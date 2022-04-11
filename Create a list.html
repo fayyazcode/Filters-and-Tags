@@ -485,6 +485,7 @@
     };
 
     // .............................third sub tag function starts.................
+    let arr=[];
     function reset() {
       //remove every filter 
       arrayCount=0;
@@ -521,7 +522,9 @@
 
     function del(data) {
       //..........................remove element.....................
+      //use array  map and regix 
       try {
+      
         //...................check get attribute of input next to select button
         if (
           data.firstElementChild.firstElementChild.getAttribute("id") ==
@@ -540,7 +543,6 @@
     let head=0
     let category=0
     let sub=0
-    let arr=[];
     function createArray(data,prop){
       
       console.log("logging data in create array function",data);
