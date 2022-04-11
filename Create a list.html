@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: "Roboto";
+    }
+
+    #mainList {
+      border: none;
+      padding: 0;
+      margin: 0;
+
+    }
+
+    .selectTagHeading {
+      display: inline-block;
+      font-size: 35px;
+    }
+
+    li {
+      border: none;
+      list-style: none;
+      outline: none;
+      text-decoration: none;
+      /* display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap; */
+    }
+
+    input {
+      border: none;
+      outline: none;
+      font-size: 35px;
+      color: black;
+      background-color: rgba(255, 255, 255, 0);
+      font-weight: 700;
+    }
+
+    .big_SuccessBtn {
+      background-color: #BADA55;
+      border: none;
+      height: 45px;
+      width: 144px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+    .innerDiv
+    .big_SuccessBtn:hover{
+      border: 1px solid black;
+      background-color: white;
+   
+    }
+
+    .big_DangerBtn {
+      height: 45px;
+      font-size: 18px;
+      border: 1px solid black;
+      background-color: white;
+      width: 144px;
+      border-radius: 10px;
+    }
+    .big_DangerBtn{
+      background-color: #F1F1F1;
+    }
+
+    .btn-success {
+      background-color: #BADA55;
+      border: none;
+      height: 38px;
+      width: 103px;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-right: 20px;
+    }
+    .btn-success:hover{
+      border: 1px solid black;
+      background-color: white;
+    }
+    .btn-danger {
+      height: 38px;
+      font-size: 16px;
+      border: 1px solid black;
+      background-color: white;
+      width: 103px;
+      border-radius: 10px;
+    }
+    .btn-danger:hover{
+      background-color: #F1F1F1;
+      /* border: none; */
+    }
+
+
+    .x {
+      font-size: 20px;
+    }
+
+    .main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      /* padding-top: 70px; */
+      /* padding-bottom: 70px; */
+      border-bottom: 1px solid black;
+    }
+
+    .filterH2 {
+      font-size: 80px
+    }
+
+    .firstDiv {
+      /* background-color: #f1f1f1; */
+      padding: 34px;
+
+    }
+
+    .selectDiv {
+      /* background-color: #F1F1F1; */
+      margin-top: 80px;
+      min-height: 425px;
+      border-radius: 30px;
+      box-shadow: 2px 2px 15px rgba(128, 128, 128, 0.541);
+      width: 90%;
+      margin: 0 auto;
+      }
+
+    .sub {
+      padding-top: 80px;
+      margin: 80px;
+      border-bottom: 2px solid #BADA55;
+      /* background-color: #F1F1F1; */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .subDiv {
+
+      margin-left: 80px;
+      margin-right: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 34px;
+      background-color: #F1F1F1;
+      border-radius: 10px;
+    }
+
+    .mainFilterDiv {
+      
+      margin-top: 80px;
+      min-height: 425px;
+      border-radius: 30px;
+      box-shadow: 2px 2px 15px rgba(128, 128, 128, 0.541);
+      padding-bottom: 80px;
+
+    }
+
+    .listitem {
+      display: flex;
+      padding-top: 80px;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 80px;
+      margin-bottom: 25px;
+
+    }
+    .subtagList{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      margin-top: 12px;
+    }
+    .subtagList input{
+      font-size: 20px;
+      font-weight: 500;
+    }
+    .innerTagDiv {
+      background-color: #F1F1F1;
+      padding: 34px;
+      margin-bottom: 20px;
+      margin: 80px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      /* align-items: flex-end; */
+    }
+    #tagSelectBtn{
+      align-self: flex-end;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="main container" id="main">
+    <h2 class="filterH2">Filter</h2>
+    <div class="inner-div">
+      <button class="btn big_DangerBtn" onclick="reset()"><span class="x">X</span> Clear All</button>
+      <button class=" big_SuccessBtn">Save Changes</button>
+    </div>
+    <!-- <input id="mainInput" type="text" disabled value="Select Tag Heading" class="form-control" /> -->
+  </div>
+
+  <div class="mainListDiv">
+    <ul id="mainList"></ul>
+  </div>
+  <div class="selectDiv">
+    <div class="sub">
+      <h2 class="selectTagHeading">Select Tag Heading</h2>
+      <button class="big_SuccessBtn" onclick="start()">Select</button>
+    </div>
+  </div>
+  <script>
+    var arrayCount=0;
+    function start() {
+      arrayCount++
+      swal({
+        content: {
+          title:"Select Tag Heading",
+          element: "input",
+          attributes: {
+            placeholder: "Tag Heading",
+            type: "text",
+            button:"success"
+          },
+        },
+      }).then((res) => {
+        try {
+          
+          console.log("result...........", res);
+          str = res
+          const lower = str.toLowerCase();
+          res = str.charAt(0).toUpperCase() + lower.slice(1);
+        } catch (error) {
+          console.log(error);
+        }
+        if (res.trim() == "" || null || undefined) {
+          swal("Oops", "Input Cant Be Empty", "error");
+        } else {
+          createFun(res);
+          createArray(res,"heading")
+        }
+      });
+    }
+    function createFun(data) {
+      // document.getElementById("mainInput").value=data
+      let liValue = data;
+
+      // if (liValue == "") {
+      //   swal("Oops", "Input Cant Be Empty", "error");
+      //   return 0;
+      // } else if (!liValue.trim().length) {
+      //   mainInput.value = "";
+      //   return 0;
+      // }
+
+      let list = document.getElementById("mainList");
+      let FirstDiv = document.createElement("div")
+      let divLi = document.createElement("div");
+      let li = document.createElement("li");
+      let inp = document.createElement("input");
+      let edit = document.createElement("button");
+      let del = document.createElement("button");
+      let subLi = document.createElement("div");
+      let subDiv = document.createElement("div");
+      let selectBtn = document.createElement("button");
+      let selectCatogery = document.createElement("span")
+
+      edit.innerHTML = "EDIT";
+      del.innerHTML = "DELETE";
+      selectBtn.setAttribute("class", "btn-danger")
+      selectBtn.innerHTML = "Select";
+      selectBtn.setAttribute("id", "select");
+      selectBtn.setAttribute(
+        "onclick",
+        "createInnerTag(this.parentElement.parentElement,this)"
+      );
+
+      selectCatogery.innerHTML = "Select Category"
+      selectCatogery.setAttribute("class", "selectCat")
+
+      FirstDiv.setAttribute("class", "firstDiv")
+      divLi.setAttribute("class", "mainFilterDiv")
+      edit.setAttribute("id", "edit");
+      edit.setAttribute("onclick", "updt(this.parentElement)");
+      edit.setAttribute("class", " btn btn-success");
+
+      del.setAttribute("id", "del");
+      del.setAttribute("onclick", "del(this.parentElement.parentElement.parentElement)");
+      del.setAttribute("class", "btn btn-danger ");
+
+      inp.setAttribute("id", "listInput");
+      inp.setAttribute("disabled", "disabled");
+      inp.setAttribute("class", "list-input form-control");
+
+      li.setAttribute("id", "li");
+      li.setAttribute("class", "listitem");
+
+      subDiv.setAttribute("class", "subDiv")
+      subLi.setAttribute("class", "subLi")
+
+      list.appendChild(FirstDiv);
+      FirstDiv.appendChild(divLi)
+      divLi.appendChild(li);
+      divLi.appendChild(subDiv)
+      li.appendChild(inp);
+      li.appendChild(subLi);
+      // subLi.appendChild(del);
+      subDiv.appendChild(selectCatogery);
+      subDiv.appendChild(selectBtn);
+      subLi.appendChild(edit);
+      subLi.appendChild(del);
+
+      inp.value = liValue;
+      console.log("swal value...........", liValue);
+      // mainInput.value = "";
+    }
+    //first function ends
+
+    //........second function...............................function for inner tag............................
+
+    function createInnerTag(parentRes, btn) {
+      console.log("print result button ...................", btn);
+      swal({
+        content: {
+          title:"Select Category",
+          element: "input",
+          attributes: {
+            placeholder: "Value",
+            type: "text",
+          },
+        },
+      }).then((res) => {
+        try {
+          
+          console.log("result...........", res);
+          str = res
+          const lower = str.toLowerCase();
+          res = str.charAt(0).toUpperCase() + lower.slice(1);
+        } catch (error) {
+          console.log(error);
+        }
+        if (res.trim() == "" || res== "") {
+          swal("Oops", "Input Cant Be Empty", "error");
+        } else {
+          createArray(res, 'innertag')
+
+          let subLi = document.createElement("li");
+          let inpSub = document.createElement("input");
+          let buttonsDiv = document.createElement("div");
+          
+          let subDel = document.createElement("button");
+          let subEdit = document.createElement("button");
+          let tagSelectBtn = document.createElement("button");
+          let innerTagDiv = document.createElement("div");
+
+          inpSub.value = res;
+          tagSelectBtn.innerHTML = "Add Tag";
+          tagSelectBtn.setAttribute("id", "tagSelectBtn");
+          tagSelectBtn.setAttribute("class", "btn-danger")
+          tagSelectBtn.setAttribute(
+            "onclick",
+            "createSubTag(this.parentElement,this)"
+          );
+
+          tagSelectBtn.style.marginTop="12px";
+          subLi.setAttribute("class", "subtagList")
+          innerTagDiv.setAttribute("class", "innerTagDiv")
+          subEdit.innerHTML = "EDIT";
+          subDel.innerHTML = "DELETE";
+          subEdit.setAttribute("id", "subEdit");
+          subEdit.setAttribute("onclick", "updt(this.parentElement)");
+          subEdit.setAttribute("class", " btn btn-success");
+
+          inpSub.setAttribute("id", "subInput");
+          inpSub.setAttribute("disabled", "disabled");
+          inpSub.setAttribute("class", "list-input form-control");
+
+          subDel.setAttribute("id", "subDel");
+          subDel.setAttribute(
+            "onclick",
+            "del(this.parentElement.parentElement.parentElement)"
+          );
+          subDel.setAttribute("class", "btn btn-danger ");
+
+          parentRes.appendChild(innerTagDiv);
+          innerTagDiv.appendChild(subLi);
+          subLi.appendChild(inpSub);
+          subLi.appendChild(buttonsDiv);
+          buttonsDiv.appendChild(subEdit);
+          buttonsDiv.appendChild(subDel);
+          innerTagDiv.appendChild(tagSelectBtn);
+
+          // btn.style.display = "none";
+          console.log("button btn direct", btn);
+          console.log(
+            "log button target from dom",
+            parentRes.firstElementChild.firstElementChild
+          );
+        }
+      });
+
+      // console.log("check for button parent siblibg",btn.parent.sibling);
+    }
+    //.............................second function ends...............
+
+    // .............................third sub tag function starts.................\
+    let createSubTag = (data) => {
+      console.log("log event..................", data);
+      //trigger swal get values in swwetalert input and if its not empty update on dom created input
+      swal({
+        content: {
+          title:"Select Sub Category",
+          element: "input",
+          attributes: {
+            placeholder: "Value",
+            type: "text",
+          },
+        },
+      }).then((res) => {
+      try {
+        str = res
+        const lower = str.toLowerCase();
+        res = str.charAt(0).toUpperCase() + lower.slice(1);
+        
+      } catch (error) {
+        console.log(error);
+      }
+
+        if (res.trim() == "null" || res== "") {
+          swal("Oops", "Input Cant Be Empty", "error");
+        } else {
+          createArray(res,'subtag')
+
+
+          let tagLi = document.createElement("li");
+          let tagInpt = document.createElement("input");
+          let tagButtonDiv=document.createElement("div")
+          let tagDel = document.createElement("button");
+          let tagEdit = document.createElement("button");
+
+
+          tagLi.setAttribute("class","subtagList")
+          tagEdit.innerHTML = "EDIT";
+          tagDel.innerHTML = "DELETE";
+          tagEdit.setAttribute("id", "tagEdit");
+          tagEdit.setAttribute("onclick", "updt(this.parentElement)");
+          tagEdit.setAttribute("class", " btn btn-success");
+
+          tagInpt.setAttribute("id", "listInput");
+          tagInpt.setAttribute("disabled", "disabled");
+          tagInpt.setAttribute("class", "list-input form-control");
+
+          tagDel.setAttribute("id", "tagDel");
+          tagDel.setAttribute("onclick", "del(this.parentElement.parentElement)");
+          tagDel.setAttribute("class", "btn btn-danger ");
+
+          data.appendChild(tagLi);
+          tagLi.appendChild(tagInpt);
+          tagLi.appendChild(tagButtonDiv);
+          tagButtonDiv.appendChild(tagEdit)
+          tagButtonDiv.appendChild(tagDel);
+
+          tagInpt.value = res;
+        }
+      });
+    };
+
+    // .............................third sub tag function starts.................
+    function reset() {
+      //remove every filter 
+      arrayCount=0;
+      let list = document.getElementById("mainList");
+      swal("Removed", "List Cleared", "success");
+      list.innerHTML = "";
+    }
+    //....................edit button function
+    function updt(edit) {
+      //trigger sweet alert takes a value and trigger inner update function if value is not emmpty
+      swal({
+        content: {
+          element: "input",
+          attributes: {
+            placeholder: "Edit",
+            type: "text",
+          },
+        },
+      }).then((res) => {
+        console.log("result...........", res);
+        innerupdate(edit, res);
+      });
+    }
+    //........................... update value in input from sweet alert
+    function innerupdate(edit, res) {
+      if (res.trim() == "" || null) {
+        swal("Edit", "Value cant be Empty", "error");
+      } else {
+        swal("Edit", "Title Edited", "success");
+        console.log("log dit.previousSibling....", edit.previousSibling);
+        edit.previousElementSibling.value = res;
+      }
+    }
+
+    function del(data) {
+      //..........................remove element.....................
+      try {
+        //...................check get attribute of input next to select button
+        if (
+          data.firstElementChild.firstElementChild.getAttribute("id") ==
+          "subInput"
+        ) {
+          document.getElementById("select").style.display = "block";
+        }
+      } catch (err) {
+        console.log("catch error", err);
+      }
+      swal("Remove", "Tag removed", "success");
+      data.remove();
+    }
+
+    //create array
+    let head=0
+    let category=0
+    let sub=0
+    let arr=[];
+    function createArray(data,prop){
+      
+      console.log("logging data in create array function",data);
+      console.log("logging data in create array  prop",prop);
+      console.log();
+      if(prop=="heading"){
+         arr.push(data)
+         head++
+         console.log("log second index of array. heading.........",arr);
+        }else if(prop=="innertag"){
+          category++
+          arr.push([data])
+          console.log("log second index of array. innertag.........",arr);
+        }else if(prop=="subtag"){
+          sub++
+    
+          console.log("log array in subtag............",arr[head][category]);
+          if(!arr[head][category]){
+            arr[head][category]=[data]
+
+          }else{
+            console.log("log arr",  arr[head][category]);
+            arr[head][category].push(data)
+          }
+
+        console.log(arr);
+      }
+    }
+
+      ///all done and working
+  </script>
+</body>
+
+</html>

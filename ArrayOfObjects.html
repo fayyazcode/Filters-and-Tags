@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="new"></div>
+  </body>
+  <script>
+    let main = [
+      [
+        "Activity",
+        [
+          ["RockClimbing", ["trad Climbing", "Big Walling", "Sport Climbing"]],
+          ["Canyoing", ["Wet Canyons", "Dry Canyons"]],
+          ["hiliting"],
+          ["RopeJumping"],
+          ["Caving"],
+        ],
+      ],
+      [
+        "Activity",
+        [
+          ["RockClimbing", ["trad Climbing", "Big Walling", "Sport Climbing"]],
+          ["Canyoing", ["Wet Canyons", "Dry Canyons"]],
+          ["hiliting"],
+          ["RopeJumping"],
+          ["Caving"],
+        ],
+      ],
+    ];
+
+    console.log("object values ...............................",Object.values(main[0]));
+//     for (const key in main[0]) {
+
+// console.log(`${key}: ${main[0][key]}`);
+// }
+
+    const myJSON = JSON.stringify(main);
+    console.log("array of object,,,,,,,,,,,,,,,,,,,,,,",main);
+    console.log("json nested array stringified ..............", myJSON);
+    console.log("JSON eval,,,,,,,,,,,,,,,,,,,,,,,,,",eval(myJSON));
+    let tags = document.getElementById("new");
+
+    console.log("log array.....................", arr.length);
+    let resultDisplayArray = [];
+    for (let x = 0; x < main.length; x++) {
+      let arr = main[x][1];
+      let heading = document.createElement("H1");
+      heading.innerText += `"${main[x][0]}"`;
+      console.log("check for value of x.....................", main[x][1]);
+      for (let i = 0; i < arr.length; i++) {
+        console.log(arr[i].length);
+
+        let mainDiv = document.createElement("div");
+        let childDiv = document.createElement("div");
+        for (let z = 0; z < arr[i].length; z++) {
+          console.log("check valuesof a z.................", arr[i][z]);
+          if (arr[i][z] == undefined) {
+            console.log("undefined");
+          } else {
+            if (!Array.isArray(arr[i][z])) {
+              mainDiv.innerHTML += ` 
+        <input  onchange="myFunction(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${
+          arr[i][z]
+        }" id="${arr[i][z].replace(/ /g, "")}" name="${arr[i][z]}" value="${
+                arr[i][z]
+              }"> 
+        <label for="${arr[i][z].replace(/ /g, "")}">${arr[i][z]}</label>
+        <br>`;
+            }
+          }
+
+          console.log(" values", arr[i][z]);
+          if (Array.isArray(arr[i][z])) {
+            for (let a = 0; a < arr[i][z].length; a++) {
+              childDiv.innerHTML += `
+        <input type="checkbox" style=" margin-left: 15px;" placeholder="${
+          arr[i][z][a]
+        }" id="${arr[i][z][a].replace(/ /g, "")}" name="${
+                arr[i][z][a]
+              }" value="${arr[i][z][a]}"> 
+        <label for="${arr[i][z][a].replace(/ /g, "")}">${arr[i][z][a]}</label>
+        <br>`;
+
+              mainDiv.append(childDiv);
+            }
+          }
+          tags.append(mainDiv);
+        }
+      }
+    }
+    function myFunction(val) {
+      let attr = val.parentElement.nextSibling.firstChild.getAttribute("class");
+      console.log("attribut class", attr);
+      val.addEventListener("change", (event) => {
+        if (event.currentTarget.checked) {
+          // console.log(val.parentElement.nextSibling);
+          val.parentElement.nextSibling.style.display = "block";
+        } else {
+          if (attr !== "main") {
+            val.parentElement.nextSibling.style.display = "none";
+          }
+        }
+      });
+    }
+  </script>
+</html>
