@@ -101,7 +101,7 @@
 let main;
 
     window.onmessage = (event) => {
-      console.log("log event in iframe...............", event.data.data);
+      console.log("log new event in iframe...", event.data.data);
 
   main=event.data.data
   dataRender()
@@ -115,24 +115,25 @@ let main;
   let resultDisplayArray = [];
   for (let x = 0; x < main.length; x++) {
     let mainDiv = document.createElement("div");
-    mainDiv.style.width = "400px";
-    let heading = document.createElement("H3");
-    heading.style.padding = "10px";
-    heading.style.fontSize = "40px";
-    heading.style.borderBottom = "2px solid #BADA55";
+    mainDiv.style.width = "320px";
+    mainDiv.style.paddingBottom = "10px";
+    let heading = document.createElement("p");
+    heading.style.fontSize = "50px";
+    heading.style.fontWeight = "600px";
+    // heading.style.borderBottom = "2px solid #BADA55";
+        mainDiv.style.borderBottom = "2px solid #BADA55";
     mainDiv.append(heading);
     heading.innerText = main[x][0];
     console.log("heading...........", heading);
     let arr = main[x][1];
     for (let i = 0; i < arr.length; i++) {
       //.............................first loop......................
-      console.log("check i...........", arr[i]);
+      //console.log("check i...........", arr[i]);
 
       //...............................second loop...........................
 
       for (let z = 0; z < arr[i].length; z++) {
         let childDiv = document.createElement("div");
-
         childDiv.setAttribute("class", "childDiv");
         childDiv.style.display = "none";
         let fstChild = document.createElement("div");
@@ -210,22 +211,17 @@ let main;
 
   }
 
-  let getValues = (res) => {
-    //............... functionality when checked ,..............................//
-    //console.log("valueszxxxxx..........................", res.value);
-    //............................add checked item into filter array call filter function every onChange event................................//
-
-    // commented for check
-    window.postMessage(
-      {
-        data: {
+  function getValues  (res)  {
+   window.parent.postMessage ( {
+        
           status: res.checked,
           value: res.value,
-        },
+        
       },
-      "https://jenksryan-editorx-io.filesusr.com"
+      "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
     );
-    // console.log("result on check and uncheck",res.checked);
+    console.log("valueszxxxxx...............", res.value);
+    //............................add checked item into filter array call filter function every onChange event........................//
     if (res.checked) {
       let parentBox = document.getElementById("selectedTags")
       let addedTag = document.createElement("div")
@@ -236,9 +232,7 @@ let main;
       span.setAttribute("class","spanButton")
       span.innerHTML = "X "+res.value 
       span.onclick = function (event) {
-          let Ids =this.getAttribute("id")
-         Ids= Ids.substring(0, str.length - 3)
-        console.log("log id span subtract.............",Ids);
+        console.log("log id span.............", event.id);
         // document.getElementById(res.value)
         console.log("button remove functionality.............",document.getElementById(res.value.trim()));
         // let unCheck= document.getElementById(res.value.trim()).checked = false;
