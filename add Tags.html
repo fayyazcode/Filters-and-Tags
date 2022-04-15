@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Tags</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         * {
             font-family: "Roboto", sans-serif;
@@ -74,16 +73,25 @@
     integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    [["Activity", [["RockClimbing", ["trad Climbing", "Big Walling", "Sport Climbing"]], ["Canyoing", ["Wet Canyons", "Dry Canyons"]], ["hiliting"], ["RopeJumping"], ["Caving"]]], ["GEAR", [["Ropes", ["Dynamic Ropes", "Static Ropes"]], ["Belay Device", ["tubular", "Assisted Breaking"]], ["CARABINERS",["Wiregate","Locking","Non-Locking"]], ["Cams"], ["Nuts"],["Bolts"]]],["Episode Flavor",[["Stunts",["Sketchy","Well Planned"]],["Science",["Dynamic Test","Bolt Buster","Slow Pull","Human Testing"]]]]]
 
     let main;
-    let addedTag;
+    let myPromise;
     window.onmessage = (event) => {
-        console.log("log event in iframe...............", event.data.data);
-        console.log("log event in iframe...............", event.data.addedtags);
-        addedTag = event.data.addedtags;
+        console.log("log addedTags in iframe...............", event.data.addedtags);
+
         main = event.data.data;
         dataRender()
+
+        myPromise = new Promise(function (myResolve, myReject) {
+            if (event.data.addedtags) {
+                myResolve(); // when successful
+            }
+            myReject();  // when error event.data.addedtags
+        });
+        myPromise.then((dataThen)=>{
+            alreadyEsistingTags(dataThen)
+        })
+
     };
 
     let dataRender = () => {
@@ -148,36 +156,38 @@
             }
         }
     }
-    function myFunction(getCheckbox) {
-        try {
-            let attr =
-                getCheckbox.parentElement.nextSibling.firstElementChild.getAttribute(
-                    "class"
-                );
-            if (getCheckbox.checked) {
-                if (attr !== "main") {
-                    // getCheckbox.parentElement.nextSibling.firstElementChild.classList.add("slide-fade")
-                    //   console.log(getCheckbox.value);
-                    getCheckbox.parentElement.nextSibling.style.display = "block";
-                }
-            } else {
 
-                if (attr !== "main") {
+    //..................use this function to hide and show
+    // function myFunction(getCheckbox) {
+    //     try {
+    //         let attr =
+    //             getCheckbox.parentElement.nextSibling.firstElementChild.getAttribute(
+    //                 "class"
+    //             );
+    //         if (getCheckbox.checked) {
+    //             if (attr !== "main") {
+    //                 // getCheckbox.parentElement.nextSibling.firstElementChild.classList.add("slide-fade")
+    //                 //   console.log(getCheckbox.value);
+    //                 getCheckbox.parentElement.nextSibling.style.display = "block";
+    //             }
+    //         } else {
 
-                    getCheckbox.parentElement.nextSibling.style.display = "none";
-                }
-            }
-        } catch (error) {
-            console.log("catch log...........", error);
-        }
+    //             if (attr !== "main") {
 
-    }
+    //                 getCheckbox.parentElement.nextSibling.style.display = "none";
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.log("catch log...........", error);
+    //     }
 
+    // }
+
+    
+//sent valuse of whceck box to wix when checkbox is checked
     let getValues = (res) => {
-        //............... functionality when checked ,..............................//
-        //console.log("values..........................", res);
         //............................add checked item into filter array call filter function every onChange event................................//
-        //............................add checked item into filter array call filter function every onChange event................................//
+       
         window.parent.postMessage(
             {
                 data: {
@@ -185,33 +195,41 @@
                     value: res.value,
                 },
             },
-            "https://jenksryan.editorx.io/hownot2/blank-1"
+            "https://jenksryan.editorx.io/hownot2/addtags"
         );
-        //   console.log("get item", res);
-        //   console.log("item value", res.checked);
-        //   console.log("item data.......", res.value);
-        //   console.log("indxes of element", res.name);
 
 
-        // console.log("if checked add",value);
-        //................................functionality for remove when unchecked................................
 
-        //using array.indexOf to get index of item which is unchecked and splice /remove it from data
     };
-//     $(document).ready(function(){
-//  let allInpt= $(":input")
-//  console.log("logging data as all inputs........",allInpt);
-//  let arrData=addedTag
-//  for(let x=0;x<arrData.length;x++){
 
-//    for(var i=0;i<allInpt.length;i++){
-//      console.log("logging one / one",arrData[x].toLocaleLowerCase(),allInpt[i].value.toLocaleLowerCase());
-//      if(arrData[x].toLocaleLowerCase()==allInpt[i].value.toLocaleLowerCase()){
-//        allInpt[i].checked=true;
-//      }
-//     }
-//  }
-// });
+    //get tags of bo bolg which arer already esisting in data base and mark them as checked
+     function alreadyEsistingTags(tagArr) {
+        console.log("logging addedtag", tagArr);
+        if (tagArr) {
+            let allInpt = document.getElementsByTagName("input")
+            console.log("logging data as all inputs........", allInpt.length);
+            let arrData = tagArr
+            console.log("log data in already esisting tags function", arrData);
+            for (let x = 0; x < arrData.length; x++) {
+
+                for (var i = 0; i < allInpt.length; i++) {
+                    // myFunction(allInpt[i])
+                    console.log(allInpt[i]);
+                    console.log("logging one / one", arrData[x].toLocaleLowerCase(), allInpt[i].value.toLocaleLowerCase());
+                    if (arrData[x].toLocaleLowerCase() == allInpt[i].value.toLocaleLowerCase()) {
+                        allInpt[i].checked = true;
+
+
+                    }
+                }
+            }
+        } else {
+            console.log("no data found");
+        }
+
+
+    }
+
 </script>
 
 </html>
