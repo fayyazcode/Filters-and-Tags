@@ -226,25 +226,34 @@ let main;
     if (res.checked) {
       let parentBox = document.getElementById("selectedTags")
       let addedTag = document.createElement("div")
-      addedTag.setAttribute("id", res.value.trim() + "sub")
+      addedTag.setAttribute("id", res.value.replace(/ /g, "") + "sub")
+
       addedTag.setAttribute("class", "addedTags")
       let span = document.createElement("button")
-      span.setAttribute("id",res.value+"span")
+      let id=res.value.replace(/ /g, "")
+      console.log("logging id.........",id);
+      span.setAttribute("id",id+"span")
       span.setAttribute("class","spanButton")
       span.innerHTML = "X "+res.value 
       span.onclick = function (event) {
-        console.log("log id span.............", event.id);
-        // document.getElementById(res.value)
-        console.log("button remove functionality.............",document.getElementById(res.value.trim()));
-        // let unCheck= document.getElementById(res.value.trim()).checked = false;
+        console.log("button remove functionality.............",document.getElementById(res.value.replace(/ /g, "")));
+         let unCheck= document.getElementById(res.value.replace(/ /g, "")).checked = false;
+        window.parent.postMessage ( {
+        
+        status: res.checked,
+        value: res.value,
+      
+    },
+    "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+  );
         this.remove()
 
       }
       addedTag.appendChild(span)
       parentBox.appendChild(addedTag)
     } else {
-      console.log("log for uncheck.......",document.getElementById(res.value.trim()+"sub"));
-      document.getElementById(res.value.trim()+"sub").remove()
+      console.log("log for uncheck.id ......",document.getElementById(res.value.replace(/ /g, "")+"sub"));
+       document.getElementById(res.value.replace(/ /g, "")+"sub").remove()
     }
 
     //................................functionality for remove when unchecked................................
