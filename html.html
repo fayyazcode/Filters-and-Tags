@@ -1,10 +1,57 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Add Tags</title>
+    <style>
+      * {
+        font-family: "Roboto", sans-serif;
+      }
+      label {
+        font-size: 16px !important;
+      }
+      .checkHead {
+        font-size: 22px !important;
+        font-weight: 500;
+      }
+      input {
+        vertical-align:middle;
+        width: 26px;
+        height: 26px;
+      }
+
+      input[type="checkbox"] {
+  display: none;
+}
+
+      input[type="checkbox"] + *::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 26px;
+        height: 26px;
+        margin-right: 0.3rem;
+        border-radius: 10%;
+        border-style: solid;
+        border-width: 0.1rem;
+        border-color: gray;
+        flex-shrink: 0;
+       margin-bottom: 10px;
+      }
+      input[type="checkbox"]:checked + *::before {
+        content: "✓";
+        color: white;
+        text-align: center;
+        background: rgb(0, 0, 0);
+        border-color: rgb(0, 0, 0);
+      }
+      .innerInput +*::before{
+        margin-left: 26px !important;
+      }
+    </style>
   </head>
   <body>
     <div
@@ -12,146 +59,170 @@
       style="
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        width: 1600px;
+        align-items:baseline;
+        flex-wrap: wrap;
+        padding:80px;
+         
       "
     ></div>
   </body>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+    integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
   <script>
-     window.onmessage=(event)=>{
-       console.log("log event in iframe...............",event)
 
-  window.postMessage(
-          {
-           message:'sent data from on message'
-          },"https://jenksryan-editorx-io.filesusr.com"
+    let main ;
+    window.onmessage = (event) => {
+      // console.log("log event in iframe...............", event.data.data);
+      console.log("log addedTags in iframe...............",event.data.addedtags);
       
-  )
+      
+	main=event.data.data;
+  dataRender()
 
-    }
-    let main = [
-      [
-        "Activity",
-        [
-          ["RockClimbing", ["trad Climbing", "Big Walling", "Sport Climbing"]],
-          ["Canyoing", ["Wet Canyons", "Dry Canyons"]],
-          ["hiliting"],
-          ["RopeJumping"],
-          ["Caving"],
-        ],
-      ],
-      [
-        "Activity",
-        [
-          ["RockClimbing", ["trad Climbing", "Big Walling", "Sport Climbing"]],
-          ["Canyoing", ["Wet Canyons", "Dry Canyons"]],
-          ["hiliting"],
-          ["RopeJumping"],
-          ["Caving"],
-        ],
-      ],
-      [
-        "Activity",
-        [
-          ["RockClimbing", ["trad Climbing", "Big Walling", "Sport Climbing"]],
-          ["Canyoing", ["Wet Canyons", "Dry Canyons"]],
-          ["hiliting"],
-          ["RopeJumping"],
-          ["Caving"],
-        ],
-      ],
-    ];
-
-
+  
+    };
+     
+    let dataRender=()=>{
+      
     let tags = document.getElementById("new");
 
-    // console.log("log array.....................", arr.length);
+// console.log("log array.....................", arr.length);
 
-    let resultDisplayArray = [];
-    for (let x = 0; x < main.length; x++) {
-      let mainDiv = document.createElement("div");
-      mainDiv.style.width = "400px";
-      let heading = document.createElement("H3");
-      heading.style.padding="10px"
-      heading.style.borderBottom="2px solid #BADA55"
-      mainDiv.append(heading);
-      heading.innerText = main[x][0];
-      console.log("heading...........", heading);
-      let arr = main[x][1];
-      // console.log("check for value of x.....................",main[x][1]);
-      for (let i = 0; i < arr.length; i++) {
-        //.............................first loop......................
-        // console.log(arr[i].length);
-        console.log("check i...........", arr[i]);
+let resultDisplayArray = [];
+for (let x = 0; x < main.length; x++) {
+  let mainDiv = document.createElement("div");
+  mainDiv.style.width = "400px";
+  let heading = document.createElement("H3");
+  heading.style.padding = "10px";
+  heading.style.fontSize = "40px";
+  heading.style.borderBottom = "2px solid #BADA55";
+  mainDiv.append(heading);
+  heading.innerText = main[x][0];
+  let arr = main[x][1];
+  for (let i = 0; i < arr.length; i++) {
+    //.............................first loop......................
 
-        //...............................second loop...........................
+    //...............................second loop...........................
 
-        for (let z = 0; z < arr[i].length; z++) {
-          let childDiv = document.createElement("div");
-          let fstChild = document.createElement("div");
-          if (arr[i][z] == undefined) {
-          } else {
-            if (!Array.isArray(arr[i][z])) {
-              console.log("i z...........", arr[i][z]);
-              fstChild.innerHTML += ` 
-        <input  onchange="getValues(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${
-          arr[i][z]
-        }" id="${arr[i][z].replace(/ /g, "")}" name="${arr[i][z]}" value="${
-                arr[i][z]
-              }"> 
-              
-        <label for="${arr[i][z].replace(/ /g, "")}">${arr[i][z]}</label>
-        <br>`;
-              mainDiv.append(fstChild);
-            }
-          }
-          if (Array.isArray(arr[i][z])) {
-            //................................third loop..................................//
-
-            for (let a = 0; a < arr[i][z].length; a++) {
-              console.log("a i z log ...............", arr[i][z][a]);
-              childDiv.innerHTML += `
-        <input onchange="getValues(this)" type="checkbox" style=" margin-left: 15px;" placeholder="${
-          arr[i][z][a]
-        }" id="${arr[i][z][a].replace(/ /g, "")}" name="${i,"",z,"",a}" value="${
-                arr[i][z][a]
-              }"> 
-        <label for="${arr[i][z][a].replace(/ /g, "")}">${arr[i][z][a]}</label>
-        <br>`;
-
-              mainDiv.append(childDiv);
-            }
-          }
-          tags.append(mainDiv);
+    for (let z = 0; z < arr[i].length; z++) {
+      let childDiv = document.createElement("div");
+      
+      childDiv.setAttribute("class", "childDiv");
+      childDiv.style.display = "none";
+      let fstChild = document.createElement("div");
+      if (arr[i][z] == undefined) {
+      } else {
+        if (!Array.isArray(arr[i][z])) {
+//console.log("i z...........", arr[i][z]);
+          fstChild.innerHTML += ` 
+    <input  onchange="myFunction(this),getValues(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${
+      arr[i][z]
+    }" id="${arr[i][z].replace(/ /g, "")}" name="${i.toString()+""}" value="${
+            arr[i][z]
+          }"> 
+          
+    <label for="${arr[i][z].replace(/ /g, "")}">${arr[i][z]}</label>
+    <br>`;
+          mainDiv.append(fstChild);
         }
       }
+      if (Array.isArray(arr[i][z])) {
+        //................................third loop..................................//
+
+        for (let a = 0; a < arr[i][z].length; a++) {
+        //  console.log("a i z log ...............", arr[i][z][a]);
+          childDiv.innerHTML += `<div class="show"  style=" margin-left: 35px;">
+    <input onchange="getValues(this)" type="checkbox" style=" margin-left: 15px;" placeholder="${
+      arr[i][z][a]
+    }" id="${arr[i][z][a].replace(/ /g, "")}" name="${
+            (i.toString()+ ","+  a.toString())
+          }" value="${arr[i][z][a]}"> 
+    <label for="${arr[i][z][a].replace(/ /g, "")}">${arr[i][z][a]}</label>
+    </div>`;
+
+          mainDiv.append(childDiv);
+        }
+      }
+      tags.append(mainDiv);
+    }
+  }
+}
+    }
+    function myFunction(getCheckbox) {
+      try {
+        let attr =
+        getCheckbox.parentElement.nextSibling.firstElementChild.getAttribute(
+          "class"
+        );
+      if (getCheckbox.checked) {
+        if (attr !== "main") {
+          // getCheckbox.parentElement.nextSibling.firstElementChild.classList.add("slide-fade")
+        //   console.log(getCheckbox.value);
+          getCheckbox.parentElement.nextSibling.style.display = "block";
+        }
+      } else {
+        
+        if (attr !== "main") {
+
+          getCheckbox.parentElement.nextSibling.style.display = "none";
+        }
+      }
+      } catch (error) {
+        console.log("catch log...........",error);
+      }
+ 
     }
 
     let getValues = (res) => {
       //............... functionality when checked ,..............................//
-
+//console.log("values..........................", res);
+      //............................add checked item into filter array call filter function every onChange event................................//
       //............................add checked item into filter array call filter function every onChange event................................//
       window.parent.postMessage(
-          {
-            data:{
-            "status":res.checked,
-            "value":res.value
-            }
-          },"https://jenksryan-editorx-io.filesusr.com"
-      
-      )
-      console.log("get item", res);
-      console.log("item value", res.checked);
-      console.log("item data.......", res.value);
-      console.log("indxes of element", res.name);
+        {
+          data: {
+            status: res.checked,
+            value: res.value,
+          },
+        },
+        "https://jenksryan.editorx.io/hownot2/addtags"
+      );
+    //   console.log("get item", res);
+    //   console.log("item value", res.checked);
+    //   console.log("item data.......", res.value);
+    //   console.log("indxes of element", res.name);
 
-      // console.log("if checked add",value);
-      //................................functionality for remove when unchecked................................
 
-      //using array.indexOf to get index of item which is unchecked and splice /remove it from data
+
     };
-   
+  function alreadyEsistingTags(tagArr){
+  console.log("logging addedtag",tagArr);
+if(tagArr){
+  let allInpt= document.getElementsByTagName("input")
+ console.log("logging data as all inputs........",allInpt.length);
+ let arrData=tagArr
+ console.log("log data in already esisting tags function",arrData);
+ for(let x=0;x<arrData.length;x++){
 
-  
+   for(var i=0;i<allInpt.length;i++){
+    // myFunction(allInpt[i])
+    console.log(allInpt[i]);
+     console.log("logging one / one",arrData[x].toLocaleLowerCase(),allInpt[i].value.toLocaleLowerCase());
+     if(arrData[x].toLocaleLowerCase()==allInpt[i].value.toLocaleLowerCase()){
+       allInpt[i].checked=true;
+     }
+    }
+ }
+}else{
+console.log("no data found");
+}
+
+
+    }
+
   </script>
 </html>
