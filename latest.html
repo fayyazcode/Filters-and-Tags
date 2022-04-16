@@ -283,15 +283,14 @@ if(tagsPresent){
       if(arrData[x].toLowerCase()==dataValue.toLowerCase()){
        displayBlockArr.push(allInpt[i]) 
      }else{
-      // allInpt[i].style.display="none";
+      allInpt[i].style.display="none";
 console.log("no data found");
 }
 
      console.log("logging one / one",arrData[x].toLowerCase());
 
     }
-    if(arrData.length==x){
-flag=true    }
+    if(x==arrData.length-1){flag=true }
  }
  if(flag){
   for(var i=0;i<allInpt.length;i++){
@@ -303,14 +302,14 @@ flag=true    }
       newData=allInpt[i].firstElementChild
        dataValue= newData.getAttribute("value").replace(/ /g, "")
       console.log("all input classed divs value",dataValue.toLowerCase());
-      if(arrData[x].toLowerCase()==dataValue.toLowerCase()){
-        allInpt[i].style.display="inline-block";
-     }else{
-      // allInpt[i].style.display="none";
-console.log("no data found");
-}
+    
+     try {
+      displayBlockArr[i].style.display="block";
 
-     console.log("logging one / one",arrData[x].toLowerCase());
+     } catch (error) {
+    console.log("length exceed");       
+     }
+
 
     }
  }
