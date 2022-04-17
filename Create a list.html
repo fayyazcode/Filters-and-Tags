@@ -540,35 +540,41 @@
     }
 
     //create array
-    let head=0
-    let category=1
-    let sub=1
+    let head=1
+    let category=-1
     function createArray(data,prop){
       
       console.log("logging data in create array function",data);
       console.log("logging data in create array  prop",prop);
       if(prop=="heading"){
-         arr.push(data)
+         arr.push(data,[])
          console.log("log second index of array. heading.........",arr);
         }else if(prop=="innertag"){
-          head++
-          // category++
-          console.log("log catogery after increment",category);
-          arr.push([data,[]])
+
+          arr[1].push([data,[]])
+          category++
           console.log("log second index of array. innertag.........",arr);
         }else if(prop=="subtag"){
-          let test=arr[head][category].push(data)
-          sub++
-          
-            console.log("test log",test);
-          console.log("log array in subtag............",arr[head][category]);
+
+         arr[1][category][1].push(data)
+          // category++
+            // console.log("test log",test);
+          console.log("log array in subtag............",arr[1][0][1]);
 
         console.log(arr);
       }
     }
 //sending data to wix 
 let sendData=()=>{
-  
+  console.log("save btn clicked");
+  window.parent.postMessage({
+
+
+data:arr,
+
+},
+"https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
+);
 }
       ///all done and working
   </script>
