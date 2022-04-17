@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <style>
+    * {
+      font-family: "Roboto", sans-serif;
+    }
+
+    label {
+      font-size: 16px !important;
+    }
+
+    .checkHead {
+      font-size: 22px !important;
+      font-weight: 500;
+    }
+
+    input {
+      vertical-align: middle;
+      width: 26px;
+      height: 26px;
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    input[type="checkbox"]+*::before {
+      content: "";
+      display: inline-block;
+      vertical-align: middle;
+      width: 26px;
+      height: 26px;
+      margin-right: 0.3rem;
+      border-radius: 10%;
+      border-style: solid;
+      border-width: 0.1rem;
+      border-color: gray;
+      flex-shrink: 0;
+      margin-bottom: 10px;
+    }
+
+    input[type="checkbox"]:checked+*::before {
+      content: "✓";
+      color: white;
+      text-align: center;
+      background: rgb(0, 0, 0);
+      border-color: rgb(0, 0, 0);
+    }
+
+    .innerInput+*::before {
+      margin-left: 26px !important;
+    }
+
+    .spanButton {
+      background-color: black;
+      color: white;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .spanButton:hover {
+      border: none;
+      outline: none;
+    }
+
+    .addedTags {
+      display: inline-block;
+
+      margin: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="parent">
+    <div id="selectedTags">
+
+    </div>
+    <div id="new" style="
+        display: flex;
+        justify-content: space-between;
+        align-items:baseline;
+        flex-wrap: wrap;
+        
+        "></div>
+  </div>
+</body>
+
+<script>
+
+
+  let main;
+  let checkedData=[];
+  // let tagsPresent=["rockClimbing","tradClimbing","bigWalling"]
+  window.onmessage = (event) => {
+    console.log("log new event in iframe...", event.data.data);
+    // tagsPresent=event.data.tagsPresent
+    main = event.data.data
+    dataRender()
+  };
+  let dataRender = () => {
+
+    let tags = document.getElementById("new");
+
+    // console.log("log array.....................", arr.length);
+
+    let resultDisplayArray = [];
+    for (let x = 0; x < main.length; x++) {
+      let mainDiv = document.createElement("div");
+      mainDiv.style.width = "320px";
+      mainDiv.style.paddingBottom = "10px";
+      let heading = document.createElement("p");
+      // heading.style.padding = "10px";
+      heading.style.fontSize = "50px";
+      heading.style.fontWeight = "600px";
+      // heading.style.borderBottom = "2px solid #BADA55";
+      mainDiv.style.borderBottom = "2px solid #BADA55";
+      mainDiv.append(heading);
+      heading.innerText = main[x][0];
+      console.log("heading...........", heading);
+      let arr = main[x][1];
+      for (let i = 0; i < arr.length; i++) {
+        //.............................first loop......................
+
+        //...............................second loop...........................
+
+        for (let z = 0; z < arr[i].length; z++) {
+          let childDiv = document.createElement("div");
+          childDiv.setAttribute("class", "childDiv");
+          childDiv.style.display = "none";
+          let fstChild = document.createElement("div");
+          fstChild.setAttribute("class", "input")
+          if (arr[i][z] == undefined) {
+          } else {
+            if (!Array.isArray(arr[i][z])) {
+              // console.log("i z...........", arr[i][z]);
+              fstChild.innerHTML += ` 
+    <input  onchange="myFunction(this),getValues(this),autoUpdataFilter()" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
+                }" id="${arr[i][z].replace(/ /g, "")}" name="${i.toString() + ""}" value="${arr[i][z]
+                }"> 
+          
+    <label for="${arr[i][z].replace(/ /g, "")}">${arr[i][z]} </label>
+    <br>`;
+              mainDiv.append(fstChild);
+            }
+          }
+          if (Array.isArray(arr[i][z])) {
+            //................................third loop..................................//
+
+            for (let a = 0; a < arr[i][z].length; a++) {
+              // console.log("a i z log ...............", arr[i][z][a]);
+              childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
+    <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild,autoUpdataFilter())" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
+                }" id="${arr[i][z][a].replace(/ /g, "")}" name="${(i.toString() + "," + a.toString())
+                }" value="${arr[i][z][a]}"> 
+    <label for="${arr[i][z][a].replace(/ /g, "")}">${arr[i][z][a]}</label>
+    </div>`;
+
+              mainDiv.append(childDiv);
+            }
+          }
+          tags.append(mainDiv);
+        }
+      }
+    }
+  }
+  //function commented
+  function myFunction(getCheckbox) {
+    try {
+      // console.log("parent parent previous first ",getCheckbox);
+
+      let attr =
+        getCheckbox.parentElement.nextSibling.firstElementChild.getAttribute(
+          "class"
+        );
+      if (getCheckbox.checked) {
+        if (attr !== "main") {
+          // getCheckbox.parentElement.nextSibling.firstElementChild.classList.add("slide-fade")
+          // console.log(getCheckbox.value);
+          getCheckbox.parentElement.nextSibling.style.display = "block";
+        }
+      }
+      else {
+        let all = getCheckbox.parentElement.nextElementSibling.children;
+
+
+        if (attr !== "main") {
+          for (let i = 0; i < all.length; i++) {
+            //console.log(all[i].firstElementChild.checked);
+            if (all[i].firstElementChild.checked) {
+              let unCheck1 = all[i].checked = false;
+              getCheckbox.parentElement.nextSibling.style.display = "block";
+              break;
+            } else {
+              getCheckbox.parentElement.nextSibling.style.display = "none";
+
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.log("catch log...........", error);
+    }
+
+  }
+
+  function getValues(res) {
+    if(res.status){
+       checkedData= checkedData.push(res.data)
+       
+        localStorage.setItem("array", JSON.stringify(checkedData));
+    }else{
+        checkedData = checkedData.filter(checkedData => checkedData !== res.data);
+        localStorage.setItem("array", JSON.stringify(checkedData));
+    }
+    window.parent.postMessage({
+
+      status: res.checked,
+      value: res.value,
+
+    },
+      "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+    );
+    console.log("valueszxxxxx...............", res.value);
+    //............................add checked item into filter array call filter function every onChange event........................//
+    if (res.checked) {
+      let parentBox = document.getElementById("selectedTags")
+      let addedTag = document.createElement("div")
+      addedTag.setAttribute("id", res.value.replace(/ /g, "") + "sub")
+
+      addedTag.setAttribute("class", "addedTags")
+      let span = document.createElement("button")
+      let id = res.value.replace(/ /g, "")
+      console.log("logging id.........", id);
+      span.setAttribute("id", id + "span")
+      span.setAttribute("class", "spanButton")
+      span.innerHTML = "X " + res.value
+      span.onclick = function (event) {
+        console.log("button remove functionality.............", document.getElementById(res.value.replace(/ /g, "")));
+        let unCheck = document.getElementById(res.value.replace(/ /g, "")).checked = false;
+        window.parent.postMessage({
+
+          status: res.checked,
+          value: res.value,
+
+        },
+          "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+        );
+        this.parentElement.remove()
+
+      }
+      addedTag.appendChild(span)
+      parentBox.appendChild(addedTag)
+    } else {
+      console.log("log for uncheck.id ......", document.getElementById(res.value.replace(/ /g, "") + "sub"));
+      document.getElementById(res.value.replace(/ /g, "") + "sub").remove()
+    }
+
+    //................................functionality for remove when unchecked................................
+
+  };
+  //function on mob to continue filter with recorded data in local storage
+  function continueFilter(){
+      
+  }
+//commented for mob
+  // function autoUpdataFilter() {
+  //   console.log("logging addedtag", tagsPresent);
+  //   if (tagsPresent) {
+  //     let allInpt = document.getElementsByClassName("input")
+  //     console.log("logging data as all inputs........", allInpt.length);
+  //     console.log("logging data as all inputs........", allInpt);
+  //     let arrData = tagsPresent
+
+  //     console.log("log data in already esisting tags function", arrData);
+  //     let displayBlockArr = []
+  //     let flag = false;
+  //     for (let x = 0; x < arrData.length; x++) {
+
+  //       for (var i = 0; i < allInpt.length; i++) {
+  //         // myFunction(allInpt[i])
+
+  //         let dataValue;
+  //         let newData;
+
+  //         newData = allInpt[i].firstElementChild
+  //         dataValue = newData.getAttribute("value").replace(/ /g, "")
+  //         console.log("all input classed divs value", dataValue.toLowerCase());
+  //         if (arrData[x].toLowerCase() == dataValue.toLowerCase()) {
+  //           displayBlockArr.push(allInpt[i])
+  //         } else {
+  //           allInpt[i].style.display = "none";
+  //           console.log("no data found");
+  //         }
+
+  //         console.log("logging one / one", arrData[x].toLowerCase());
+
+  //       }
+  //       if (x == arrData.length - 1) { flag = true }
+  //     }
+  //     if (flag) {
+  //       for (var i = 0; i < allInpt.length; i++) {
+
+  //         let dataValue;
+  //         let newData;
+
+  //         newData = allInpt[i].firstElementChild
+  //         dataValue = newData.getAttribute("value").replace(/ /g, "")
+  //         console.log("all input classed divs value", dataValue.toLowerCase());
+
+  //         try {
+  //           displayBlockArr[i].style.display = "block";
+
+  //         } catch (error) {
+  //           console.log("length exceed");
+  //         }
+
+
+  //       }
+  //     }
+  //   } else {
+  //     console.log("no data found");
+  //   }
+
+
+  // }
+</script>
+
+</html>
