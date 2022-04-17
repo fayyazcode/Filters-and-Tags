@@ -57,7 +57,8 @@
     .innerInput+*::before {
       margin-left: 26px !important;
     }
-    .spanButton{
+
+    .spanButton {
       background-color: black;
       color: white;
       border: none;
@@ -66,14 +67,16 @@
       padding: 10px;
       border-radius: 10px;
     }
-    .spanButton:hover{
+
+    .spanButton:hover {
       border: none;
       outline: none;
     }
-    .addedTags{
+
+    .addedTags {
       display: inline-block;
 
-    margin: 5px;
+      margin: 5px;
     }
   </style>
 </head>
@@ -95,86 +98,86 @@
 
 <script>
 
-   
-let main;
-let tagsPresent=["rockClimbing","tradClimbing","bigWalling"]
-    window.onmessage = (event) => {
-      console.log("log new event in iframe...", event.data.data);
-      // tagsPresent=event.data.tagsPresent
-  main=event.data.data
-  dataRender()
-    };
-  let dataRender=()=>{
 
-  let tags = document.getElementById("new");
+  let main;
+  // let tagsPresent=["rockClimbing","tradClimbing","bigWalling"]
+  window.onmessage = (event) => {
+    console.log("log new event in iframe...", event.data.data);
+    // tagsPresent=event.data.tagsPresent
+    main = event.data.data
+    dataRender()
+  };
+  let dataRender = () => {
 
-  // console.log("log array.....................", arr.length);
+    let tags = document.getElementById("new");
 
-  let resultDisplayArray = [];
-  for (let x = 0; x < main.length; x++) {
-    let mainDiv = document.createElement("div");
-    mainDiv.style.width = "320px";
-    mainDiv.style.paddingBottom = "10px";
-    let heading = document.createElement("p");
-    // heading.style.padding = "10px";
-    heading.style.fontSize = "50px";
-    heading.style.fontWeight = "600px";
-    // heading.style.borderBottom = "2px solid #BADA55";
-        mainDiv.style.borderBottom = "2px solid #BADA55";
-    mainDiv.append(heading);
-    heading.innerText = main[x][0];
-    console.log("heading...........", heading);
-    let arr = main[x][1];
-    for (let i = 0; i < arr.length; i++) {
-      //.............................first loop......................
+    // console.log("log array.....................", arr.length);
 
-      //...............................second loop...........................
+    let resultDisplayArray = [];
+    for (let x = 0; x < main.length; x++) {
+      let mainDiv = document.createElement("div");
+      mainDiv.style.width = "320px";
+      mainDiv.style.paddingBottom = "10px";
+      let heading = document.createElement("p");
+      // heading.style.padding = "10px";
+      heading.style.fontSize = "50px";
+      heading.style.fontWeight = "600px";
+      // heading.style.borderBottom = "2px solid #BADA55";
+      mainDiv.style.borderBottom = "2px solid #BADA55";
+      mainDiv.append(heading);
+      heading.innerText = main[x][0];
+      console.log("heading...........", heading);
+      let arr = main[x][1];
+      for (let i = 0; i < arr.length; i++) {
+        //.............................first loop......................
 
-      for (let z = 0; z < arr[i].length; z++) {
-        let childDiv = document.createElement("div");
-        childDiv.setAttribute("class", "childDiv");
-        childDiv.style.display = "none";
-        let fstChild = document.createElement("div");
-            fstChild.setAttribute("class","input")
-        if (arr[i][z] == undefined) {
-        } else {
-          if (!Array.isArray(arr[i][z])) {
-           // console.log("i z...........", arr[i][z]);
-            fstChild.innerHTML += ` 
+        //...............................second loop...........................
+
+        for (let z = 0; z < arr[i].length; z++) {
+          let childDiv = document.createElement("div");
+          childDiv.setAttribute("class", "childDiv");
+          childDiv.style.display = "none";
+          let fstChild = document.createElement("div");
+          fstChild.setAttribute("class", "input")
+          if (arr[i][z] == undefined) {
+          } else {
+            if (!Array.isArray(arr[i][z])) {
+              // console.log("i z...........", arr[i][z]);
+              fstChild.innerHTML += ` 
     <input  onchange="myFunction(this),getValues(this),autoUpdataFilter()" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
-              }" id="${arr[i][z].replace(/ /g, "")}" name="${i.toString() + ""}" value="${arr[i][z]
-              }"> 
+                }" id="${arr[i][z].replace(/ /g, "")}" name="${i.toString() + ""}" value="${arr[i][z]
+                }"> 
           
     <label for="${arr[i][z].replace(/ /g, "")}">${arr[i][z]} </label>
     <br>`;
-            mainDiv.append(fstChild);
+              mainDiv.append(fstChild);
+            }
           }
-        }
-        if (Array.isArray(arr[i][z])) {
-          //................................third loop..................................//
+          if (Array.isArray(arr[i][z])) {
+            //................................third loop..................................//
 
-          for (let a = 0; a < arr[i][z].length; a++) {
-           // console.log("a i z log ...............", arr[i][z][a]);
-            childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
+            for (let a = 0; a < arr[i][z].length; a++) {
+              // console.log("a i z log ...............", arr[i][z][a]);
+              childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
     <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild,autoUpdataFilter())" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
-              }" id="${arr[i][z][a].replace(/ /g, "")}" name="${(i.toString() + "," + a.toString())
-              }" value="${arr[i][z][a]}"> 
+                }" id="${arr[i][z][a].replace(/ /g, "")}" name="${(i.toString() + "," + a.toString())
+                }" value="${arr[i][z][a]}"> 
     <label for="${arr[i][z][a].replace(/ /g, "")}">${arr[i][z][a]}</label>
     </div>`;
 
-            mainDiv.append(childDiv);
+              mainDiv.append(childDiv);
+            }
           }
+          tags.append(mainDiv);
         }
-        tags.append(mainDiv);
       }
     }
-  }
   }
   //function commented
   function myFunction(getCheckbox) {
     try {
-     // console.log("parent parent previous first ",getCheckbox);
-  
+      // console.log("parent parent previous first ",getCheckbox);
+
       let attr =
         getCheckbox.parentElement.nextSibling.firstElementChild.getAttribute(
           "class"
@@ -182,26 +185,26 @@ let tagsPresent=["rockClimbing","tradClimbing","bigWalling"]
       if (getCheckbox.checked) {
         if (attr !== "main") {
           // getCheckbox.parentElement.nextSibling.firstElementChild.classList.add("slide-fade")
-         // console.log(getCheckbox.value);
+          // console.log(getCheckbox.value);
           getCheckbox.parentElement.nextSibling.style.display = "block";
         }
       }
-     else {
-        let all=getCheckbox.parentElement.nextElementSibling.children;
-        
-        
+      else {
+        let all = getCheckbox.parentElement.nextElementSibling.children;
+
+
         if (attr !== "main") {
-          for(let i=0;i<all.length;i++){
+          for (let i = 0; i < all.length; i++) {
             //console.log(all[i].firstElementChild.checked);
-            if(all[i].firstElementChild.checked){
-              let unCheck1=  all[i].checked=false;
+            if (all[i].firstElementChild.checked) {
+              let unCheck1 = all[i].checked = false;
               getCheckbox.parentElement.nextSibling.style.display = "block";
               break;
-            }else{
+            } else {
               getCheckbox.parentElement.nextSibling.style.display = "none";
 
-        }
-      }
+            }
+          }
         }
       }
     } catch (error) {
@@ -210,13 +213,14 @@ let tagsPresent=["rockClimbing","tradClimbing","bigWalling"]
 
   }
 
-  function getValues  (res)  {
-   window.parent.postMessage ( {
-        
-          status: res.checked,
-          value: res.value,
-        
-      },
+  function getValues(res) {
+    // myFunction(res)
+    window.parent.postMessage({
+
+      status: res.checked,
+      value: res.value,
+
+    },
       "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
     );
     console.log("valueszxxxxx...............", res.value);
@@ -228,97 +232,95 @@ let tagsPresent=["rockClimbing","tradClimbing","bigWalling"]
 
       addedTag.setAttribute("class", "addedTags")
       let span = document.createElement("button")
-      let id=res.value.replace(/ /g, "")
-      console.log("logging id.........",id);
-      span.setAttribute("id",id+"span")
-      span.setAttribute("class","spanButton")
-      span.innerHTML = "X "+res.value 
+      let id = res.value.replace(/ /g, "")
+      console.log("logging id.........", id);
+      span.setAttribute("id", id + "span")
+      span.setAttribute("class", "spanButton")
+      span.innerHTML = "X " + res.value
       span.onclick = function (event) {
-        console.log("button remove functionality.............",document.getElementById(res.value.replace(/ /g, "")));
-         let unCheck= document.getElementById(res.value.replace(/ /g, "")).checked = false;
-        window.parent.postMessage ( {
-        
-        status: res.checked,
-        value: res.value,
-      
-    },
-    "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
-  );
-        this.remove()
+        console.log("button remove functionality.............", document.getElementById(res.value.replace(/ /g, "")));
+        let unCheck = document.getElementById(res.value.replace(/ /g, "")).checked = false;
+        window.parent.postMessage({
+
+          status: res.checked,
+          value: res.value,
+
+        },
+          "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+        );
+        this.parentElement.remove()
 
       }
       addedTag.appendChild(span)
       parentBox.appendChild(addedTag)
     } else {
-      console.log("log for uncheck.id ......",document.getElementById(res.value.replace(/ /g, "")+"sub"));
-       document.getElementById(res.value.replace(/ /g, "")+"sub").remove()
+      console.log("log for uncheck.id ......", document.getElementById(res.value.replace(/ /g, "") + "sub"));
+      document.getElementById(res.value.replace(/ /g, "") + "sub").remove()
     }
 
     //................................functionality for remove when unchecked................................
 
   };
+  function autoUpdataFilter() {
+    console.log("logging addedtag", tagsPresent);
+    if (tagsPresent) {
+      let allInpt = document.getElementsByClassName("input")
+      console.log("logging data as all inputs........", allInpt.length);
+      console.log("logging data as all inputs........", allInpt);
+      let arrData = tagsPresent
 
-  function autoUpdataFilter(){
-  console.log("logging addedtag",tagsPresent);
-if(tagsPresent){
-  let allInpt= document.getElementsByClassName("input")
- console.log("logging data as all inputs........",allInpt.length);
- console.log("logging data as all inputs........",allInpt);
- let arrData=    tagsPresent
+      console.log("log data in already esisting tags function", arrData);
+      let displayBlockArr = []
+      let flag = false;
+      for (let x = 0; x < arrData.length; x++) {
 
- console.log("log data in already esisting tags function",arrData);
- let displayBlockArr=[]
- let flag=false;
- for(let x=0;x<arrData.length;x++){
+        for (var i = 0; i < allInpt.length; i++) {
+          // myFunction(allInpt[i])
 
-   for(var i=0;i<allInpt.length;i++){
-    // myFunction(allInpt[i])
-    
-      let dataValue;
-      let newData;
+          let dataValue;
+          let newData;
 
-      newData=allInpt[i].firstElementChild
-       dataValue= newData.getAttribute("value").replace(/ /g, "")
-      console.log("all input classed divs value",dataValue.toLowerCase());
-      if(arrData[x].toLowerCase()==dataValue.toLowerCase()){
-       displayBlockArr.push(allInpt[i]) 
-     }else{
-      allInpt[i].style.display="none";
-console.log("no data found");
-}
+          newData = allInpt[i].firstElementChild
+          dataValue = newData.getAttribute("value").replace(/ /g, "")
+          console.log("all input classed divs value", dataValue.toLowerCase());
+          if (arrData[x].toLowerCase() == dataValue.toLowerCase()) {
+            displayBlockArr.push(allInpt[i])
+          } else {
+            allInpt[i].style.display = "none";
+            console.log("no data found");
+          }
 
-     console.log("logging one / one",arrData[x].toLowerCase());
+          console.log("logging one / one", arrData[x].toLowerCase());
 
+        }
+        if (x == arrData.length - 1) { flag = true }
+      }
+      if (flag) {
+        for (var i = 0; i < allInpt.length; i++) {
+
+          let dataValue;
+          let newData;
+
+          newData = allInpt[i].firstElementChild
+          dataValue = newData.getAttribute("value").replace(/ /g, "")
+          console.log("all input classed divs value", dataValue.toLowerCase());
+
+          try {
+            displayBlockArr[i].style.display = "block";
+
+          } catch (error) {
+            console.log("length exceed");
+          }
+
+
+        }
+      }
+    } else {
+      console.log("no data found");
     }
-    if(x==arrData.length-1){flag=true }
- }
- if(flag){
-  for(var i=0;i<allInpt.length;i++){
-    // myFunction(allInpt[i])
-    
-      let dataValue;
-      let newData;
-
-      newData=allInpt[i].firstElementChild
-       dataValue= newData.getAttribute("value").replace(/ /g, "")
-      console.log("all input classed divs value",dataValue.toLowerCase());
-    
-     try {
-      displayBlockArr[i].style.display="block";
-
-     } catch (error) {
-    console.log("length exceed");       
-     }
 
 
-    }
- }
-}else{
-console.log("no data found");
-}
-
-
-    }
+  }
 </script>
 
 </html>
