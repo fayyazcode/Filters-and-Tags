@@ -285,28 +285,19 @@
     if(getArr.length>0){
       for (let x = 0; x < getArr.length; x++) {
 
-for (var i = 0; i < allInpt.length; i++) {
-  let dataValue = allInpt[i].getAttribute("value").replace(/ /g, "")
-  if (getArr[x].toLowerCase() == dataValue.toLowerCase()) {
-    continueFilterArr.push(allInpt[i])
-    // allInpt[i].checked = true
-  } else {
-  }
-}
-if (x == getArr.length - 1) { flagNew = true }
-}
+        let arrData=getArr
+ console.log("log data in already esisting tags function",arrData);
+ for(let x=0;x<arrData.length;x++){
+
+   for(var i=0;i<allInpt.length;i++){
+    console.log(allInpt[i]);
+     console.log("logging one / one",arrData[x].toLocaleLowerCase(),allInpt[i].value.toLocaleLowerCase());
+     if(arrData[x].toLocaleLowerCase()==allInpt[i].value.toLocaleLowerCase()){
+       allInpt[i].checked=true;
+     }
     }
-
-    if(flagNew){
-for (var i = 0; i < allInpt.length; i++) {
-
-try {
-  continueFilterArr[i].checked = true
-
-} catch (error) {
-console.log("exceed i ignore");  
+ }
 }
-      }
     }
   }
 //commented for mob
