@@ -488,6 +488,7 @@
     let arr=[]; //nested array of new tags 
     function reset() {
       //remove every filter 
+      arr=[]
       arrayCount=0;
       let list = document.getElementById("mainList");
       swal("Removed", "List Cleared", "success");
@@ -567,6 +568,7 @@
 //sending data to wix 
 let sendData=()=>{
   console.log("save btn clicked");
+ if (arr.length>0) {
   window.parent.postMessage({
 
 
@@ -575,6 +577,9 @@ data:arr,
 },
 "https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
 );
+ }else{
+  swal("Oops", "Please create a filter", "error");
+ }
 }
       ///all done and working
   </script>
