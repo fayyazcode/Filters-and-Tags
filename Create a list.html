@@ -485,7 +485,7 @@
     };
 
     // .............................third sub tag function end.................
-    let arr=[];
+    let arr=[]; //nested array of new tags 
     function reset() {
       //remove every filter 
       arrayCount=0;
@@ -541,31 +541,27 @@
 
     //create array
     let head=0
-    let category=0
-    let sub=0
+    let category=1
+    let sub=1
     function createArray(data,prop){
       
       console.log("logging data in create array function",data);
       console.log("logging data in create array  prop",prop);
       if(prop=="heading"){
          arr.push(data)
-         head++
          console.log("log second index of array. heading.........",arr);
         }else if(prop=="innertag"){
-          category++
-          arr.push([data])
+          head++
+          // category++
+          console.log("log catogery after increment",category);
+          arr.push([data,[]])
           console.log("log second index of array. innertag.........",arr);
         }else if(prop=="subtag"){
+          let test=arr[head][category].push(data)
           sub++
-    
+          
+            console.log("test log",test);
           console.log("log array in subtag............",arr[head][category]);
-          if(!arr[head][category]){
-            arr[head][category]=[data]
-
-          }else{
-            console.log("log arr",  arr[head][category]);
-            arr[head][category].push(data)
-          }
 
         console.log(arr);
       }
