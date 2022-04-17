@@ -100,13 +100,16 @@
 
 
   let main;
-  let checkedData=[];
+  let checkedData = [];
+  let continueFilterArr=[];
   // let tagsPresent=["rockClimbing","tradClimbing","bigWalling"]
   window.onmessage = (event) => {
     console.log("log new event in iframe...", event.data.data);
     // tagsPresent=event.data.tagsPresent
     main = event.data.data
     dataRender()
+    continueFilter()
+
   };
   let dataRender = () => {
 
@@ -173,6 +176,7 @@
         }
       }
     }
+
   }
   //function commented
   function myFunction(getCheckbox) {
@@ -215,14 +219,17 @@
   }
 
   function getValues(res) {
-    if(res.status){
-       checkedData= checkedData.push(res.data)
-       
-        localStorage.setItem("array", JSON.stringify(checkedData));
-    }else{
-        checkedData = checkedData.filter(checkedData => checkedData !== res.data);
-        localStorage.setItem("array", JSON.stringify(checkedData));
+    if (res.checked) {
+      console.log("statuse in iframe", res.checked);
+      checkedData.push(res.value)
+      localStorage.setItem("array", JSON.stringify(checkedData));
+    } else {
+      console.log("statuse in iframe", res.checked);
+
+      checkedData = checkedData.filter(checkedData => checkedData != res.value);
+      localStorage.setItem("array", JSON.stringify(checkedData));
     }
+
     window.parent.postMessage({
 
       status: res.checked,
@@ -270,8 +277,37 @@
 
   };
   //function on mob to continue filter with recorded data in local storage
-  function continueFilter(){
-      
+  function continueFilter() {
+    let flagNew=false;
+    var getArr = JSON.parse(localStorage.getItem('array'));
+    console.log("saved data in array localstorage", getArr);
+    let allInpt = document.getElementsByTagName("input")
+    if(getArr.length>0){
+      for (let x = 0; x < getArr.length; x++) {
+
+for (var i = 0; i < allInpt.length; i++) {
+  let dataValue = allInpt[i].getAttribute("value").replace(/ /g, "")
+  if (getArr[x].toLowerCase() == dataValue.toLowerCase()) {
+    continueFilterArr.push(allInpt[i])
+    // allInpt[i].checked = true
+  } else {
+  }
+}
+if (x == getArr.length - 1) { flagNew = true }
+}
+    }
+
+    if(flagNew){
+for (var i = 0; i < allInpt.length; i++) {
+
+try {
+  continueFilterArr[i].checked = true
+
+} catch (error) {
+console.log("exceed i ignore");  
+}
+      }
+    }
   }
 //commented for mob
   // function autoUpdataFilter() {
