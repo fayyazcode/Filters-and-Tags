@@ -100,12 +100,16 @@
 
 
   let main;
-  // let tagsPresent=["rockClimbing","tradClimbing","bigWalling"]
+  let tagsPresent = []
   window.onmessage = (event) => {
-    console.log("log new event in iframe...", event.data.data);
-    // tagsPresent=event.data.tagsPresent
-    main = event.data.data
-    dataRender()
+    console.log("log new event in iframe...", event.data);
+    if (event.data.data) {
+      main = event.data.data
+      dataRender()
+    }
+    tagsPresent = event.data.tagsPresent
+
+
   };
   let dataRender = () => {
 
@@ -212,9 +216,18 @@
     }
 
   }
-
+  let checkArray = [];
   function getValues(res) {
     // myFunction(res)
+    if (res.checked) {
+      checkArray.push(res.value)
+      console.log("check array add.............", checkArray);
+    } else {
+      checkArray = checkArray.filter(function (valueRemov, index, arr) {
+        return valueRemov !== res.value;
+      });
+      console.log("check array remove..........", checkArray);
+    }
     window.parent.postMessage({
 
       status: res.checked,
@@ -263,62 +276,71 @@
   };
   function autoUpdataFilter() {
     console.log("logging addedtag", tagsPresent);
-    if (tagsPresent) {
-      let allInpt = document.getElementsByClassName("input")
-      console.log("logging data as all inputs........", allInpt.length);
-      console.log("logging data as all inputs........", allInpt);
-      let arrData = tagsPresent
+    let allInpt = document.getElementsByClassName("input")
+    if (checkArray.length > 0) {
 
-      console.log("log data in already esisting tags function", arrData);
-      let displayBlockArr = []
-      let flag = false;
-      for (let x = 0; x < arrData.length; x++) {
+      if (tagsPresent) {
+        console.log("logging data as all inputs........", allInpt.length);
+        console.log("logging data as all inputs........", allInpt);
+        let arrData = tagsPresent
 
-        for (var i = 0; i < allInpt.length; i++) {
-          // myFunction(allInpt[i])
+        console.log("log data in already esisting tags function", arrData);
+        let displayBlockArr = []
+        let flag = false;
+        for (let x = 0; x < arrData.length; x++) {
 
-          let dataValue;
-          let newData;
+          for (var i = 0; i < allInpt.length; i++) {
+            // myFunction(allInpt[i])
 
-          newData = allInpt[i].firstElementChild
-          dataValue = newData.getAttribute("value").replace(/ /g, "")
-          console.log("all input classed divs value", dataValue.toLowerCase());
-          if (arrData[x].toLowerCase() == dataValue.toLowerCase()) {
-            displayBlockArr.push(allInpt[i])
-          } else {
-            allInpt[i].style.display = "none";
-            console.log("no data found");
+            let dataValue;
+            let newData;
+
+            newData = allInpt[i].firstElementChild
+            dataValue = newData.getAttribute("value").replace(/ /g, "")
+            // console.log("all input classed divs value", dataValue.toLowerCase());
+            if (arrData[x].toLowerCase().replace(/ /g, "") == dataValue.toLowerCase().replace(/ /g, "")) {
+              displayBlockArr.push(allInpt[i])
+            } else {
+              allInpt[i].style.display = "none";
+
+              // console.log("no data found",allInpt[i]);
+            }
+
+            // console.log("logging one / one", arrData[x].toLowerCase());
+
           }
-
-          console.log("logging one / one", arrData[x].toLowerCase());
-
+          if (x == arrData.length - 1) { flag = true }
         }
-        if (x == arrData.length - 1) { flag = true }
-      }
-      if (flag) {
-        for (var i = 0; i < allInpt.length; i++) {
+        if (flag) {
+          for (var i = 0; i < allInpt.length; i++) {
 
-          let dataValue;
-          let newData;
+            let dataValue;
+            let newData;
 
-          newData = allInpt[i].firstElementChild
-          dataValue = newData.getAttribute("value").replace(/ /g, "")
-          console.log("all input classed divs value", dataValue.toLowerCase());
+            newData = allInpt[i].firstElementChild
+            dataValue = newData.getAttribute("value").replace(/ /g, "")
+            // console.log("all input classed divs value", dataValue.toLowerCase());
 
-          try {
-            displayBlockArr[i].style.display = "block";
+            try {
+              displayBlockArr[i].style.display = "block";
 
-          } catch (error) {
-            console.log("length exceed");
+            } catch (error) {
+              // console.log("length exceed");
+            }
+
+
           }
-
-
         }
+      } else {
+        console.log("no data found");
       }
-    } else {
-      console.log("no data found");
+
+    }else{
+      for(let x =0; x < allInpt[x].length;x++){
+        allInpt[x].style.display="block"
+        console.log("logging elements in else",allInpt[x]);
+      }
     }
-
 
   }
 </script>

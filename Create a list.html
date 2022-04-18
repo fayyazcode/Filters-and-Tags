@@ -535,9 +535,15 @@
         }
       } catch (err) {
         console.log("catch error", err);
-      }
-      swal("Remove", "Tag removed", "success");
-      data.remove();
+        console.log("catch error", check);
+      }     
+      // let check=data.firstElementChild.firstElementChild.value
+      // arr = arr.filter(function (valueRemov, index, arr) {
+      //           return valueRemov !== check;
+      //       });
+        console.log("array ",data);
+        data.remove();
+        swal("Remove", "Tag removed", "success");
     }
 
     //create array
