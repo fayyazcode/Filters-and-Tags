@@ -54,11 +54,11 @@
       border-radius: 10px;
       font-size: 18px;
     }
-    .innerDiv
-    .big_SuccessBtn:hover{
+
+    .innerDiv .big_SuccessBtn:hover {
       border: 1px solid black;
       background-color: white;
-   
+
     }
 
     .big_DangerBtn {
@@ -69,7 +69,8 @@
       width: 144px;
       border-radius: 10px;
     }
-    .big_DangerBtn{
+
+    .big_DangerBtn {
       background-color: #F1F1F1;
     }
 
@@ -82,10 +83,12 @@
       font-size: 16px;
       margin-right: 20px;
     }
-    .btn-success:hover{
+
+    .btn-success:hover {
       border: 1px solid black;
       background-color: white;
     }
+
     .btn-danger {
       height: 38px;
       font-size: 16px;
@@ -94,7 +97,8 @@
       width: 103px;
       border-radius: 10px;
     }
-    .btn-danger:hover{
+
+    .btn-danger:hover {
       background-color: #F1F1F1;
       /* border: none; */
     }
@@ -132,7 +136,7 @@
       box-shadow: 2px 2px 15px rgba(128, 128, 128, 0.541);
       width: 90%;
       margin: 0 auto;
-      }
+    }
 
     .sub {
       padding-top: 80px;
@@ -159,7 +163,7 @@
     }
 
     .mainFilterDiv {
-      
+
       margin-top: 80px;
       min-height: 425px;
       border-radius: 30px;
@@ -178,7 +182,8 @@
       margin-bottom: 25px;
 
     }
-    .subtagList{
+
+    .subtagList {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -186,10 +191,12 @@
       margin-bottom: 12px;
       margin-top: 12px;
     }
-    .subtagList input{
+
+    .subtagList input {
       font-size: 20px;
       font-weight: 500;
     }
+
     .innerTagDiv {
       background-color: #F1F1F1;
       padding: 34px;
@@ -201,10 +208,10 @@
       justify-content: flex-end;
       /* align-items: flex-end; */
     }
-    #tagSelectBtn{
+
+    #tagSelectBtn {
       align-self: flex-end;
     }
-
   </style>
 </head>
 
@@ -229,22 +236,22 @@
     </div>
   </div>
   <script>
-    var arrayCount=0;
+    var arrayCount = 0;
     function start() {
       arrayCount++
       swal({
         content: {
-          title:"Select Tag Heading",
+          title: "Select Tag Heading",
           element: "input",
           attributes: {
             placeholder: "Tag Heading",
             type: "text",
-            button:"success"
+            button: "success"
           },
         },
       }).then((res) => {
         try {
-          
+
           console.log("result...........", res);
           str = res
           const lower = str.toLowerCase();
@@ -256,7 +263,7 @@
           swal("Oops", "Input Cant Be Empty", "error");
         } else {
           createFun(res);
-          createArray(res,"heading")
+          createArray(res, "heading")
         }
       });
     }
@@ -341,7 +348,7 @@
       console.log("print result button ...................", btn);
       swal({
         content: {
-          title:"Select Category",
+          title: "Select Category",
           element: "input",
           attributes: {
             placeholder: "Value",
@@ -350,7 +357,7 @@
         },
       }).then((res) => {
         try {
-          
+
           console.log("result...........", res);
           str = res
           const lower = str.toLowerCase();
@@ -358,7 +365,7 @@
         } catch (error) {
           console.log(error);
         }
-        if (res.trim() == "" || res== "") {
+        if (res.trim() == "" || res == "") {
           swal("Oops", "Input Cant Be Empty", "error");
         } else {
           createArray(res, 'innertag')
@@ -366,7 +373,7 @@
           let subLi = document.createElement("li");
           let inpSub = document.createElement("input");
           let buttonsDiv = document.createElement("div");
-          
+
           let subDel = document.createElement("button");
           let subEdit = document.createElement("button");
           let tagSelectBtn = document.createElement("button");
@@ -381,7 +388,7 @@
             "createSubTag(this.parentElement,this)"
           );
 
-          tagSelectBtn.style.marginTop="12px";
+          tagSelectBtn.style.marginTop = "12px";
           subLi.setAttribute("class", "subtagList")
           innerTagDiv.setAttribute("class", "innerTagDiv")
           subEdit.innerHTML = "EDIT";
@@ -418,7 +425,7 @@
         }
       });
 
-      
+
     }
     //.............................second function ends...............
 
@@ -428,7 +435,7 @@
       //trigger swal get values in swwetalert input and if its not empty update on dom created input
       swal({
         content: {
-          title:"Select Sub Category",
+          title: "Select Sub Category",
           element: "input",
           attributes: {
             placeholder: "Value",
@@ -436,29 +443,29 @@
           },
         },
       }).then((res) => {
-      try {
-        str = res
-        const lower = str.toLowerCase();
-        res = str.charAt(0).toUpperCase() + lower.slice(1);
-        
-      } catch (error) {
-        console.log(error);
-      }
+        try {
+          str = res
+          const lower = str.toLowerCase();
+          res = str.charAt(0).toUpperCase() + lower.slice(1);
 
-        if (res.trim() == "null" || res== "") {
+        } catch (error) {
+          console.log(error);
+        }
+
+        if (res.trim() == "null" || res == "") {
           swal("Oops", "Input Cant Be Empty", "error");
         } else {
-          createArray(res,'subtag')
+          createArray(res, 'subtag')
 
 
           let tagLi = document.createElement("li");
           let tagInpt = document.createElement("input");
-          let tagButtonDiv=document.createElement("div")
+          let tagButtonDiv = document.createElement("div")
           let tagDel = document.createElement("button");
           let tagEdit = document.createElement("button");
 
 
-          tagLi.setAttribute("class","subtagList")
+          tagLi.setAttribute("class", "subtagList")
           tagEdit.innerHTML = "EDIT";
           tagDel.innerHTML = "DELETE";
           tagEdit.setAttribute("id", "tagEdit");
@@ -485,17 +492,24 @@
     };
 
     // .............................third sub tag function end.................
-    let arr=[]; //nested array of new tags 
+    let arr = []; //nested array of new tags 
     function reset() {
       //remove every filter 
-      arr=[]
-      arrayCount=0;
+      arr = []
+      arrayCount = 0;
       let list = document.getElementById("mainList");
       swal("Removed", "List Cleared", "success");
       list.innerHTML = "";
     }
     //....................edit button function
     function updt(edit) {
+      // console.log("edit value ",edit.previousElementSibling.value)
+      let preVal = edit.previousElementSibling.value
+      console.log("preVal ", preVal)
+      // for(let i=0;i<arr.length;i++){
+      //   console.log("array items ",arr[i])
+      // }
+
       //trigger sweet alert takes a value and trigger inner update function if value is not emmpty
       swal({
         content: {
@@ -507,25 +521,64 @@
         },
       }).then((res) => {
         console.log("result...........", res);
-        innerupdate(edit, res);
+        innerupdate(edit, res, preVal);
       });
     }
     //........................... update value in input from sweet alert
-    function innerupdate(edit, res) {
+    function innerupdate(edit, res, preVal) {
       if (res.trim() == "" || null) {
         swal("Edit", "Value cant be Empty", "error");
       } else {
         swal("Edit", "Title Edited", "success");
         console.log("log dit.previousSibling....", edit.previousSibling);
-        edit.previousElementSibling.value = res;
+        let newVal = edit.previousElementSibling.value = res;
+        for (let z = 0; z < arr.length; z++) {
+          if (arr[z] == undefined) {
+          } else {
+            if (!Array.isArray(arr[z]) && arr[z] == preVal) {
+              arr[z] = newVal
+              console.log(arr);
+              break;
+              // console.log("item not array", arr[z]);
+            }
+
+            if (Array.isArray(arr[z])) {
+              console.log("item  is array arr[z][0]", arr[z][0])
+              for (let a = 0; a < arr[z][0].length; a++) {
+                if (!Array.isArray(arr[z][0][a]) && arr[z][0][a] == preVal) {
+                  arr[z][0][a] = newVal
+                  console.log("log cat", arr[z][0][a])
+                  break;
+                }else{
+                  console.log("is an array in tags")
+                // if (Array.isArray(arr[z][0][a])) {
+                  for (let p = 0; p < arr[z][0][a].length; p++) {
+                    console.log("a z o", arr[z][0][a][p]);
+                    if (!Array.isArray(arr[z][0][a][p]) && arr[z][0][a][p] == preVal) {
+                      arr[z][0][a][p] = newVal
+                    }
+                  }
+                }
+
+
+              }
+            }
+          }
+
+          console.log(arr[z])
+        }
+
       }
+      // console.log("Updatee Array ",arr.indexOf('Tag'))
+
+
     }
 
     function del(data) {
       //..........................remove element.....................
       //use array  map and regix 
       try {
-      
+
         //...................check get attribute of input next to select button
         if (
           data.firstElementChild.firstElementChild.getAttribute("id") ==
@@ -536,57 +589,57 @@
       } catch (err) {
         console.log("catch error", err);
         console.log("catch error", check);
-      }     
+      }
       // let check=data.firstElementChild.firstElementChild.value
       // arr = arr.filter(function (valueRemov, index, arr) {
       //           return valueRemov !== check;
       //       });
-        console.log("array ",data);
-        data.remove();
-        swal("Remove", "Tag removed", "success");
+      console.log("array ", data);
+      data.remove();
+      swal("Remove", "Tag removed", "success");
     }
 
     //create array
-    let head=1
-    let category=-1
-    function createArray(data,prop){
-      
-      console.log("logging data in create array function",data);
-      console.log("logging data in create array  prop",prop);
-      if(prop=="heading"){
-         arr.push(data,[])
-         console.log("log second index of array. heading.........",arr);
-        }else if(prop=="innertag"){
+    let head = 1
+    let category = -1
+    function createArray(data, prop) {
 
-          arr[1].push([data,[]])
-          category++
-          console.log("log second index of array. innertag.........",arr);
-        }else if(prop=="subtag"){
+      console.log("logging data in create array function", data);
+      console.log("logging data in create array  prop", prop);
+      if (prop == "heading") {
+        arr.push(data, [])
+        console.log("log second index of array. heading.........", arr);
+      } else if (prop == "innertag") {
 
-         arr[1][category][1].push(data)
-          // category++
-            // console.log("test log",test);
-          console.log("log array in subtag............",arr[1][0][1]);
+        arr[1].push([data, []])
+        category++
+        console.log("log second index of array. innertag.........", arr);
+      } else if (prop == "subtag") {
 
-        console.log(arr);
+        arr[1][category][1].push(data)
+        // category++
+        // console.log("test log",test);
+        console.log("log array in subtag............", arr[1][0][1]);
+
+        console.log(...arr);
       }
     }
-//sending data to wix 
-let sendData=()=>{
-  console.log("save btn clicked");
- if (arr.length>0) {
-  window.parent.postMessage({
+    //sending data to wix 
+    let sendData = () => {
+      console.log("save btn clicked");
+      if (arr.length > 0) {
+        window.parent.postMessage({
 
 
-data:arr,
+          data: arr,
 
-},
-"https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
-);
- }else{
-  swal("Oops", "Please create a filter", "error");
- }
-}
+        },
+          "https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
+        );
+      } else {
+        swal("Oops", "Please create a filter", "error");
+      }
+    }
       ///all done and working
   </script>
 </body>
