@@ -11,6 +11,27 @@
     * {
       font-family: "Roboto", sans-serif;
     }
+	
+/* //style of scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: black; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+/* //style of scrollbar */
 
     label {
       font-size: 16px !important;
@@ -98,24 +119,23 @@
 
 <script>
 
-  
+
   let main;
-  let checkArray = [];
-//  setInterval(()=>{if(checkArray.length==0){
-   
-//  }},1000)
+ 
   window.onmessage = (event) => {
     // console.log("log new event in iframe...", event.data);
     console.log("log new event in iframe  tags present...", event.data.tagsPresent);
     if (event.data.tagsPresent) {
      let tagsPresent = event.data.tagsPresent
-      autoUpdataFilter(tagsPresent)
+     setTimeout(()=>{
+        autoUpdataFilter(tagsPresent)
+      },1000)
     } else {
       main = event.data.data
 
       dataRender()
     }
-    
+
 
   };
   let dataRender = () => {
@@ -223,7 +243,9 @@
     }
 
   }
+  let checkArray = [];
   function getValues(res) {
+
     // myFunction(res)
     if (res.checked) {
       checkArray.push(res.value)
@@ -232,7 +254,20 @@
       checkArray = checkArray.filter(function (valueRemov, index, arr) {
         return valueRemov !== res.value;
       });
-      console.log("check array remove..........", checkArray);
+    console.log("testa array length",checkArray.length);
+      if(checkArray.length ==0){
+        console.log("check array remove length..........", checkArray.length,main);
+        let allInpt = document.getElementsByClassName("input")
+        console.log("allinput when test array is 0",allInpt);
+        for (let z = 0; z < allInpt.length; z++) {
+          // myFunction(allInpt[i])
+
+          
+          // console.log("all input classed divs value", dataValue.toLowerCase());
+          allInpt[z].style.display = "";
+        }
+       
+      }
     }
     window.parent.postMessage({
 
@@ -242,6 +277,7 @@
     },
       "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
     );
+    
     console.log("valueszxxxxx...............", res.value);
     //............................add checked item into filter array call filter function every onChange event........................//
     if (res.checked) {
@@ -282,9 +318,9 @@
   };
   function autoUpdataFilter(tagsPresent) {
     // console.log("logging addedtag", tagsPresent);
-    let allInpt = document.getElementsByClassName("input")
     if (checkArray.length > 0) {
-
+      
+      let allInpt = document.getElementsByClassName("input")
       if (tagsPresent) {
         // console.log("logging data as all inputs........", allInpt.length);
         // console.log("logging data as all inputs........", allInpt);
