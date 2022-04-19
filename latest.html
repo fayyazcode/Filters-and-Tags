@@ -98,17 +98,24 @@
 
 <script>
 
-
+  
   let main;
-  let tagsPresent = []
+  let checkArray = [];
+//  setInterval(()=>{if(checkArray.length==0){
+   
+//  }},1000)
   window.onmessage = (event) => {
-    console.log("log new event in iframe...", event.data);
-    if (event.data.data) {
+    // console.log("log new event in iframe...", event.data);
+    console.log("log new event in iframe  tags present...", event.data.tagsPresent);
+    if (event.data.tagsPresent) {
+     let tagsPresent = event.data.tagsPresent
+      autoUpdataFilter(tagsPresent)
+    } else {
       main = event.data.data
+
       dataRender()
     }
-    tagsPresent = event.data.tagsPresent
-
+    
 
   };
   let dataRender = () => {
@@ -148,7 +155,7 @@
             if (!Array.isArray(arr[i][z])) {
               // console.log("i z...........", arr[i][z]);
               fstChild.innerHTML += ` 
-    <input  onchange="myFunction(this),getValues(this),autoUpdataFilter()" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
+    <input  onchange="myFunction(this),getValues(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
                 }" id="${arr[i][z].replace(/ /g, "")}" name="${i.toString() + ""}" value="${arr[i][z]
                 }"> 
           
@@ -163,7 +170,7 @@
             for (let a = 0; a < arr[i][z].length; a++) {
               // console.log("a i z log ...............", arr[i][z][a]);
               childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
-    <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild,autoUpdataFilter())" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
+    <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild)" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
                 }" id="${arr[i][z][a].replace(/ /g, "")}" name="${(i.toString() + "," + a.toString())
                 }" value="${arr[i][z][a]}"> 
     <label for="${arr[i][z][a].replace(/ /g, "")}">${arr[i][z][a]}</label>
@@ -216,12 +223,11 @@
     }
 
   }
-  let checkArray = [];
   function getValues(res) {
     // myFunction(res)
     if (res.checked) {
       checkArray.push(res.value)
-      console.log("check array add.............", checkArray);
+      // console.log("check array add.............", checkArray);
     } else {
       checkArray = checkArray.filter(function (valueRemov, index, arr) {
         return valueRemov !== res.value;
@@ -251,7 +257,7 @@
       span.setAttribute("class", "spanButton")
       span.innerHTML = "X " + res.value
       span.onclick = function (event) {
-        console.log("button remove functionality.............", document.getElementById(res.value.replace(/ /g, "")));
+        // console.log("button remove functionality.............", document.getElementById(res.value.replace(/ /g, "")));
         let unCheck = document.getElementById(res.value.replace(/ /g, "")).checked = false;
         window.parent.postMessage({
 
@@ -267,81 +273,68 @@
       addedTag.appendChild(span)
       parentBox.appendChild(addedTag)
     } else {
-      console.log("log for uncheck.id ......", document.getElementById(res.value.replace(/ /g, "") + "sub"));
+      // console.log("log for uncheck.id ......", document.getElementById(res.value.replace(/ /g, "") + "sub"));
       document.getElementById(res.value.replace(/ /g, "") + "sub").remove()
     }
 
     //................................functionality for remove when unchecked................................
 
   };
-  function autoUpdataFilter() {
-    console.log("logging addedtag", tagsPresent);
+  function autoUpdataFilter(tagsPresent) {
+    // console.log("logging addedtag", tagsPresent);
     let allInpt = document.getElementsByClassName("input")
     if (checkArray.length > 0) {
 
       if (tagsPresent) {
-        console.log("logging data as all inputs........", allInpt.length);
-        console.log("logging data as all inputs........", allInpt);
+        // console.log("logging data as all inputs........", allInpt.length);
+        // console.log("logging data as all inputs........", allInpt);
         let arrData = tagsPresent
 
         console.log("log data in already esisting tags function", arrData);
         let displayBlockArr = []
         let flag = false;
-        for (let x = 0; x < arrData.length; x++) {
 
-          for (var i = 0; i < allInpt.length; i++) {
-            // myFunction(allInpt[i])
+        for (var i = 0; i < allInpt.length; i++) {
+          // myFunction(allInpt[i])
 
+          
+          // console.log("all input classed divs value", dataValue.toLowerCase());
+          allInpt[i].style.display = "none";
+          
+          // console.log("no data found",allInpt[i]);
+          
+          if(i==allInpt.length-1){
             let dataValue;
             let newData;
+            console.log("loop finished");
+            for(var a = 0; a < tagsPresent.length; a++){
 
-            newData = allInpt[i].firstElementChild
-            dataValue = newData.getAttribute("value").replace(/ /g, "")
-            // console.log("all input classed divs value", dataValue.toLowerCase());
-            if (arrData[x].toLowerCase().replace(/ /g, "") == dataValue.toLowerCase().replace(/ /g, "")) {
-              displayBlockArr.push(allInpt[i])
-            } else {
-              allInpt[i].style.display = "none";
+              for (var x = 0; x < allInpt.length; x++) {
+                newData = allInpt[x].firstElementChild
+                dataValue = newData.getAttribute("value").replace(/ /g, "").toLocaleLowerCase()
 
-              // console.log("no data found",allInpt[i]);
+                // console.log("input value",dataValue.trim());
+                // console.log("Tag Search",tagsPresent[a].toLowerCase().replace(/ /g, ""));
+
+                if(dataValue==tagsPresent[a].toLowerCase().replace(/ /g, "")){
+                  allInpt[x].style.display = "";
+                  console.log("display block",allInpt[x],dataValue);
+                }
+                }
+              }
             }
-
-            // console.log("logging one / one", arrData[x].toLowerCase());
-
-          }
-          if (x == arrData.length - 1) { flag = true }
         }
-        if (flag) {
-          for (var i = 0; i < allInpt.length; i++) {
-
-            let dataValue;
-            let newData;
-
-            newData = allInpt[i].firstElementChild
-            dataValue = newData.getAttribute("value").replace(/ /g, "")
-            // console.log("all input classed divs value", dataValue.toLowerCase());
-
-            try {
-              displayBlockArr[i].style.display = "block";
-
-            } catch (error) {
-              // console.log("length exceed");
-            }
 
 
-          }
-        }
-      } else {
-        console.log("no data found");
       }
+      // else{
+      //   for(let x =0; x < allInpt[x].length;x++){
+      //     allInpt[x].style.display="block"
+      //     console.log("logging elements in else",allInpt[x]);
+      //   }
+      // }
 
-    }else{
-      for(let x =0; x < allInpt[x].length;x++){
-        allInpt[x].style.display="block"
-        console.log("logging elements in else",allInpt[x]);
-      }
     }
-
   }
 </script>
 
