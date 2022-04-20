@@ -212,7 +212,32 @@
     #tagSelectBtn {
       align-self: flex-end;
     }
-  </style>
+    .swal-modal {
+      padding: 40px 20px;
+    }
+    .swal-modal button{
+      background-color: #BADA55 !important;
+      font-weight: 300;
+      width: 144px;
+      border: 2px solid #BADA55;
+      margin-right: 135px !important;
+      
+    }
+    .swal-modal button:hover{
+      background-color: white !important;
+      border: 2px solid #BADA55;
+      color: black;
+      
+    }
+    .swal-modal input{
+      border: 1px solid rgb(41, 41, 41);   
+    }
+    .swal-modal input:focus{
+      
+      border: 1px solid black;  
+      box-shadow: 0px 1px 1px 1px rgba(88, 88, 88, 0.5); 
+    } 
+       </style>
 </head>
 
 <body>
@@ -240,8 +265,8 @@
     function start() {
       arrayCount++
       swal({
+        title: "Select Tag Heading",
         content: {
-          title: "Select Tag Heading",
           element: "input",
           attributes: {
             placeholder: "Tag Heading",
@@ -347,8 +372,8 @@
     function createInnerTag(parentRes, btn) {
       console.log("print result button ...................", btn);
       swal({
+        title: "Select Category",
         content: {
-          title: "Select Category",
           element: "input",
           attributes: {
             placeholder: "Value",
@@ -434,12 +459,13 @@
       console.log("log event..................", data);
       //trigger swal get values in swwetalert input and if its not empty update on dom created input
       swal({
+        title: "Select Sub Category",
         content: {
-          title: "Select Sub Category",
           element: "input",
           attributes: {
             placeholder: "Value",
             type: "text",
+            
           },
         },
       }).then((res) => {
