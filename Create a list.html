@@ -311,7 +311,7 @@
       edit.setAttribute("class", " btn btn-success");
 
       del.setAttribute("id", "del");
-      del.setAttribute("onclick", "del(this.parentElement.parentElement.parentElement)");
+      del.setAttribute("onclick", "del(this.parentElement.parentElement.parentElement,this.parentElement)");
       del.setAttribute("class", "btn btn-danger ");
 
       inp.setAttribute("id", "listInput");
@@ -404,7 +404,7 @@
           subDel.setAttribute("id", "subDel");
           subDel.setAttribute(
             "onclick",
-            "del(this.parentElement.parentElement.parentElement)"
+            "del(this.parentElement.parentElement.parentElement,this.parentElement)"
           );
           subDel.setAttribute("class", "btn btn-danger ");
 
@@ -477,7 +477,7 @@
           tagInpt.setAttribute("class", "list-input form-control");
 
           tagDel.setAttribute("id", "tagDel");
-          tagDel.setAttribute("onclick", "del(this.parentElement.parentElement)");
+          tagDel.setAttribute("onclick", "del(this.parentElement.parentElement,this.parentElement)");
           tagDel.setAttribute("class", "btn btn-danger ");
 
           data.appendChild(tagLi);
@@ -574,7 +574,7 @@
 
     }
 
-    function del(data) {
+    function del(data,updata) {
       //..........................remove element.....................
       //use array  map and regix 
       try {
@@ -588,12 +588,56 @@
         }
       } catch (err) {
         console.log("catch error", err);
-        console.log("catch error", check);
+        // console.log("catch error", check);
       }
       // let check=data.firstElementChild.firstElementChild.value
       // arr = arr.filter(function (valueRemov, index, arr) {
       //           return valueRemov !== check;
       //       });
+      let newVal = updata.previousElementSibling.value ;
+      console.log("value .................del",newVal);
+        for (let z = 0; z < arr.length; z++) {
+          if (arr[z] == undefined) {
+          } else {
+            if (!Array.isArray(arr[z]) && arr[z] == newVal) {
+            let index=  arr.indexOf(newVal) 
+            console.log("logging array z",arr[z]);
+            arr=[]
+
+              break;
+              // console.log("item not array", arr[z]);
+            }
+            
+            if (Array.isArray(arr[z])) {
+              console.log("item  is array arr[z][0]", arr[z][0])
+              for (let a = 0; a < arr[z][0].length; a++) {
+                if (!Array.isArray(arr[z][0][a]) && arr[z][0][a] == newVal) {
+                  arr[z][0].splice(z,1) 
+
+                  console.log("log cat", arr[z][0])
+                  console.log(arr);
+                  break;
+                }else{
+                  console.log("is an array in tags")
+                  // if (Array.isArray(arr[z][0][a])) {
+                    for (let p = 0; p < arr[z][0][a].length; p++) {
+                      console.log("a z o", arr[z][0][a][p]);
+                      if (!Array.isArray(arr[z][0][a][p]) && arr[z][0][a][p] == newVal) {
+                        arr[z][0][a].splice(p-1,2)
+                        console.log(arr);
+                    }
+                  }
+                }
+
+
+              }
+            }
+          }
+
+          console.log(arr[z])
+        }
+
+        //zzzzzzzzzzzz
       console.log("array ", data);
       data.remove();
       swal("Remove", "Tag removed", "success");
