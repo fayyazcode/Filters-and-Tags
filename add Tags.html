@@ -1,225 +1,245 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Tags</title>
-    <style>
-      * {
-        font-family: "Roboto", sans-serif;
-      }
-      label {
-        font-size: 16px !important;
-      }
-      .checkHead {
-        font-size: 22px !important;
-        font-weight: 500;
-      }
-      input {
-        vertical-align:middle;
-        width: 26px;
-        height: 26px;
-      }
 
-      input[type="checkbox"] {
-  display: none;
-}
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Tags</title>
+  <style>
+    * {
+      font-family: "Roboto", sans-serif;
+    }
 
-      input[type="checkbox"] + *::before {
-        content: "";
-        display: inline-block;
-        vertical-align: middle;
-        width: 26px;
-        height: 26px;
-        margin-right: 0.3rem;
-        border-radius: 10%;
-        border-style: solid;
-        border-width: 0.1rem;
-        border-color: gray;
-        flex-shrink: 0;
-       margin-bottom: 10px;
-      }
-      input[type="checkbox"]:checked + *::before {
-        content: "✓";
-        color: white;
-        text-align: center;
-        background: rgb(0, 0, 0);
-        border-color: rgb(0, 0, 0);
-      }
-      .innerInput +*::before{
-        margin-left: 26px !important;
-      }
-    </style>
-  </head>
-  <body>
-    <div
-      id="new"
-      style="
+    /* //style of scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: black;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    /* //style of scrollbar */
+    label {
+      font-size: 16px !important;
+    }
+
+    .checkHead {
+      font-size: 22px !important;
+      font-weight: 500;
+    }
+
+    input {
+      vertical-align: middle;
+      width: 26px;
+      height: 26px;
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    input[type="checkbox"]+*::before {
+      content: "";
+      display: inline-block;
+      vertical-align: middle;
+      width: 26px;
+      height: 26px;
+      margin-right: 0.3rem;
+      border-radius: 10%;
+      border-style: solid;
+      border-width: 0.1rem;
+      border-color: gray;
+      flex-shrink: 0;
+      margin-bottom: 10px;
+    }
+
+    input[type="checkbox"]:checked+*::before {
+      content: "✓";
+      color: white;
+      text-align: center;
+      background: rgb(0, 0, 0);
+      border-color: rgb(0, 0, 0);
+    }
+
+    .innerInput+*::before {
+      margin-left: 26px !important;
+    }
+
+    .childDiv {
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="new" style="
         display: flex;
         justify-content: space-between;
         align-items:baseline;
         flex-wrap: wrap;
         padding:80px;
          
-      "
-    ></div>
-  </body>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
-    integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  ></script>
-  <script>
+      "></div>
+</body>
 
-    let main ;
-    window.onmessage = (event) => {
-      console.log("log addedTags in iframe...............",event.data.addedtags);
-      
-      
-	main=event.data.data;
-  dataRender()
- 
-    setTimeout(alreadyEsistingTags(event.data.addedtags),2000)
-  
-    };
-     
-    let dataRender=()=>{
-      
+<script>
+
+  let main;
+  window.onmessage = (event) => {
+    console.log("log addedTags in iframe...............", event.data.addedtags);
+
+
+    main = event.data.data;
+    dataRender()
+
+    setTimeout(alreadyEsistingTags(event.data.addedtags), 2000)
+
+  };
+
+  let dataRender = () => {
+
     let tags = document.getElementById("new");
 
-//.............................first loop......................
-//..............heading loop
+    //.............................first loop......................
+    //..............heading loop
 
-let resultDisplayArray = [];
-for (let x = 0; x < main.length; x++) {
-  let mainDiv = document.createElement("div");
-  mainDiv.style.width = "400px";
-  let heading = document.createElement("H3");
-  heading.style.padding = "10px";
-  heading.style.fontSize = "40px";
-  heading.style.borderBottom = "2px solid #BADA55";
-  mainDiv.append(heading);
-  heading.innerText = main[x][0];
-  let arr = main[x][1];
-  for (let i = 0; i < arr.length; i++) {
+    let resultDisplayArray = [];
+    for (let x = 0; x < main.length; x++) {
+      let mainDiv = document.createElement("div");
+      mainDiv.style.width = "400px";
+      let heading = document.createElement("H3");
+      heading.style.padding = "10px";
+      heading.style.fontSize = "40px";
+      heading.style.borderBottom = "2px solid #BADA55";
+      mainDiv.append(heading);
+      heading.innerText = main[x][0];
+      let arr = main[x][1];
+      for (let i = 0; i < arr.length; i++) {
 
-    //...............................second loop...........................
-//..................category loop
+        //...............................second loop...........................
+        //..................category loop
 
-    for (let z = 0; z < arr[i].length; z++) {
-      let childDiv = document.createElement("div");
-      
-      childDiv.setAttribute("class", "childDiv");
-      childDiv.style.display = "none";
-      let fstChild = document.createElement("div");
-      if (arr[i][z] == undefined) {
-      } else {
-        if (!Array.isArray(arr[i][z])) {
-//console.log("i z...........", arr[i][z]);
-          fstChild.innerHTML += ` 
-    <input  onchange="myFunction(this),getValues(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${
-      arr[i][z]
-    }" id="${arr[i][z].replace(/ /g, "")}" name="${i.toString()+""}" value="${
-            arr[i][z]
-          }"> 
+        for (let z = 0; z < arr[i].length; z++) {
+          let childDiv = document.createElement("div");
+
+          childDiv.setAttribute("class", "childDiv");
+          // childDiv.style.display = "none";
+          let fstChild = document.createElement("div");
+          if (arr[i][z] == undefined) {
+          } else {
+            if (!Array.isArray(arr[i][z])) {
+              //console.log("i z...........", arr[i][z]);
+              fstChild.innerHTML += ` 
+    <input  onchange="myFunction(this),getValues(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
+                }" id="${arr[i][z].replace(/ /g, "")}" name="${i.toString() + ""}" value="${arr[i][z]
+                }"> 
           
     <label for="${arr[i][z].replace(/ /g, "")}">${arr[i][z]}</label>
     <br>`;
-          mainDiv.append(fstChild);
-        }
-      }
-      if (Array.isArray(arr[i][z])) {
-        //................................third loop..................................//
-        //...........subtags loop
+              mainDiv.append(fstChild);
+            }
+          }
+          if (Array.isArray(arr[i][z])) {
+            //................................third loop..................................//
+            //...........subtags loop
 
-        for (let a = 0; a < arr[i][z].length; a++) {
-        //  console.log("a i z log ...............", arr[i][z][a]);
-          childDiv.innerHTML += `<div class="show"  style=" margin-left: 35px;">
-    <input onchange="getValues(this)" type="checkbox" style=" margin-left: 15px;" placeholder="${
-      arr[i][z][a]
-    }" id="${arr[i][z][a].replace(/ /g, "")}" name="${
-            (i.toString()+ ","+  a.toString())
-          }" value="${arr[i][z][a]}"> 
+            for (let a = 0; a < arr[i][z].length; a++) {
+              //  console.log("a i z log ...............", arr[i][z][a]);
+              childDiv.innerHTML += `<div class="show"  style=" margin-left: 35px;">
+    <input onchange="getValues(this)" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
+                }" id="${arr[i][z][a].replace(/ /g, "")}" name="${(i.toString() + "," + a.toString())
+                }" value="${arr[i][z][a]}"> 
     <label for="${arr[i][z][a].replace(/ /g, "")}">${arr[i][z][a]}</label>
     </div>`;
 
-          mainDiv.append(childDiv);
+              mainDiv.append(childDiv);
+            }
+          }
+          tags.append(mainDiv);
         }
       }
-      tags.append(mainDiv);
     }
   }
-}
-    }
-    //...............hide and show functionality when checked or unchecked
-    function myFunction(getCheckbox) {
-      try {
-        let attr =
-        getCheckbox.parentElement.nextSibling.firstElementChild.getAttribute(
-          "class"
-        );
-      if (getCheckbox.checked) {
-        if (attr !== "main") {
-          // getCheckbox.parentElement.nextSibling.firstElementChild.classList.add("slide-fade")
-        //   console.log(getCheckbox.value);
-          getCheckbox.parentElement.nextSibling.style.display = "block";
-        }
-      } else {
-        
-        if (attr !== "main") {
+  //...............hide and show functionality when checked or unchecked
+  function myFunction(getCheckbox) {
+    // try {
+    //   let attr =
+    //   getCheckbox.parentElement.nextSibling.firstElementChild.getAttribute(
+    //     "class"
+    //   );
+    // if (getCheckbox.checked) {
+    //   if (attr !== "main") {
+    //     // getCheckbox.parentElement.nextSibling.firstElementChild.classList.add("slide-fade")
+    //   //   console.log(getCheckbox.value);
+    //     getCheckbox.parentElement.nextSibling.style.display = "block";
+    //   }
+    // } else {
 
-          getCheckbox.parentElement.nextSibling.style.display = "none";
-        }
-      }
-      } catch (error) {
-        console.log("catch log...........",error);
-      }
- 
-    }
+    //   if (attr !== "main") {
 
-    let getValues = (res) => {
-      //............... functionality when checked ,..............................//
-//console.log("values..........................", res);
-      //............................add checked item into filter array call filter function every onChange event................................//
-      window.parent.postMessage(
-        {
-          data: {
-            status: res.checked,
-            value: res.value,
-          },
+    //     getCheckbox.parentElement.nextSibling.style.display = "none";
+    //   }
+    // }
+    // } catch (error) {
+    //   console.log("catch log...........",error);
+    // }
+
+  }
+
+  let getValues = (res) => {
+    //............... functionality when checked ,..............................//
+    //console.log("values..........................", res);
+    //............................add checked item into filter array call filter function every onChange event................................//
+    window.parent.postMessage(
+      {
+        data: {
+          status: res.checked,
+          value: res.value,
         },
-        "https://jenksryan.editorx.io/hownot2/addtags"
-      );
-   
-
-    };
-  function alreadyEsistingTags(tagArr){
-  console.log("logging addedtag",tagArr);
-if(tagArr){
-  let allInpt= document.getElementsByTagName("input")
- console.log("logging data as all inputs........",allInpt.length);
- let arrData=tagArr
- console.log("log data in already esisting tags function",arrData);
- for(let x=0;x<arrData.length;x++){
-
-   for(var i=0;i<allInpt.length;i++){
-    // myFunction(allInpt[i])
-    console.log(allInpt[i]);
-     console.log("logging one / one",arrData[x].toLocaleLowerCase(),allInpt[i].value.toLocaleLowerCase());
-     if(arrData[x].toLocaleLowerCase()==allInpt[i].value.toLocaleLowerCase()){
-       allInpt[i].checked=true;
-     }
-    }
- }
-}else{
-console.log("no data found");
-}
+      },
+      "https://jenksryan.editorx.io/hownot2/addtags"
+    );
 
 
+  };
+  function alreadyEsistingTags(tagArr) {
+    console.log("logging addedtag", tagArr);
+    if (tagArr) {
+      let allInpt = document.getElementsByTagName("input")
+      console.log("logging data as all inputs........", allInpt.length);
+      let arrData = tagArr
+      console.log("log data in already esisting tags function", arrData);
+      for (let x = 0; x < arrData.length; x++) {
+
+        for (var i = 0; i < allInpt.length; i++) {
+          // myFunction(allInpt[i])
+          console.log(allInpt[i]);
+          console.log("logging one / one", arrData[x].toLocaleLowerCase(), allInpt[i].value.toLocaleLowerCase());
+          if (arrData[x].toLocaleLowerCase() == allInpt[i].value.toLocaleLowerCase()) {
+            allInpt[i].checked = true;
+          }
+        }
+      }
+    } else {
+      console.log("no data found");
     }
 
-  </script>
+
+  }
+
+</script>
+
 </html>
