@@ -103,9 +103,10 @@
 
 
     main = event.data.data;
+    console.log("log main............",main);
     dataRender()
-
     setTimeout(alreadyEsistingTags(event.data.addedtags), 2000)
+
 
   };
 
@@ -127,6 +128,10 @@
       mainDiv.append(heading);
       heading.innerText = main[x][0];
       let arr = main[x][1];
+      console.log("logging arr........................", arr);
+      try {
+        
+      
       for (let i = 0; i < arr.length; i++) {
 
         //...............................second loop...........................
@@ -170,6 +175,9 @@
           }
           tags.append(mainDiv);
         }
+      }
+    } catch (error) {
+        
       }
     }
   }
@@ -216,7 +224,7 @@
 
   };
   function alreadyEsistingTags(tagArr) {
-    console.log("logging addedtag", tagArr);
+    console.log("logging addedtag .............", tagArr);
     if (tagArr) {
       let allInpt = document.getElementsByTagName("input")
       console.log("logging data as all inputs........", allInpt.length);
