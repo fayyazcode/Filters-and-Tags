@@ -192,16 +192,20 @@
       margin-top: 12px;
     }
 
-    .subtagList input {
-      font-size: 20px;
+    .category input {
+      font-size: 22px;
       font-weight: 500;
+    }
+    .tags input {
+      font-size: 16px;
+      font-weight: 400;
     }
 
     .innerTagDiv {
       background-color: #F1F1F1;
       padding: 34px;
       margin-bottom: 20px;
-      margin: 80px;
+      margin:40px 80px;
       border-radius: 10px;
       display: flex;
       flex-direction: column;
@@ -213,14 +217,17 @@
       align-self: flex-end;
     }
     .swal-modal {
-      padding: 40px 20px;
+      width: 650px;
+      min-width: 320px;
+      padding: 40px 70px;
+
     }
     .swal-modal button{
       background-color: #BADA55 !important;
       font-weight: 300;
       width: 144px;
       border: 2px solid #BADA55;
-      margin-right: 135px !important;
+      margin-right: 150px !important;
       
     }
     .swal-modal button:hover{
@@ -231,12 +238,27 @@
     }
     .swal-modal input{
       border: 1px solid rgb(41, 41, 41);   
+      font-weight: 400;
+      color: black;
+      margin-top: 40px;
     }
     .swal-modal input:focus{
       
-      border: 1px solid black;  
-      box-shadow: 0px 1px 1px 1px rgba(88, 88, 88, 0.5); 
+      border: 1px solid rgb(37, 37, 37);  
+      box-shadow: 0px 1px 1px 1px rgba(109, 109, 109, 0.219); 
+
+    }
+    .swal-title{
+      margin-bottom: 30px;
+      border-bottom: 1px solid #BADA55;
     } 
+    .swal-title:first-child{
+      margin: 0;
+    }
+    .swal-title{
+      padding-bottom: 20px;
+    }
+   
        </style>
 </head>
 
@@ -414,7 +436,7 @@
           );
 
           tagSelectBtn.style.marginTop = "12px";
-          subLi.setAttribute("class", "subtagList")
+          subLi.setAttribute("class", "subtagList category")
           innerTagDiv.setAttribute("class", "innerTagDiv")
           subEdit.innerHTML = "EDIT";
           subDel.innerHTML = "DELETE";
@@ -491,7 +513,7 @@
           let tagEdit = document.createElement("button");
 
 
-          tagLi.setAttribute("class", "subtagList")
+          tagLi.setAttribute("class", "subtagList tags")
           tagEdit.innerHTML = "EDIT";
           tagDel.innerHTML = "DELETE";
           tagEdit.setAttribute("id", "tagEdit");
