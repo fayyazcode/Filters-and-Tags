@@ -697,7 +697,7 @@
     function updt(edit) {
       // console.log("edit value ",edit.previousElementSibling.value)
       let preVal = edit.previousElementSibling.value
-      console.log("preVal ", preVal)
+      // console.log("preVal ", preVal)
       // for(let i=0;i<arr.length;i++){
       //   console.log("array items ",arr[i])
       // }
@@ -712,7 +712,7 @@
           },
         },
       }).then((res) => {
-        console.log("result...........", res);
+        // console.log("result...........", res);
         innerupdate(edit, res, preVal);
       });
     }
@@ -722,7 +722,7 @@
         swal("Edit", "Value cant be Empty", "error");
       } else {
         swal("Edit", "Title Edited", "success");
-        console.log("log dit.previousSibling....", edit.previousSibling);
+        // console.log("log dit.previousSibling....", edit.previousSibling);
         let newVal = edit.previousElementSibling.value = res;
         for (let z = 0; z < arr.length; z++) {
           if (arr[z] == undefined) {
@@ -873,22 +873,7 @@
         console.log("logging array", arr);
       }
     }
-    //sending data to wix 
-    let sendData = () => {
-      console.log("save btn clicked");
-      if (arr.length > 0) {
-        window.parent.postMessage({
 
-
-          data: arr,
-
-        },
-          "https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
-        );
-      } else {
-        swal("Oops", "Please create a filter", "error");
-      }
-    }
 
     ///all done and working
 
@@ -957,24 +942,24 @@
               let text = "";
               let a = 0;
               do {
-               
-              
-              // for (let a = 0; a < arr[i][z].length; a++) {
-              //  console.log("a i z log ...............", arr[i][z][a]);
-              childDiv.innerHTML += `<div class="subTagsdiv"  style=" margin-left: 35px;">
+
+
+                // for (let a = 0; a < arr[i][z].length; a++) {
+                //  console.log("a i z log ...............", arr[i][z][a]);
+                childDiv.innerHTML += `<div class="subTagsdiv"  style=" margin-left: 35px;">
     <input   style=" margin-left: 15px;" disabled placeholder="${arr[i][z][a]
-                }" id="${arr[i][z][a].replace(/ /g, "")}" name="${(i.toString() + "," + a.toString())
-                }" value="${arr[i][z][a]}"> 
-                   <div class="btns"><button class="btn-danger" id="${arr[i][z][a].replace(/ /g, "")}del" onclick="delExisting(this.parentElement.parentElement,this.parentElement)" style=" margin-right: 10px;">Delete</button>
+                  }" id="${arr[i][z][a].replace(/ /g, "")}" name="${(i.toString() + "," + a.toString())
+                  }" value="${arr[i][z][a]}"> 
+                   <div class="btns"><button class="btn-danger" id="${arr[i][z][a].replace(/ /g, "")}del" name="subCat" onclick="delExisting(this.parentElement.parentElement,this.parentElement,this.name)" style=" margin-right: 10px;">Delete</button>
                     <button class="btn-success" id="${arr[i][z][a].replace(/ /g, "")}edt" onclick="updtExist(this.parentElement)" style=" margin-right: 0px;" >Edit</button></div>
     </div>`;
 
-              mainDiv.append(childDiv);
-              a++;
+                mainDiv.append(childDiv);
+                a++;
               }
               while (a < arr[i][z].length);
               // }
-            }else{
+            } else {
               mainDiv.append(childDiv);
             }
             tags.append(mainDiv);
@@ -982,7 +967,9 @@
         }
       }
     }
+    //add catogery to existing filter
     let addTagAddedFilter = (data) => {
+      console.log("************************* data in already created filters  select button function  *****************", data.parentElement.parentElement.firstElementChild.firstElementChild.value, data.parentElement.parentElement.parentElement.firstElementChild.name);
       swal({
         title: "Add Sub Category",
         content: {
@@ -1005,10 +992,12 @@
     <input   style=" margin-left: 15px;" disabled placeholder="" id="${res.replace(/ /g, "")}" name="${(res.toString())}" 
             value="${res}"> 
              <div class="btns">
-              <button type="button" class="btn-danger" id="${res.replace(/ /g, "")}del" style=" margin-right: 10px;">Delete</button>
+              <button type="button" class="btn-danger" id="${res.replace(/ /g, "")}del" name="subCat" onclick="delExisting(this.parentElement.parentElement,this.parentElement,this.name)" style=" margin-right: 10px;">Delete</button>
               <button  class="btn-success" onclick="updtExist(this.parentElement)" id="${res.replace(/ /g, "")}edt"  style=" margin-right: 0px;" >Edit</button>
               </div>`
         divToAppen.append(ipts)
+
+        NewTagsToEsisting(data.parentElement.parentElement.firstElementChild.firstElementChild.value, data.parentElement.parentElement.parentElement.firstElementChild.name)
       });
     }
 
@@ -1040,9 +1029,9 @@
       });
     }
     //........................... update value in input from sweet alert
-    let existingArr=[];
+    let existingArr = [];
     function innerupdatExist(edit, res, preVal) {
-      if(existingArr.length==0){
+      if (existingArr.length == 0) {
         existingArr = JSON.parse(edit.parentElement.parentElement.parentElement.firstElementChild.name)
       }
       if (res.trim() == "" || null) {
@@ -1087,15 +1076,12 @@
                   }
                 }
 
-
-
-
               }
             }
           }
           //check if that object is present if exist replace else push 
           let updArr = {}
-          let objProperty=existingArr[0]
+          let objProperty = existingArr[0]
           updArr[objProperty] = existingArr
           if (objArray.length == 0) {
             objArray.push(updArr)
@@ -1105,72 +1091,54 @@
               // var headName=
               let element = objArray[p];
               // console.log("log objects one by one",element);
-              if( objArray[p][objProperty]){
-                  objArray[p]=updArr
-                  console.log("check if object changed",objArray[p]);
-                }else{
-                    // objArray.push({newVal:updArr})
-                    console.log("no data found");
-                  }
-
+              if (objArray[p][objProperty]) {
+                objArray[p] = updArr
+                console.log("check if object changed", objArray[p]);
+              } else {
+                // objArray.push({newVal:updArr})
+                console.log("no data found");
+              }
             }
           }
-
           // console.log("existing arrray updated", existingArr)
         }
-
       }
       // console.log("Updatee Array ",existingArr.indexOf('Tag'))
-
-
     }
     //function for already existing filters delete remove
-    function delExisting(data, updata) {
+    function delExisting(data, updata,newProp) {
       //..........................remove element.....................
       let existingArr;
-      let name = updata.previousElementSibling.value
+      let name = updata.parentElement.parentElement.parentElement.firstElementChild.name
+      name=JSON.parse(name)
+      name=name[0]
       console.log("name of object", name);
       for (let l = 0; l < objArray.length; l++) {
-        let element = objArray[l];
-        console.log("log element in del", element);
-        // if(objArray[l]==name){
-        //   existingArr= objArray[l].name
-        // }else{
+        // let element = objArray[l];
+        console.log("log object array value",objArray[l] );
+        if(objArray[l][name]){
+          existingArr= objArray[l][name]
+          console.log("data found");
+        }else{
         //  console.log("error cant find any data",objArray,name);
-        // }
-
-      }
-      try {
-
-        //...................check get attribute of input next to select button
-        if (
-          data.firstElementChild.firstElementChild.getAttribute("id") ==
-          "subInput"
-        ) {
-          document.getElementById("select").style.display = "block";
         }
-      } catch (err) {
-        console.log("catch error", err);
-        // console.log("catch error", check);
+
       }
-      // let check=data.firstElementChild.firstElementChild.value
-      // existingArr = existingArr.filter(function (valueRemov, index, existingArr) {
-      //           return valueRemov !== check;
-      //       });
+
       let newVal = updata.previousElementSibling.value;
       console.log("value .................del", newVal);
       for (let z = 0; z < existingArr.length; z++) {
         if (existingArr[z] == undefined) {
+          // existing array is undefiened
+          console.log("existing array is undefiened");
         } else {
           if (!Array.isArray(existingArr[z]) && existingArr[z] == newVal) {
             let index = existingArr.indexOf(newVal)
-            console.log("logging array z", existingArr[z]);
+            // console.log("logging array z", existingArr[z]);
             existingArr = []
-
             break;
             // console.log("item not array", existingArr[z]);
           }
-
           if (Array.isArray(existingArr[z])) {
             console.log("item  is array existingArr[z][0]", existingArr[z][0])
             for (let a = 0; a < existingArr[z].length; a++) {
@@ -1185,34 +1153,88 @@
                   console.log("is an array in tags")
                   // if (Array.isArray(existingArr[z][0][a])) {
                   for (let p = 0; p < existingArr[z][a][x].length; p++) {
-                    console.log("a z o", existingArr[z][a][x][p]);
+                    // console.log("a z o", existingArr[z][a][x][p]);
                     if (!Array.isArray(existingArr[z][a][x][p]) && existingArr[z][a][x][p] == newVal) {
                       existingArr[z][a][x].splice(p, 1)
-                      console.log(existingArr);
+                      console.log("log index p ..........",p);
                     }
                   }
                 }
               }
-
-
-
             }
           }
         }
 
-        console.log(existingArr[z])
+        console.log("loging existing array", existingArr[z])
       }
 
       //zzzzzzzzzzzz
       console.log("array ", data);
       if (newProp == "subCat") {
-        // data.remove();
-      } else {
-
         data.remove();
+      } else {
+try {
+  
+  data.parentElement.nextElementSibling.nextElementSibling.remove()
+  data.parentElement.nextElementSibling.remove()
+  data.parentElement.remove()
+} catch (error) {
+  data.parentElement.nextElementSibling.remove()
+  data.parentElement.remove()
+  
+}
+
+      // console.log(  data.parentElement.nextElementSibling.nextElementSibling);
       }
       console.log("log child divnext to category"), data;
       swal("Remove", "Tag removed", "success");
+    }
+
+    //add new tags data to existing tags
+    let NewTagsToEsisting = (catNew, headArray) => {
+      headArray = JSON.parse(headArray)
+      for (let l = 0; l < objArray.length; l++) {
+        // let element = objArray[l];
+        console.log("log object array value",objArray[l][headArray[0]] );
+        // if()
+      }
+
+      console.log("log cat new.........", catNew, headArray[0]);
+
+    }
+
+
+        //sending data to wix 
+        let sendData = () => {
+      let mainDataArr=[]
+      console.log("save btn clicked");
+      for (let l = 0; l < objArray.length; l++) {
+        // let element = objArray[l];
+        // console.log("log object array value", objArray[l][Object.keys( objArray[l])[0]] );
+        mainDataArr.push(objArray[l][Object.keys( objArray[l])[0]] )
+      }
+      console.log("arr main created.................##3##########",arr);
+      
+      if (arr.length > 0) {
+        mainDataArr.push(arr)
+        window.parent.postMessage({
+
+
+          data: mainDataArr,
+
+        },
+          "https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
+        );
+      } else {
+        window.parent.postMessage({
+
+
+data: mainDataArr,
+
+},
+"https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
+);
+      }
     }
   </script>
 </body>
