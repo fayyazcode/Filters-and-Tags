@@ -124,7 +124,7 @@
  
   window.onmessage = (event) => {
     // console.log("log new event in iframe...", event.data);
-    console.log("log new event in iframe  tags present...", event.data.tagsPresent);
+    // console.log("log new event in iframe  tags present...", event.data.tagsPresent);
     if (event.data.tagsPresent) {
      let tagsPresent = event.data.tagsPresent
      setTimeout(()=>{
@@ -157,7 +157,7 @@
       mainDiv.style.borderBottom = "2px solid #BADA55";
       mainDiv.append(heading);
       heading.innerText = main[x][0];
-      console.log("heading...........", heading);
+      // console.log("heading...........", heading);
       let arr = main[x][1];
       for (let i = 0; i < arr.length; i++) {
         //.............................first loop......................
@@ -254,11 +254,11 @@
       checkArray = checkArray.filter(function (valueRemov, index, arr) {
         return valueRemov !== res.value;
       });
-    console.log("testa array length",checkArray.length);
+    // console.log("testa array length",checkArray.length);
       if(checkArray.length ==0){
-        console.log("check array remove length..........", checkArray.length,main);
+        // console.log("check array remove length..........", checkArray.length,main);
         let allInpt = document.getElementsByClassName("input")
-        console.log("allinput when test array is 0",allInpt);
+        // console.log("allinput when test array is 0",allInpt);
         for (let z = 0; z < allInpt.length; z++) {
           // myFunction(allInpt[i])
 
@@ -278,7 +278,7 @@
       "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
     );
     
-    console.log("valueszxxxxx...............", res.value);
+    // console.log("valueszxxxxx...............", res.value);
     //............................add checked item into filter array call filter function every onChange event........................//
     if (res.checked) {
       let parentBox = document.getElementById("selectedTags")
@@ -288,7 +288,7 @@
       addedTag.setAttribute("class", "addedTags")
       let span = document.createElement("button")
       let id = res.value.replace(/ /g, "")
-      console.log("logging id.........", id);
+      // console.log("logging id.........", id);
       span.setAttribute("id", id + "span")
       span.setAttribute("class", "spanButton")
       span.innerHTML = "X " + res.value
@@ -342,7 +342,7 @@
           if(i==allInpt.length-1){
             let dataValue;
             let newData;
-            console.log("loop finished");
+            // console.log("loop finished");
             for(var a = 0; a < tagsPresent.length; a++){
 
               for (var x = 0; x < allInpt.length; x++) {
@@ -354,7 +354,7 @@
 
                 if(dataValue==tagsPresent[a].toLowerCase().replace(/ /g, "")){
                   allInpt[x].style.display = "";
-                  console.log("display block",allInpt[x],dataValue);
+                  // console.log("display block",allInpt[x],dataValue);
                 }
                 }
               }
