@@ -456,27 +456,20 @@
       // document.getElementById("mainInput").value=data
       let liValue = data;
 
-      // if (liValue == "") {
-      //   swal("Oops", "Input Cant Be Empty", "error");
-      //   return 0;
-      // } else if (!liValue.trim().length) {
-      //   mainInput.value = "";
-      //   return 0;
-      // }
 
       let list = document.getElementById("mainList");
       let FirstDiv = document.createElement("div")
       let divLi = document.createElement("div");
       let li = document.createElement("li");
       let inp = document.createElement("input");
-      let edit = document.createElement("button");
+      // let edit = document.createElement("button");
       let del = document.createElement("button");
       let subLi = document.createElement("div");
       let subDiv = document.createElement("div");
       let selectBtn = document.createElement("button");
       let selectCatogery = document.createElement("span")
 
-      edit.innerHTML = "EDIT";
+      // edit.innerHTML = "EDIT";
       del.innerHTML = "DELETE";
       selectBtn.setAttribute("class", "btn-danger")
       selectBtn.innerHTML = "Select";
@@ -491,9 +484,9 @@
 
       FirstDiv.setAttribute("class", "firstDiv")
       divLi.setAttribute("class", "mainFilterDiv")
-      edit.setAttribute("id", "edit");
-      edit.setAttribute("onclick", "updt(this.parentElement)");
-      edit.setAttribute("class", " btn btn-success");
+      // edit.setAttribute("id", "edit");
+      // edit.setAttribute("onclick", "updt(this.parentElement)");
+      // edit.setAttribute("class", " btn btn-success");
 
       del.setAttribute("id", "del");
       del.setAttribute("onclick", "del(this.parentElement.parentElement.parentElement,this.parentElement)");
@@ -518,7 +511,7 @@
       // subLi.appendChild(del);
       subDiv.appendChild(selectCatogery);
       subDiv.appendChild(selectBtn);
-      subLi.appendChild(edit);
+      // subLi.appendChild(edit);
       subLi.appendChild(del);
 
       inp.value = liValue;
@@ -921,7 +914,7 @@
                 //console.log("i z...........", arr[i][z]);
                 fstChild.innerHTML += `<div class="cat"> 
     <input   class="heading"  style="margin-bottom:10px" disabled placeholder="${arr[i][z]
-                  }" id="${arr[i][z].replace(/ /g, "")}" name="${i.toString() + ""}" value="${arr[i][z]
+                  }" id="${arr[i][z].replace(/ /g, "")}append" name="${i.toString() + ""}" value="${arr[i][z]
                   }"> 
           <div class="btns ">
             <button class="btn-danger" id="${arr[i][z].replace(/ /g, "")}del" onclick="delExisting(this.parentElement.parentElement,this.parentElement)"  style=" margin-right: 10px;">Delete</button>
@@ -997,7 +990,7 @@
               </div>`
         divToAppen.append(ipts)
 
-        NewTagsToEsisting(data.parentElement.parentElement.firstElementChild.firstElementChild.value, data.parentElement.parentElement.parentElement.firstElementChild.name)
+        NewTagsToEsisting(data.parentElement.parentElement.firstElementChild.firstElementChild.value, data.parentElement.parentElement.parentElement.firstElementChild.name,res)
       });
     }
 
@@ -1106,21 +1099,21 @@
       // console.log("Updatee Array ",existingArr.indexOf('Tag'))
     }
     //function for already existing filters delete remove
-    function delExisting(data, updata,newProp) {
+    function delExisting(data, updata, newProp) {
       //..........................remove element.....................
       let existingArr;
       let name = updata.parentElement.parentElement.parentElement.firstElementChild.name
-      name=JSON.parse(name)
-      name=name[0]
+      name = JSON.parse(name)
+      name = name[0]
       console.log("name of object", name);
       for (let l = 0; l < objArray.length; l++) {
         // let element = objArray[l];
-        console.log("log object array value",objArray[l] );
-        if(objArray[l][name]){
-          existingArr= objArray[l][name]
+        console.log("log object array value", objArray[l]);
+        if (objArray[l][name]) {
+          existingArr = objArray[l][name]
           console.log("data found");
-        }else{
-        //  console.log("error cant find any data",objArray,name);
+        } else {
+          //  console.log("error cant find any data",objArray,name);
         }
 
       }
@@ -1156,7 +1149,7 @@
                     // console.log("a z o", existingArr[z][a][x][p]);
                     if (!Array.isArray(existingArr[z][a][x][p]) && existingArr[z][a][x][p] == newVal) {
                       existingArr[z][a][x].splice(p, 1)
-                      console.log("log index p ..........",p);
+                      console.log("log index p ..........", p);
                     }
                   }
                 }
@@ -1173,48 +1166,102 @@
       if (newProp == "subCat") {
         data.remove();
       } else {
-try {
-  
-  data.parentElement.nextElementSibling.nextElementSibling.remove()
-  data.parentElement.nextElementSibling.remove()
-  data.parentElement.remove()
-} catch (error) {
-  data.parentElement.nextElementSibling.remove()
-  data.parentElement.remove()
-  
-}
+        try {
 
-      // console.log(  data.parentElement.nextElementSibling.nextElementSibling);
+          data.parentElement.nextElementSibling.nextElementSibling.remove()
+          data.parentElement.nextElementSibling.remove()
+          data.parentElement.remove()
+        } catch (error) {
+          data.parentElement.nextElementSibling.remove()
+          data.parentElement.remove()
+
+        }
+
+        // console.log(  data.parentElement.nextElementSibling.nextElementSibling);
       }
       console.log("log child divnext to category"), data;
       swal("Remove", "Tag removed", "success");
     }
 
     //add new tags data to existing tags
-    let NewTagsToEsisting = (catNew, headArray) => {
+    let NewTagsToEsisting = (catNew, headArray,res) => {
       headArray = JSON.parse(headArray)
+        let name=headArray[0]
       for (let l = 0; l < objArray.length; l++) {
         // let element = objArray[l];
-        console.log("log object array value",objArray[l][headArray[0]] );
+        
+        console.log("log object array value", objArray[l][name]);
         // if()
+        // console.log("log cat new.........", catNew, headArray[0]);
+        if (objArray[l][name]) {
+          existingArr = objArray[l][name]
+          //#############################  loop to push new data to existing array #######################################
+          for (let z = 0; z < existingArr.length; z++) {
+            console.log("log loop data>>>>>>>>>>>>>>>>>>>",existingArr[z]);
+        if (existingArr[z] == undefined) {
+        } else {
+          if (!Array.isArray(existingArr[z]) && existingArr[z] ==name) {
+          
+          console.log("log array[z]#############",existingArr[z+1]);
+            if (Array.isArray(existingArr[z+1])) {
+              let innerArr=existingArr[z+1]
+          //   // console.log("item  is array existingArr[z][0]", existingArr[z])
+            for (let a = 0; a < innerArr.length; a++) {
+              // console.log("logging inner array",innerArr[a]);
+              if (Array.isArray(innerArr[a])) {
+                for (let l = 0; l < innerArr[a].length; l++) {
+                  if (!Array.isArray(innerArr[a][l]) && innerArr[a][l] == catNew) {
+                    if( innerArr[a][l+1]){
+                      innerArr[a][l+1].push(res)
+                      
+                    }else{
+                      let emptyArr=[]
+                      innerArr[a].push(emptyArr)
+                      innerArr[a][l+1].push(res)
+
+                    }
+                    console.log("log cat", innerArr[a][l+1])
+                    break;
+                  }
+                  else {
+                    console.log("Cant find any catogery")
+            
+                  }
+
+                }
+              }
+
+            }
+          }
+
+
+          }
+
+
+        }
       }
 
-      console.log("log cat new.........", catNew, headArray[0]);
+
+
+
+        }
+
+      }
 
     }
 
 
-        //sending data to wix 
-        let sendData = () => {
-      let mainDataArr=[]
+    //sending data to wix 
+    let sendData = () => {
+      let mainDataArr = []
       console.log("save btn clicked");
       for (let l = 0; l < objArray.length; l++) {
         // let element = objArray[l];
         // console.log("log object array value", objArray[l][Object.keys( objArray[l])[0]] );
-        mainDataArr.push(objArray[l][Object.keys( objArray[l])[0]] )
+        mainDataArr.push(objArray[l][Object.keys(objArray[l])[0]])
       }
-      console.log("arr main created.................##3##########",arr);
-      
+      console.log("arr main created.................##3##########", arr);
+
       if (arr.length > 0) {
         mainDataArr.push(arr)
         window.parent.postMessage({
@@ -1229,11 +1276,11 @@ try {
         window.parent.postMessage({
 
 
-data: mainDataArr,
+          data: mainDataArr,
 
-},
-"https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
-);
+        },
+          "https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
+        );
       }
     }
   </script>
