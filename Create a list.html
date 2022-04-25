@@ -19,6 +19,9 @@
       border: none;
       padding: 0;
       margin: 0;
+      padding-bottom: 50px;
+      /* opacity: 0; */
+      background-color: rgba(255, 255, 255, 0);
 
     }
 
@@ -70,14 +73,13 @@
       height: 45px;
       font-size: 18px;
       border: 1px solid black;
-      background-color: white;
       width: 144px;
       border-radius: 10px;
+      background-color: #F1F1F1;
+      margin-right: 20px;
     }
 
-    .big_DangerBtn {
-      background-color: #F1F1F1;
-    }
+  
 
     .btn-success {
       background-color: #BADA55;
@@ -148,6 +150,7 @@
       box-shadow: 2px 2px 15px rgba(128, 128, 128, 0.541);
       width: 100%;
       margin: 0 auto;
+      padding-bottom: 50px;
     }
 
     .sub {
@@ -322,7 +325,7 @@
 
     .mainListDiv {
       opacity: 1;
-      background-color: white;
+      background-color: rgba(255, 255, 255, 0);
     }
 
     button {
@@ -366,6 +369,9 @@
       font-size: 18px !important;
       font-weight: 400;
 
+    }
+    .mainListDiv{
+      background-color: #ffffff00;
     }
 
     .subTagsdiv {
@@ -438,12 +444,10 @@
       }).then((res) => {
         try {
 
-          console.log("result...........", res);
-          res = res.toLowerCase();
+          console.log("result...........", res);res = res.toLowerCase();
 
         } catch (error) {
-          console.log(error);
-        }
+          console.log(error);}
         if (res.trim() == "" || null || undefined) {
           swal("Oops", "Input Cant Be Empty", "error");
         } else {
@@ -515,16 +519,14 @@
       subLi.appendChild(del);
 
       inp.value = liValue;
-      console.log("swal value...........", liValue);
-      // mainInput.value = "";
+      console.log("swal value...........", liValue);// mainInput.value = "";
     }
     //first function ends
 
     //........second function...............................function for inner tag............................
 
     function createInnerTag(parentRes, btn) {
-      console.log("print result button ...................", btn);
-      swal({
+      console.log("print result button ...................", btn);swal({
         title: "Select Category",
         content: {
           element: "input",
@@ -536,13 +538,11 @@
       }).then((res) => {
         try {
 
-          console.log("result...........", res);
-          str = res
+          console.log("result...........", res);str = res
           const lower = str.toLowerCase();
           res = str.charAt(0).toUpperCase() + lower.slice(1);
         } catch (error) {
-          console.log(error);
-        }
+          console.log(error);}
         if (res.trim() == "" || res == "") {
           swal("Oops", "Input Cant Be Empty", "error");
         } else {
@@ -601,11 +601,11 @@
           innerTagDiv.appendChild(tagSelectBtn);
 
           // btn.style.display = "none";
-          console.log("button btn direct", btn);
-          console.log(
-            "log button target from dom",
-            parentRes.firstElementChild.firstElementChild
-          );
+          // console.log("button btn direct", btn);
+          // console.log(
+          //   "log button target from dom",
+          //   parentRes.firstElementChild.firstElementChild
+          // );
         }
       });
 
@@ -615,7 +615,7 @@
 
     // .............................third sub tag function starts.................\
     let createSubTag = (data) => {
-      console.log("log event..................", data);
+      // console.log("log event..................", data);
       //trigger swal get values in swwetalert input and if its not empty update on dom created input
       swal({
         title: "Select Sub Category",
@@ -634,7 +634,7 @@
           res = str.charAt(0).toUpperCase() + lower.slice(1);
 
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
 
         if (res.trim() == "null" || res == "") {
@@ -722,27 +722,27 @@
           } else {
             if (!Array.isArray(arr[z]) && arr[z] == preVal) {
               arr[z] = newVal
-              console.log(arr);
+              // console.log(arr);
               break;
               // console.log("item not array", arr[z]);
             }
 
             if (Array.isArray(arr[z])) {
-              console.log("item  is array arr[z][0]", arr[z])
+              // console.log("item  is array arr[z][0]", arr[z])
               for (let a = 0; a < arr[z].length; a++) {
 
                 if (Array.isArray(arr[z][a])) {
                   for (let l = 0; l < arr[z][a].length; l++) {
                     if (!Array.isArray(arr[z][a][l]) && arr[z][a][l] == preVal) {
                       arr[z][0][a] = newVal
-                      console.log("log cat", arr[z][a][l])
+                      // console.log("log cat", arr[z][a][l])
                       break;
                     }
                     else {
-                      console.log("is an array in tags")
+                      // console.log("is an array in tags")
                       // if (Array.isArray(arr[z][0][a])) {
                       for (let p = 0; p < arr[z][a][l].length; p++) {
-                        console.log("a z o", arr[z][a][l][p]);
+                        // console.log("a z o", arr[z][a][l][p]);
                         if (!Array.isArray(arr[z][a][l][p]) && arr[z][a][l][p] == preVal) {
                           arr[z][a][l][p] = newVal
                           break;
@@ -759,8 +759,8 @@
               }
             }
           }
-
-          console.log(arr[z])
+// 
+          // console.log(arr[z])
         }
 
       }
@@ -782,7 +782,7 @@
           document.getElementById("select").style.display = "block";
         }
       } catch (err) {
-        console.log("catch error", err);
+        // console.log("catch error", err);
         // console.log("catch error", check);
       }
       // let check=data.firstElementChild.firstElementChild.value
@@ -790,13 +790,13 @@
       //           return valueRemov !== check;
       //       });
       let newVal = updata.previousElementSibling.value;
-      console.log("value .................del", newVal);
+      // console.log("value .................del", newVal);
       for (let z = 0; z < arr.length; z++) {
         if (arr[z] == undefined) {
         } else {
           if (!Array.isArray(arr[z]) && arr[z] == newVal) {
             let index = arr.indexOf(newVal)
-            console.log("logging array z", arr[z]);
+            // console.log("logging array z", arr[z]);
             arr = []
 
             break;
@@ -804,23 +804,23 @@
           }
 
           if (Array.isArray(arr[z])) {
-            console.log("item  is array arr[z][0]", arr[z][0])
+            // console.log("item  is array arr[z][0]", arr[z][0])
             for (let a = 0; a < arr[z].length; a++) {
               for (let x = 0; x < arr[z][a].length; x++) {
                 if (!Array.isArray(arr[z][a][x]) && arr[z][a][x] == newVal) {
                   arr[z][a].splice(a, 1)
 
-                  console.log("log cat", arr[z][a])
-                  console.log(arr);
+                  // console.log("log cat", arr[z][a])
+                  // console.log(arr);
                   break;
                 } else {
-                  console.log("is an array in tags")
+                  // console.log("is an array in tags")
                   // if (Array.isArray(arr[z][0][a])) {
                   for (let p = 0; p < arr[z][a][x].length; p++) {
-                    console.log("a z o", arr[z][a][x][p]);
+                    // console.log("a z o", arr[z][a][x][p]);
                     if (!Array.isArray(arr[z][a][x][p]) && arr[z][a][x][p] == newVal) {
                       arr[z][a][x].splice(p, 1)
-                      console.log(arr);
+                      // console.log(arr);
                     }
                   }
                 }
@@ -832,11 +832,11 @@
           }
         }
 
-        console.log(arr[z])
+        // console.log(arr[z])
       }
 
       //zzzzzzzzzzzz
-      console.log("array ", data);
+      // console.log("array ", data);
       data.remove();
       swal("Remove", "Tag removed", "success");
     }
@@ -846,24 +846,24 @@
     let category = -1
     function createArray(data, prop) {
 
-      console.log("logging data in create array function", data);
+      // console.log("logging data in create array function", data);
       console.log("logging data in create array  prop", prop);
       if (prop == "heading") {
         arr.push(data, [])
-        console.log("log second index of array. heading.........", arr);
+        // console.log("log second index of array. heading.........", arr);
       } else if (prop == "innertag") {
 
         arr[1].push([data, []])
         category++
-        console.log("log second index of array. innertag.........", arr);
+        // console.log("log second index of array. innertag.........", arr);
       } else if (prop == "subtag") {
 
         arr[1][category][1].push(data)
         // category++
         // console.log("test log",test);
-        console.log("log array in subtag............", arr[1][0][1]);
+        // console.log("log array in subtag............", arr[1][0][1]);
 
-        console.log("logging array", arr);
+        // console.log("logging array", arr);
       }
     }
 
@@ -875,7 +875,7 @@
     let addedFilters = (main) => {
       for (let b = 0; b < main.length; b++) {
         var newEl = main[b][0];
-        console.log("new Element", newEl);
+        // console.log("new Element", newEl);
         let newObj = {}
         newObj[newEl] = main[b]
         objArray.push(newObj)
@@ -885,6 +885,7 @@
       let tags = document.getElementById("addedFilters");
       for (let x = 0; x < main.length; x++) {
         let mainDiv = document.createElement("div");
+        let btns = document.createElement("div");
         // mainDiv.style.width = "400px";
         let heading = document.createElement("input");
         heading.style.padding = "10px";
@@ -892,8 +893,11 @@
         heading.disabled = "true";
         heading.setAttribute("name", `${JSON.stringify(main[x])}`)
         heading.style.borderBottom = "2px solid #BADA55";
-        console.log("logging heading name", JSON.parse(heading.name));
+        // btns.innerText="Del"
+        btns.innerHTML = `
+            <button class="btn-danger" name="head" id="delx" onclick="delExisting(this.parentElement.parentElement,this.parentElement,this.name)"  style="float: right; margin-right: 10px;display:inline-block; margin-top:-52px;">Delete</button>`;
         mainDiv.append(heading);
+        mainDiv.append(btns)
         heading.value = main[x][0];
         let arr = main[x][1];
         for (let i = 0; i < arr.length; i++) {
@@ -960,9 +964,11 @@
         }
       }
     }
+
+
     //add catogery to existing filter
     let addTagAddedFilter = (data) => {
-      console.log("************************* data in already created filters  select button function  *****************", data.parentElement.parentElement.firstElementChild.firstElementChild.value, data.parentElement.parentElement.parentElement.firstElementChild.name);
+      // console.log("************************* data in already created filters  select button function  *****************", data.parentElement.parentElement.firstElementChild.firstElementChild.value, data.parentElement.parentElement.parentElement.firstElementChild.name);
       swal({
         title: "Add Sub Category",
         content: {
@@ -973,10 +979,10 @@
           },
         },
       }).then((res) => {
-        console.log("result...........", res);
+        // console.log("result...........", res);
         let divId = data.value.replace(/ /g, "").toLowerCase().toString()
         let divToAppen = document.getElementById(divId)
-        console.log("log data........div to append*************", divToAppen);
+        // console.log("log data........div to append*************", divToAppen);
         let ipts = document.createElement("div")
         ipts.setAttribute("class", "subTagsdiv")
         ipts.style.marginLeft = "35px"
@@ -990,7 +996,7 @@
               </div>`
         divToAppen.append(ipts)
 
-        NewTagsToEsisting(data.parentElement.parentElement.firstElementChild.firstElementChild.value, data.parentElement.parentElement.parentElement.firstElementChild.name,res)
+        NewTagsToEsisting(data.parentElement.parentElement.firstElementChild.firstElementChild.value, data.parentElement.parentElement.parentElement.firstElementChild.name, res)
       });
     }
 
@@ -1017,7 +1023,7 @@
           },
         },
       }).then((res) => {
-        console.log("result...........", res);
+        // console.log("result...........", res);
         innerupdatExist(edit, res, preVal);
       });
     }
@@ -1086,7 +1092,7 @@
               // console.log("log objects one by one",element);
               if (objArray[p][objProperty]) {
                 objArray[p] = updArr
-                console.log("check if object changed", objArray[p]);
+                // console.log("check if object changed", objArray[p]);
               } else {
                 // objArray.push({newVal:updArr})
                 console.log("no data found");
@@ -1102,24 +1108,37 @@
     function delExisting(data, updata, newProp) {
       //..........................remove element.....................
       let existingArr;
-      let name = updata.parentElement.parentElement.parentElement.firstElementChild.name
+      let name;
+      let flag = false;
+      if(newProp="head"){
+        name=updata.previousElementSibling.name
+      }else{
+
+         name = updata.parentElement.parentElement.parentElement.firstElementChild.name
+      }
       name = JSON.parse(name)
       name = name[0]
-      console.log("name of object", name);
+      // console.log("name of object", name);
       for (let l = 0; l < objArray.length; l++) {
         // let element = objArray[l];
-        console.log("log object array value", objArray[l]);
+        // console.log("log object array value", objArray[l]);
         if (objArray[l][name]) {
-          existingArr = objArray[l][name]
-          console.log("data found");
+          if (newProp="head") {
+            objArray.splice(l,1)
+          }else{
+            flag=true
+            existingArr = objArray[l][name]
+            // console.log("data found",existingArr);
+          }
         } else {
           //  console.log("error cant find any data",objArray,name);
         }
 
       }
-
-      let newVal = updata.previousElementSibling.value;
-      console.log("value .................del", newVal);
+if(flag){
+  
+  let newVal = updata.previousElementSibling.value;
+      // console.log("value .................del", newVal);
       for (let z = 0; z < existingArr.length; z++) {
         if (existingArr[z] == undefined) {
           // existing array is undefiened
@@ -1133,14 +1152,14 @@
             // console.log("item not array", existingArr[z]);
           }
           if (Array.isArray(existingArr[z])) {
-            console.log("item  is array existingArr[z][0]", existingArr[z][0])
+            // console.log("item  is array existingArr[z][0]", existingArr[z][0])
             for (let a = 0; a < existingArr[z].length; a++) {
               for (let x = 0; x < existingArr[z][a].length; x++) {
                 if (!Array.isArray(existingArr[z][a][x]) && existingArr[z][a][x] == newVal) {
                   existingArr[z][a].splice(a, 1)
 
-                  console.log("log cat", existingArr[z][a])
-                  console.log(existingArr);
+                  // console.log("log cat", existingArr[z][a])
+                  // console.log(existingArr);
                   break;
                 } else {
                   console.log("is an array in tags")
@@ -1149,7 +1168,7 @@
                     // console.log("a z o", existingArr[z][a][x][p]);
                     if (!Array.isArray(existingArr[z][a][x][p]) && existingArr[z][a][x][p] == newVal) {
                       existingArr[z][a][x].splice(p, 1)
-                      console.log("log index p ..........", p);
+                      // console.log("log index p ..........", p);
                     }
                   }
                 }
@@ -1158,13 +1177,15 @@
           }
         }
 
-        console.log("loging existing array", existingArr[z])
+        // console.log("loging existing array", existingArr[z])
       }
 
       //zzzzzzzzzzzz
-      console.log("array ", data);
+      // console.log("array ", data);
       if (newProp == "subCat") {
         data.remove();
+      } else if (newProp == "head") {
+        data.remove()
       } else {
         try {
 
@@ -1179,17 +1200,20 @@
 
         // console.log(  data.parentElement.nextElementSibling.nextElementSibling);
       }
-      console.log("log child divnext to category"), data;
+      // console.log("log child divnext to category"), data;
       swal("Remove", "Tag removed", "success");
+    }
+    data.remove();
+    swal("Remove", "Tag removed", "success");
     }
 
     //add new tags data to existing tags
-    let NewTagsToEsisting = (catNew, headArray,res) => {
+    let NewTagsToEsisting = (catNew, headArray, res) => {
       headArray = JSON.parse(headArray)
-        let name=headArray[0]
+      let name = headArray[0]
       for (let l = 0; l < objArray.length; l++) {
         // let element = objArray[l];
-        
+
         console.log("log object array value", objArray[l][name]);
         // if()
         // console.log("log cat new.........", catNew, headArray[0]);
@@ -1197,49 +1221,49 @@
           existingArr = objArray[l][name]
           //#############################  loop to push new data to existing array #######################################
           for (let z = 0; z < existingArr.length; z++) {
-            console.log("log loop data>>>>>>>>>>>>>>>>>>>",existingArr[z]);
-        if (existingArr[z] == undefined) {
-        } else {
-          if (!Array.isArray(existingArr[z]) && existingArr[z] ==name) {
-          
-          console.log("log array[z]#############",existingArr[z+1]);
-            if (Array.isArray(existingArr[z+1])) {
-              let innerArr=existingArr[z+1]
-          //   // console.log("item  is array existingArr[z][0]", existingArr[z])
-            for (let a = 0; a < innerArr.length; a++) {
-              // console.log("logging inner array",innerArr[a]);
-              if (Array.isArray(innerArr[a])) {
-                for (let l = 0; l < innerArr[a].length; l++) {
-                  if (!Array.isArray(innerArr[a][l]) && innerArr[a][l] == catNew) {
-                    if( innerArr[a][l+1]){
-                      innerArr[a][l+1].push(res)
-                      
-                    }else{
-                      let emptyArr=[]
-                      innerArr[a].push(emptyArr)
-                      innerArr[a][l+1].push(res)
+            // console.log("log loop data>>>>>>>>>>>>>>>>>>>", existingArr[z]);
+            if (existingArr[z] == undefined) {
+            } else {
+              if (!Array.isArray(existingArr[z]) && existingArr[z] == name) {
 
+                // console.log("log array[z]#############", existingArr[z + 1]);
+                if (Array.isArray(existingArr[z + 1])) {
+                  let innerArr = existingArr[z + 1]
+                  //   // console.log("item  is array existingArr[z][0]", existingArr[z])
+                  for (let a = 0; a < innerArr.length; a++) {
+                    // console.log("logging inner array",innerArr[a]);
+                    if (Array.isArray(innerArr[a])) {
+                      for (let l = 0; l < innerArr[a].length; l++) {
+                        if (!Array.isArray(innerArr[a][l]) && innerArr[a][l] == catNew) {
+                          if (innerArr[a][l + 1]) {
+                            innerArr[a][l + 1].push(res)
+
+                          } else {
+                            let emptyArr = []
+                            innerArr[a].push(emptyArr)
+                            innerArr[a][l + 1].push(res)
+
+                          }
+                          // console.log("log cat", innerArr[a][l + 1])
+                          break;
+                        }
+                        else {
+                          // console.log("Cant find any catogery")
+
+                        }
+
+                      }
                     }
-                    console.log("log cat", innerArr[a][l+1])
-                    break;
-                  }
-                  else {
-                    console.log("Cant find any catogery")
-            
-                  }
 
+                  }
                 }
+
+
               }
+
 
             }
           }
-
-
-          }
-
-
-        }
-      }
 
 
 
@@ -1254,13 +1278,13 @@
     //sending data to wix 
     let sendData = () => {
       let mainDataArr = []
-      console.log("save btn clicked");
+      // console.log("save btn clicked");
       for (let l = 0; l < objArray.length; l++) {
         // let element = objArray[l];
         // console.log("log object array value", objArray[l][Object.keys( objArray[l])[0]] );
         mainDataArr.push(objArray[l][Object.keys(objArray[l])[0]])
       }
-      console.log("arr main created.................##3##########", arr);
+      // console.log("arr main created.................##3##########", arr);
 
       if (arr.length > 0) {
         mainDataArr.push(arr)
