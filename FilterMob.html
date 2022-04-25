@@ -148,7 +148,7 @@
             if (!Array.isArray(arr[i][z])) {
               // console.log("i z...........", arr[i][z]);
               fstChild.innerHTML += ` 
-    <input  onchange="myFunction(this),getValues(this),autoUpdataFilter()" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
+    <input  onchange="myFunction(this),getValues(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
                 }" id="${arr[i][z].replace(/ /g, "")}" name="${i.toString() + ""}" value="${arr[i][z]
                 }"> 
           
@@ -163,7 +163,7 @@
             for (let a = 0; a < arr[i][z].length; a++) {
               // console.log("a i z log ...............", arr[i][z][a]);
               childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
-    <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild,autoUpdataFilter())" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
+    <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild)" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
                 }" id="${arr[i][z][a].replace(/ /g, "")}" name="${(i.toString() + "," + a.toString())
                 }" value="${arr[i][z][a]}"> 
     <label for="${arr[i][z][a].replace(/ /g, "")}">${arr[i][z][a]}</label>
