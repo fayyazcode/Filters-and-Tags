@@ -184,6 +184,7 @@
       border-radius: 30px;
       box-shadow: 2px 2px 15px rgba(128, 128, 128, 0.541);
       padding-bottom: 80px;
+      background-color: white !important;
 
     }
 
@@ -325,7 +326,7 @@
 
     .mainListDiv {
       opacity: 1;
-      background-color: rgba(255, 255, 255, 0);
+      /* background-color: rgba(255, 255, 255, 0); */
     }
 
     button {
@@ -529,12 +530,12 @@
     }
     //first function ends
 
-    //........second function...............................function for inner tag............................
+    //........second function...............................function for sub tag............................
 
 
     //trigger function on select button  create  category
     function createInnerTag(parentRes, btn) {
-      console.log("print result button ...................", btn); swal({
+       swal({
         title: "Select Category",
         content: {
           element: "input",
@@ -546,7 +547,6 @@
       }).then((res) => {
         try {
 
-          console.log("result...........", res); str = res
           const lower = str.toLowerCase();
           res = str.charAt(0).toUpperCase() + lower.slice(1);
         } catch (error) {
@@ -556,7 +556,7 @@
           swal("Oops", "Input Cant Be Empty", "error");
         } else {
           createArray(res, 'innertag')
-          //creating elements and setting attribute
+          //creating elements and setting attribute  for catogeries
           let subLi = document.createElement("li");
           let inpSub = document.createElement("input");
           let buttonsDiv = document.createElement("div");
@@ -608,13 +608,6 @@
 
           innerTagDiv.appendChild(selectSubCatogery);
           innerTagDiv.appendChild(tagSelectBtn);
-
-          // btn.style.display = "none";
-          // console.log("button btn direct", btn);
-          // console.log(
-          //   "log button target from dom",
-          //   parentRes.firstElementChild.firstElementChild
-          // );
         }
       });
 
@@ -624,7 +617,6 @@
 
     // .............................third sub tag function starts.................\
     let createSubTag = (data) => {
-      // console.log("log event..................", data);
       //trigger swal get values in swwetalert input and if its not empty update on dom created input
       swal({
         title: "Select Sub Category",
@@ -643,7 +635,6 @@
           res = str.charAt(0).toUpperCase() + lower.slice(1);
 
         } catch (error) {
-          // console.log(error);
         }
 
         if (res.trim() == "null" || res == "") {
@@ -687,9 +678,8 @@
 
     // .............................third sub tag function end.................
     let arr = []; //nested array of new tags 
-    //reste function creare array  new created 
     function reset() {
-      //remove every filter 
+      //remove every new  filter from dom and clear data of it 
       arr = []
       arrayCount = 0;
       let list = document.getElementById("mainList");
@@ -809,8 +799,6 @@
             }
           }
         }
-
-        // console.log(arr[z])
       }
 // after removing data remove element from dom
       data.remove();
@@ -843,7 +831,6 @@
     let addedFilters = (main) => {
       for (let b = 0; b < main.length; b++) {
         var newEl = main[b][0];
-        // console.log("new Element", newEl);
         let newObj = {}
         newObj[newEl] = main[b]
         objArray.push(newObj)
@@ -945,7 +932,6 @@
           },
         },
       }).then((res) => {
-        // console.log("result...........", res);
         let divId = data.value.replace(/ /g, "").toLowerCase().toString()
         let divToAppen = document.getElementById(divId)
         let ipts = document.createElement("div")
@@ -961,7 +947,7 @@
               <button  class="btn-success" onclick="updtExist(this.parentElement)" id="${res.replace(/ /g, "")}edt"  style=" margin-right: 0px;" >Edit</button>
               </div>`
         divToAppen.append(ipts)
-//pass the new dags data to add into main array
+//pass  new tags data to add into main array
         NewTagsToEsisting(data.parentElement.parentElement.firstElementChild.firstElementChild.value, data.parentElement.parentElement.parentElement.firstElementChild.name, res)
       });
     }
@@ -1087,10 +1073,8 @@
           } else {
             flag = true
             existingArr = objArray[l][name]
-            // console.log("data found",existingArr);
           }
         } else {
-          //  console.log("error cant find any data",objArray,name);
         }
 
       }
@@ -1105,13 +1089,10 @@
           } else {
             if (!Array.isArray(existingArr[z]) && existingArr[z] == newVal) {
               let index = existingArr.indexOf(newVal)
-              // console.log("logging array z", existingArr[z]);
               existingArr = []
               break;
-              // console.log("item not array", existingArr[z]);
             }
             if (Array.isArray(existingArr[z])) {
-              // console.log("item  is array existingArr[z][0]", existingArr[z][0])
               for (let a = 0; a < existingArr[z].length; a++) {
                 for (let x = 0; x < existingArr[z][a].length; x++) {
                   if (!Array.isArray(existingArr[z][a][x]) && existingArr[z][a][x] == newVal) {
@@ -1164,7 +1145,6 @@
       headArray = JSON.parse(headArray)
       let name = headArray[0]
       for (let l = 0; l < objArray.length; l++) {
-        // let element = objArray[l];
 
         console.log("log object array value", objArray[l][name]);
         
@@ -1180,9 +1160,7 @@
                
                 if (Array.isArray(existingArr[z + 1])) {
                   let innerArr = existingArr[z + 1]
-                  //   // console.log("item  is array existingArr[z][0]", existingArr[z])
                   for (let a = 0; a < innerArr.length; a++) {
-                    // console.log("logging inner array",innerArr[a]);
                     if (Array.isArray(innerArr[a])) {
                       for (let l = 0; l < innerArr[a].length; l++) {
                         if (!Array.isArray(innerArr[a][l]) && innerArr[a][l] == catNew) {
@@ -1195,11 +1173,9 @@
                             innerArr[a][l + 1].push(res)
 
                           }
-                          // console.log("log cat", innerArr[a][l + 1])
                           break;
                         }
                         else {
-                          // console.log("Cant find any catogery")
 
                         }
 
@@ -1233,7 +1209,6 @@
       // get data we saved in array of object and  formate into needed data structure arrays of arrays then sent to wix
       // console.log("save btn clicked");
       for (let l = 0; l < objArray.length; l++) {
-        // let element = objArray[l];
         mainDataArr.push(objArray[l][Object.keys(objArray[l])[0]])
       }
 
