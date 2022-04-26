@@ -11,6 +11,27 @@
     * {
       font-family: "Roboto", sans-serif;
     }
+	
+/* //style of scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: black; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+/* //style of scrollbar */
 
     label {
       font-size: 16px !important;
@@ -100,23 +121,32 @@
 
 
   let main;
-  let checkedData = [];
   let continueFilterArr=[];
-  // let tagsPresent=["rockClimbing","tradClimbing","bigWalling"]
+
+ //get data from wix databse and save in main and tags present
   window.onmessage = (event) => {
-    console.log("log new event in iframe...", event.data.data);
-    // tagsPresent=event.data.tagsPresent
-    main = event.data.data
-    dataRender()
-    continueFilter()
+    if (event.data.tagsPresent) {
+     let tagsPresent = event.data.tagsPresent
+     setTimeout(()=>{
+        autoUpdataFilter(tagsPresent)
+      },1000)
+    } else {
+      main = event.data.data
+//if it contain main data call render function 
+      dataRender()
+      continueFilter()
+
+    }
+
 
   };
+  // create filters from nested array
   let dataRender = () => {
 
     let tags = document.getElementById("new");
 
-    // console.log("log array.....................", arr.length);
-
+//create heading and set attributes for further functionality
+//nested loops to render data in nested arrays
     let resultDisplayArray = [];
     for (let x = 0; x < main.length; x++) {
       let mainDiv = document.createElement("div");
@@ -130,13 +160,12 @@
       mainDiv.style.borderBottom = "2px solid #BADA55";
       mainDiv.append(heading);
       heading.innerText = main[x][0];
-      console.log("heading...........", heading);
       let arr = main[x][1];
       for (let i = 0; i < arr.length; i++) {
         //.............................first loop......................
 
         //...............................second loop...........................
-
+        //create sub category after heading and setting attributes
         for (let z = 0; z < arr[i].length; z++) {
           let childDiv = document.createElement("div");
           childDiv.setAttribute("class", "childDiv");
@@ -145,8 +174,8 @@
           fstChild.setAttribute("class", "input")
           if (arr[i][z] == undefined) {
           } else {
+            //use template strings 
             if (!Array.isArray(arr[i][z])) {
-              // console.log("i z...........", arr[i][z]);
               fstChild.innerHTML += ` 
     <input  onchange="myFunction(this),getValues(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
                 }" id="${arr[i][z].replace(/ /g, "")}" name="${i.toString() + ""}" value="${arr[i][z]
@@ -161,7 +190,6 @@
             //................................third loop..................................//
 
             for (let a = 0; a < arr[i][z].length; a++) {
-              // console.log("a i z log ...............", arr[i][z][a]);
               childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
     <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild)" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
                 }" id="${arr[i][z][a].replace(/ /g, "")}" name="${(i.toString() + "," + a.toString())
@@ -176,12 +204,10 @@
         }
       }
     }
-
   }
   //function commented
   function myFunction(getCheckbox) {
     try {
-      // console.log("parent parent previous first ",getCheckbox);
 
       let attr =
         getCheckbox.parentElement.nextSibling.firstElementChild.getAttribute(
@@ -189,8 +215,6 @@
         );
       if (getCheckbox.checked) {
         if (attr !== "main") {
-          // getCheckbox.parentElement.nextSibling.firstElementChild.classList.add("slide-fade")
-          // console.log(getCheckbox.value);
           getCheckbox.parentElement.nextSibling.style.display = "block";
         }
       }
@@ -200,7 +224,6 @@
 
         if (attr !== "main") {
           for (let i = 0; i < all.length; i++) {
-            //console.log(all[i].firstElementChild.checked);
             if (all[i].firstElementChild.checked) {
               let unCheck1 = all[i].checked = false;
               getCheckbox.parentElement.nextSibling.style.display = "block";
@@ -213,23 +236,19 @@
         }
       }
     } catch (error) {
-      console.log("catch log...........", error);
     }
 
   }
-
+  let checkedData = [];
   function getValues(res) {
     if (res.checked) {
-      console.log("statuse in iframe", res.checked);
       checkedData.push(res.value)
       localStorage.setItem("array", JSON.stringify(checkedData));
     } else {
-      console.log("statuse in iframe", res.checked);
 
-      checkedData = checkedData.filter(checkedData => checkedData != res.value);
+      checkedData = checkedData.filter(function(checkedData) {return checkedData != res.value});
       localStorage.setItem("array", JSON.stringify(checkedData));
     }
-
     window.parent.postMessage({
 
       status: res.checked,
@@ -238,8 +257,7 @@
     },
       "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
     );
-    console.log("valueszxxxxx...............", res.value);
-    //............................add checked item into filter array call filter function every onChange event........................//
+        //............................add checked item into filter array call filter function every onChange event........................//
     if (res.checked) {
       let parentBox = document.getElementById("selectedTags")
       let addedTag = document.createElement("div")
@@ -248,12 +266,10 @@
       addedTag.setAttribute("class", "addedTags")
       let span = document.createElement("button")
       let id = res.value.replace(/ /g, "")
-      console.log("logging id.........", id);
       span.setAttribute("id", id + "span")
       span.setAttribute("class", "spanButton")
       span.innerHTML = "X " + res.value
       span.onclick = function (event) {
-        console.log("button remove functionality.............", document.getElementById(res.value.replace(/ /g, "")));
         let unCheck = document.getElementById(res.value.replace(/ /g, "")).checked = false;
         window.parent.postMessage({
 
@@ -269,29 +285,33 @@
       addedTag.appendChild(span)
       parentBox.appendChild(addedTag)
     } else {
-      console.log("log for uncheck.id ......", document.getElementById(res.value.replace(/ /g, "") + "sub"));
       document.getElementById(res.value.replace(/ /g, "") + "sub").remove()
     }
 
     //................................functionality for remove when unchecked................................
 
   };
-  //function on mob to continue filter with recorded data in local storage
+
   function continueFilter() {
     let flagNew=false;
     var getArr = JSON.parse(localStorage.getItem('array'));
-    console.log("saved data in array localstorage", getArr);
+    window.parent.postMessage({
+
+local: getArr,
+message:"exist"
+
+},
+"https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+);
     let allInpt = document.getElementsByTagName("input")
     if(getArr.length>0){
       for (let x = 0; x < getArr.length; x++) {
 
         let arrData=getArr
- console.log("log data in already esisting tags function",arrData);
  for(let x=0;x<arrData.length;x++){
 
    for(var i=0;i<allInpt.length;i++){
     console.log(allInpt[i]);
-     console.log("logging one / one",arrData[x].toLocaleLowerCase(),allInpt[i].value.toLocaleLowerCase());
      if(arrData[x].toLocaleLowerCase()==allInpt[i].value.toLocaleLowerCase()){
        allInpt[i].checked=true;
      }
@@ -300,66 +320,46 @@
 }
     }
   }
-//commented for mob
-  // function autoUpdataFilter() {
-  //   console.log("logging addedtag", tagsPresent);
-  //   if (tagsPresent) {
+
+
+  // function autoUpdataFilter(tagsPresent) {
+  //   if (checkArray.length > 0) {
+      
   //     let allInpt = document.getElementsByClassName("input")
-  //     console.log("logging data as all inputs........", allInpt.length);
-  //     console.log("logging data as all inputs........", allInpt);
-  //     let arrData = tagsPresent
+  //     if (tagsPresent) {
+  //       let arrData = tagsPresent
 
-  //     console.log("log data in already esisting tags function", arrData);
-  //     let displayBlockArr = []
-  //     let flag = false;
-  //     for (let x = 0; x < arrData.length; x++) {
+  //       console.log("log data in already esisting tags function", arrData);
+  //       let displayBlockArr = []
+  //       let flag = false;
 
   //       for (var i = 0; i < allInpt.length; i++) {
-  //         // myFunction(allInpt[i])
 
-  //         let dataValue;
-  //         let newData;
+          
+  //         allInpt[i].style.display = "none";
+          
+          
+  //         if(i==allInpt.length-1){
+  //           let dataValue;
+  //           let newData;
+  //           for(var a = 0; a < tagsPresent.length; a++){
 
-  //         newData = allInpt[i].firstElementChild
-  //         dataValue = newData.getAttribute("value").replace(/ /g, "")
-  //         console.log("all input classed divs value", dataValue.toLowerCase());
-  //         if (arrData[x].toLowerCase() == dataValue.toLowerCase()) {
-  //           displayBlockArr.push(allInpt[i])
-  //         } else {
-  //           allInpt[i].style.display = "none";
-  //           console.log("no data found");
-  //         }
+  //             for (var x = 0; x < allInpt.length; x++) {
+  //               newData = allInpt[x].firstElementChild
+  //               dataValue = newData.getAttribute("value").replace(/ /g, "").toLocaleLowerCase()
 
-  //         console.log("logging one / one", arrData[x].toLowerCase());
 
+  //               if(dataValue==tagsPresent[a].toLowerCase().replace(/ /g, "")){
+  //                 allInpt[x].style.display = "";
+  //               }
+  //               }
+  //             }
+  //           }
   //       }
-  //       if (x == arrData.length - 1) { flag = true }
+
+
   //     }
-  //     if (flag) {
-  //       for (var i = 0; i < allInpt.length; i++) {
-
-  //         let dataValue;
-  //         let newData;
-
-  //         newData = allInpt[i].firstElementChild
-  //         dataValue = newData.getAttribute("value").replace(/ /g, "")
-  //         console.log("all input classed divs value", dataValue.toLowerCase());
-
-  //         try {
-  //           displayBlockArr[i].style.display = "block";
-
-  //         } catch (error) {
-  //           console.log("length exceed");
-  //         }
-
-
-  //       }
-  //     }
-  //   } else {
-  //     console.log("no data found");
   //   }
-
-
   // }
 </script>
 
