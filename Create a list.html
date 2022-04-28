@@ -1055,7 +1055,7 @@
       let existingArr;
       let name;
       let flag = false;
-      if (newProp = "head") {
+      if (newProp == "head") {
         name = updata.previousElementSibling.name
       } else {
 
@@ -1068,7 +1068,7 @@
         // let element = objArray[l];
         // console.log("log object array value", objArray[l]);
         if (objArray[l][name]) {
-          if (newProp = "head") {
+          if (newProp == "head") {
             objArray.splice(l, 1)
           } else {
             flag = true
@@ -1081,7 +1081,6 @@
       if (flag) {
 
         let newVal = updata.previousElementSibling.value;
-        // console.log("value .................del", newVal);
         for (let z = 0; z < existingArr.length; z++) {
           if (existingArr[z] == undefined) {
             // existing array is undefiened
@@ -1092,19 +1091,29 @@
               existingArr = []
               break;
             }
+            //filter category
             if (Array.isArray(existingArr[z])) {
               for (let a = 0; a < existingArr[z].length; a++) {
                 for (let x = 0; x < existingArr[z][a].length; x++) {
                   if (!Array.isArray(existingArr[z][a][x]) && existingArr[z][a][x] == newVal) {
-                    existingArr[z][a].splice(a, 1)
+                    existingArr[z].splice(a,1)
+                    console.log("aray in cat", existingArr[z][a]);
 
                 
                     break;
                   } else {
                     console.log("is an array in tags")
+                    //filter data in sub tags 
                     for (let p = 0; p < existingArr[z][a][x].length; p++) {
                       if (!Array.isArray(existingArr[z][a][x][p]) && existingArr[z][a][x][p] == newVal) {
-                        existingArr[z][a][x].splice(p, 1)
+                        updR=existingArr[z][a][x] 
+                        existingArr[z][a][x] =  updR.filter(function(updR) {return updR != newVal});
+                        if (existingArr[z][a][x]==[]) {
+                          existingArr[z][a].splice(x,1)
+                        }else{
+
+                        }
+                        console.log(existingArr[z][a][x]);
                       }
                     }
                   }
@@ -1207,7 +1216,6 @@
     let sendData = () => {
       let mainDataArr = []
       // get data we saved in array of object and  formate into needed data structure arrays of arrays then sent to wix
-      // console.log("save btn clicked");
       for (let l = 0; l < objArray.length; l++) {
         mainDataArr.push(objArray[l][Object.keys(objArray[l])[0]])
       }
