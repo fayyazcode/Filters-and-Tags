@@ -162,7 +162,6 @@
       heading.innerText = main[x][0];
       let arr = main[x][1];
       for (let i = 0; i < arr.length; i++) {
-        //.............................first loop......................
 
         //...............................second loop...........................
         //create sub category after heading and setting attributes
@@ -174,7 +173,7 @@
           fstChild.setAttribute("class", "input")
           if (arr[i][z] == undefined) {
           } else {
-            //use template strings 
+            //use template strings  to create category and append into div
             if (!Array.isArray(arr[i][z])) {
               fstChild.innerHTML += ` 
     <input  onchange="myFunction(this),getValues(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
@@ -188,7 +187,7 @@
           }
           if (Array.isArray(arr[i][z])) {
             //................................third loop..................................//
-
+//loop through sub category and create tags and append elements in to main div
             for (let a = 0; a < arr[i][z].length; a++) {
               childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
     <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild)" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
@@ -205,7 +204,9 @@
       }
     }
   }
-  //function commented
+  //function check box hide and show
+  //hide and show  check box when checked on parent checkbox
+  
   function myFunction(getCheckbox) {
     try {
 
@@ -242,10 +243,11 @@
   let checkedData = [];
   function getValues(res) {
     if (res.checked) {
+      // push tags in to local storage for later use 
       checkedData.push(res.value)
       localStorage.setItem("array", JSON.stringify(checkedData));
     } else {
-
+//remove item from array when unchecked
       checkedData = checkedData.filter(function(checkedData) {return checkedData != res.value});
       localStorage.setItem("array", JSON.stringify(checkedData));
     }
@@ -258,6 +260,7 @@
       "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
     );
         //............................add checked item into filter array call filter function every onChange event........................//
+        //add tag buttons of tags when any filter is checked
     if (res.checked) {
       let parentBox = document.getElementById("selectedTags")
       let addedTag = document.createElement("div")
@@ -291,7 +294,7 @@
     //................................functionality for remove when unchecked................................
 
   };
-
+//used when lightbox is closed . saves data of checkboc and keep them checked when light box is reopend
   function continueFilter() {
     let flagNew=false;
     var getArr = JSON.parse(localStorage.getItem('array'));
