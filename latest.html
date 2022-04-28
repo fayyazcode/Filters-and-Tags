@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>home</title>
 
   <style>
     * {
@@ -170,7 +170,7 @@
           fstChild.setAttribute("class", "input")
           if (arr[i][z] == undefined) {
           } else {
-            //use template strings
+            //use template strings create input and assigning attributes and appending to first child
             if (!Array.isArray(arr[i][z])) {
               fstChild.innerHTML += ` 
     <input  onchange="myFunction(this),getValues(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
@@ -184,7 +184,7 @@
           }
           if (Array.isArray(arr[i][z])) {
             //................................third loop..................................//
-
+//loop through sub category tags and creale elements and setting attributes through template string
             for (let a = 0; a < arr[i][z].length; a++) {
               childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
     <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild)" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
@@ -201,8 +201,9 @@
       }
     }
   }
-  //function commented
+  //function hide and show sub tags 
   function myFunction(getCheckbox) {
+    //get attribute class and check for parent  check box if checked show sub tags
     try {
 
       let attr =
@@ -238,13 +239,17 @@
   }
   let checkArray = [];
   function getValues(res) {
+//get values of checkbox 
 
+//when checked push value to checkArray 
     if (res.checked) {
       checkArray.push(res.value)
     } else {
+      // if status is unchecked remove that value from array?
       checkArray = checkArray.filter(function (valueRemov, index, arr) {
         return valueRemov !== res.value;
       });
+      //if array is empty display all checkbox to block
       if(checkArray.length ==0){
         let allInpt = document.getElementsByClassName("input")
         for (let z = 0; z < allInpt.length; z++) {
@@ -264,6 +269,7 @@
     );
         //............................add checked item into filter array call filter function every onChange event........................//
     if (res.checked) {
+      //create tag putton on top of filters when any checkbox is selected
       let parentBox = document.getElementById("selectedTags")
       let addedTag = document.createElement("div")
       addedTag.setAttribute("id", res.value.replace(/ /g, "") + "sub")
@@ -275,7 +281,9 @@
       span.setAttribute("class", "spanButton")
       span.innerHTML = "X " + res.value
       span.onclick = function (event) {
+        //when uncheck checkbox remove tag button created on top
         let unCheck = document.getElementById(res.value.replace(/ /g, "")).checked = false;
+        //send data to wix when any item is checked or unchecked
         window.parent.postMessage({
 
           status: res.checked,
@@ -296,6 +304,8 @@
     //................................functionality for remove when unchecked................................
 
   };
+
+  //get values of tags present in filter bolgs and show existing tags other wise hide
   function autoUpdataFilter(tagsPresent) {
     if (checkArray.length > 0) {
       
