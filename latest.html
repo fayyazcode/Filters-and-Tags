@@ -121,6 +121,7 @@
 
 
   let main;
+  let paramsData;
  //get data from wix databse and save in main and tags present
   window.onmessage = (event) => {
     if (event.data.tagsPresent) {
@@ -130,8 +131,11 @@
       },1000)
     } else {
       main = event.data.data
+      paramsData=event.data.params
+
 //if it contain main data call render function 
       dataRender()
+      setTimeout(()=>{checkParams(paramsData)},2000)
     }
 
 
@@ -233,7 +237,6 @@
         }
       }
     } catch (error) {
-      console.log("catch log...........", error);
     }
 
   }
@@ -304,6 +307,23 @@
     //................................functionality for remove when unchecked................................
 
   };
+  //get data from params and mark them check
+  let checkParams=(params)=>{
+let allInpts=document.getElementsByTagName("input")
+for(let i=0;i<allInpts.length;i++){
+let val=allInpts[i].getAttribute("value").replace(/ /g, "").toLocaleLowerCase()
+for(let z=0;z<params.length;z++){
+  if(val==params[z].replace(/ /g, "").toLocaleLowerCase()){
+    allInpts[i].checked=true;
+    break;
+  }
+}
+}
+console.log("all inputs",allInpts);
+  }
+
+
+
 
   //get values of tags present in filter bolgs and show existing tags other wise hide
   function autoUpdataFilter(tagsPresent) {
@@ -313,7 +333,6 @@
       if (tagsPresent) {
         let arrData = tagsPresent
 
-        console.log("log data in already esisting tags function", arrData);
         let displayBlockArr = []
         let flag = false;
 
