@@ -322,6 +322,33 @@ let val=allInpts[i].getAttribute("value").replace(/ /g, "").toLocaleLowerCase()
 for(let z=0;z<params.length;z++){
   if(val==params[z].replace(/ /g, "").toLocaleLowerCase()){
     allInpts[i].checked=true;
+    let parentBox = document.getElementById("selectedTags")
+      let addedTag = document.createElement("div")
+      addedTag.setAttribute("id", allInpts[i].value.replace(/ /g, "") + "sub")
+
+      addedTag.setAttribute("class", "addedTags")
+      let span = document.createElement("button")
+      let id =  allInpts[i].value.replace(/ /g, "")
+      span.setAttribute("id", id + "span")
+      span.setAttribute("class", "spanButton")
+      span.innerHTML = "X " +  allInpts[i].value
+      span.onclick = function (event) {
+        //when uncheck checkbox remove tag button created on top
+        let unCheck = document.getElementById( allInpts[i].value.replace(/ /g, "")).checked = false;
+        //send data to wix when any item is checked or unchecked
+        window.parent.postMessage({
+
+          status:  allInpts[i].checked,
+          value:  allInpts[i].value,
+
+        },
+          "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+        );
+        this.parentElement.remove()
+
+      }
+      addedTag.appendChild(span)
+      parentBox.appendChild(addedTag)
     break;
   }
 }
