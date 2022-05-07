@@ -136,7 +136,10 @@
      setTimeout(()=>{
         autoUpdataFilter(tagsPresent)
       },1000)
-    } else {
+    }else if(event.data.message=="clear"){
+      clearAll()
+    }
+     else {
       main = event.data.data
       paramsData=event.data.params
 
@@ -332,6 +335,11 @@ for(let z=0;z<params.length;z++){
       span.setAttribute("id", id + "span")
       span.setAttribute("class", "spanButton")
       span.innerHTML = "X " +  allInpts[i].value
+
+
+      myFunction( allInpts[i])
+
+
       span.onclick = function (event) {
         //when uncheck checkbox remove tag button created on top
         let unCheck = document.getElementById( allInpts[i].value.replace(/ /g, "")).checked = false;
@@ -398,6 +406,7 @@ console.log("all inputs",allInpts);
       }
     }
   }
+
 </script>
 
 </html>
