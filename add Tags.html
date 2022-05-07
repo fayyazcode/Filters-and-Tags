@@ -99,11 +99,11 @@
 
   let main;
   window.onmessage = (event) => {
-    console.log("log addedTags in iframe...............", event.data.addedtags);
+    // console.log("log addedTags in iframe...............", event.data.addedtags);
 
 
     main = event.data.data;
-    console.log("log main............",main);
+    // console.log("log main............",main);
     dataRender()
     setTimeout(alreadyEsistingTags(event.data.addedtags), 2000)
 
@@ -128,7 +128,7 @@
       mainDiv.append(heading);
       heading.innerText = main[x][0];
       let arr = main[x][1];
-      console.log("logging arr........................", arr);
+      // console.log("logging arr........................", arr);
       try {
         
       
@@ -224,18 +224,18 @@
 
   };
   function alreadyEsistingTags(tagArr) {
-    console.log("logging addedtag .............", tagArr);
+    // console.log("logging addedtag .............", tagArr);
     if (tagArr) {
       let allInpt = document.getElementsByTagName("input")
-      console.log("logging data as all inputs........", allInpt.length);
+      // console.log("logging data as all inputs........", allInpt.length);
       let arrData = tagArr
-      console.log("log data in already esisting tags function", arrData);
+      // console.log("log data in already esisting tags function", arrData);
       for (let x = 0; x < arrData.length; x++) {
 
         for (var i = 0; i < allInpt.length; i++) {
           // myFunction(allInpt[i])
-          console.log(allInpt[i]);
-          console.log("logging one / one", arrData[x].toLocaleLowerCase(), allInpt[i].value.toLocaleLowerCase());
+          // console.log(allInpt[i]);
+          // console.log("logging one / one", arrData[x].toLocaleLowerCase(), allInpt[i].value.toLocaleLowerCase());
           if (arrData[x].toLocaleLowerCase() == allInpt[i].value.toLocaleLowerCase()) {
             allInpt[i].checked = true;
           }
