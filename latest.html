@@ -10,6 +10,8 @@
   <style>
     * {
       font-family: "Roboto", sans-serif;
+      margin: 0;
+      padding: 0;
     }
 	
 /* //style of scrollbar */
@@ -39,6 +41,8 @@
 }
 #selectedTags{
   position: sticky;
+  margin: 0 10px;
+  padding: 0;
 }
     label {
       font-size: 16px !important;
@@ -103,7 +107,6 @@
 
     .addedTags {
       display: inline-block;
-
       margin: 5px;
     }
   </style>
@@ -166,7 +169,8 @@
       // heading.style.padding = "10px";
       heading.style.fontSize = "35px";
       heading.style.fontWeight = "700px";
-      heading.style.margin="15px"
+      heading.style.marginTop="5px"
+      heading.style.marginBottom="25px"
       // heading.style.borderBottom = "2px solid #BADA55";
       // mainDiv.style.borderBottom = "2px solid #BADA55";
       mainDiv.append(heading);
