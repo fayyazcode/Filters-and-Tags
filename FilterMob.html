@@ -151,10 +151,12 @@
     for (let x = 0; x < main.length; x++) {
       let mainDiv = document.createElement("div");
       mainDiv.style.width = "320px";
-      mainDiv.style.paddingBottom = "10px";
+      mainDiv.style.paddingBottom = "5px";
       let heading = document.createElement("p");
       // heading.style.padding = "10px";
-      heading.style.fontSize = "50px";
+      heading.style.fontSize = "35px";
+      heading.style.marginTop = "5px";
+      heading.style.marginBottom = "20px";
       heading.style.fontWeight = "600px";
       // heading.style.borderBottom = "2px solid #BADA55";
       mainDiv.style.borderBottom = "2px solid #BADA55";
@@ -162,6 +164,7 @@
       heading.innerText = main[x][0];
       let arr = main[x][1];
       for (let i = 0; i < arr.length; i++) {
+        //.............................first loop......................
 
         //...............................second loop...........................
         //create sub category after heading and setting attributes
@@ -188,6 +191,7 @@
           if (Array.isArray(arr[i][z])) {
             //................................third loop..................................//
 //loop through sub category and create tags and append elements in to main div
+
             for (let a = 0; a < arr[i][z].length; a++) {
               childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
     <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild)" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
@@ -204,9 +208,9 @@
       }
     }
   }
-  //function check box hide and show
-  //hide and show  check box when checked on parent checkbox
-  
+  //function commented
+    //hide and show  check box when checked on parent checkbox
+
   function myFunction(getCheckbox) {
     try {
 
@@ -243,12 +247,13 @@
   let checkedData = [];
   function getValues(res) {
     if (res.checked) {
-      // push tags in to local storage for later use 
+            // push tags in to local storage for later use 
+
       checkedData.push(res.value)
       localStorage.setItem("array", JSON.stringify(checkedData));
     } else {
-//remove item from array when unchecked
-      checkedData = checkedData.filter(function(checkedData) {return checkedData != res.value});
+      //remove item from array when unchecked
+      checkedData = checkedData.filter(checkedData => checkedData != res.value);
       localStorage.setItem("array", JSON.stringify(checkedData));
     }
     window.parent.postMessage({
@@ -261,7 +266,8 @@
     );
         //............................add checked item into filter array call filter function every onChange event........................//
         //add tag buttons of tags when any filter is checked
-    if (res.checked) {
+
+        if (res.checked) {
       let parentBox = document.getElementById("selectedTags")
       let addedTag = document.createElement("div")
       addedTag.setAttribute("id", res.value.replace(/ /g, "") + "sub")
@@ -295,6 +301,7 @@
 
   };
 //used when lightbox is closed . saves data of checkboc and keep them checked when light box is reopend
+
   function continueFilter() {
     let flagNew=false;
     var getArr = JSON.parse(localStorage.getItem('array'));
