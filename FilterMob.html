@@ -319,7 +319,7 @@ message:"exist"
 );
     let allInpt = document.getElementsByTagName("input")
     if(getArr.length>0){
-      for (let x = 0; x < getArr.length; x++) {
+      for (let x = 0; x < 1; x++) {
 
         let arrData=getArr
  for(let x=0;x<arrData.length;x++){
@@ -328,6 +328,44 @@ message:"exist"
     //console.log(allInpt[i]);
      if(arrData[x].toLocaleLowerCase()==allInpt[i].value.toLocaleLowerCase()){
        allInpt[i].checked=true;
+       let parentBox = document.getElementById("selectedTags")
+      let addedTag = document.createElement("div")
+      addedTag.setAttribute("id", allInpt[i].value.replace(/ /g, "") + "sub")
+
+      addedTag.setAttribute("class", "addedTags")
+      let span = document.createElement("button")
+      let id =  allInpt[i].value.replace(/ /g, "")
+      span.setAttribute("id", id + "span")
+      span.setAttribute("class", "spanButton")
+      span.innerHTML = "X " +  allInpt[i].value
+
+
+      // myFunction( allInpt[i])
+
+
+      span.onclick = function (event) {
+        //when uncheck checkbox remove tag button created on top
+        let unCheck = document.getElementById( allInpt[i].value.replace(/ /g, "")).checked = false;
+        //send data to wix when any item is checked or unchecked
+        console.log("..................",getArr);
+        getArr = getArr.filter(function (valueRemov, index, arr) {
+                  return valueRemov !== allInpt[i].value;
+                });
+                localStorage.setItem('array', JSON.stringify(getArr))
+        window.parent.postMessage({
+
+          status:  allInpt[i].checked,
+          value:  allInpt[i].value,
+
+        },
+          "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+        );
+        this.parentElement.remove()
+
+      }
+      addedTag.appendChild(span)
+      parentBox.appendChild(addedTag)
+    break;
      }
     }
  }
