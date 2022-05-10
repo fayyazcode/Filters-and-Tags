@@ -125,11 +125,15 @@
 
  //get data from wix databse and save in main and tags present
   window.onmessage = (event) => {
+    console.log(event,"log event");
     if (event.data.tagsPresent) {
      let tagsPresent = event.data.tagsPresent
      setTimeout(()=>{
         autoUpdataFilter(tagsPresent)
       },1000)
+    }else if(event.data.message=="clear"){
+      clearAll()
+      console.log(event.data.message,"remove all data of filters");
     } else {
       main = event.data.data
 //if it contain main data call render function 
@@ -159,7 +163,7 @@
       heading.style.marginBottom = "20px";
       heading.style.fontWeight = "600px";
       // heading.style.borderBottom = "2px solid #BADA55";
-      mainDiv.style.borderBottom = "2px solid #BADA55";
+      // mainDiv.style.borderBottom = "2px solid #BADA55";
       mainDiv.append(heading);
       heading.innerText = main[x][0];
       let arr = main[x][1];
@@ -321,7 +325,7 @@ message:"exist"
  for(let x=0;x<arrData.length;x++){
 
    for(var i=0;i<allInpt.length;i++){
-    console.log(allInpt[i]);
+    //console.log(allInpt[i]);
      if(arrData[x].toLocaleLowerCase()==allInpt[i].value.toLocaleLowerCase()){
        allInpt[i].checked=true;
      }
@@ -332,45 +336,47 @@ message:"exist"
   }
 
 
-  // function autoUpdataFilter(tagsPresent) {
-  //   if (checkArray.length > 0) {
+  function autoUpdataFilter(tagsPresent) {
+    if (checkedData.length > 0) {
       
-  //     let allInpt = document.getElementsByClassName("input")
-  //     if (tagsPresent) {
-  //       let arrData = tagsPresent
+      let allInpt = document.getElementsByClassName("input")
+      if (tagsPresent) {
+        let arrData = tagsPresent
 
-  //       console.log("log data in already esisting tags function", arrData);
-  //       let displayBlockArr = []
-  //       let flag = false;
+        //console.log("log data in already esisting tags function", arrData);
+        let displayBlockArr = []
+        let flag = false;
 
-  //       for (var i = 0; i < allInpt.length; i++) {
+        for (var i = 0; i < allInpt.length; i++) {
 
           
-  //         allInpt[i].style.display = "none";
+          allInpt[i].style.display = "none";
           
           
-  //         if(i==allInpt.length-1){
-  //           let dataValue;
-  //           let newData;
-  //           for(var a = 0; a < tagsPresent.length; a++){
+          if(i==allInpt.length-1){
+            let dataValue;
+            let newData;
+            for(var a = 0; a < tagsPresent.length; a++){
 
-  //             for (var x = 0; x < allInpt.length; x++) {
-  //               newData = allInpt[x].firstElementChild
-  //               dataValue = newData.getAttribute("value").replace(/ /g, "").toLocaleLowerCase()
-
-
-  //               if(dataValue==tagsPresent[a].toLowerCase().replace(/ /g, "")){
-  //                 allInpt[x].style.display = "";
-  //               }
-  //               }
-  //             }
-  //           }
-  //       }
+              for (var x = 0; x < allInpt.length; x++) {
+                newData = allInpt[x].firstElementChild
+                dataValue = newData.getAttribute("value").replace(/ /g, "").toLocaleLowerCase()
 
 
-  //     }
-  //   }
-  // }
+                if(dataValue==tagsPresent[a].toLowerCase().replace(/ /g, "")){
+                  allInpt[x].style.display = "";
+                }
+                }
+              }
+            }
+        }
+
+
+      }
+    }
+  }
+  
+  
 </script>
 
 </html>
