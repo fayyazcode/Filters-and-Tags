@@ -376,7 +376,19 @@ message:"exist"
     }
   }
   
-  
+  let clearAll=()=>{
+    localStorage.clear();
+    document.getElementById("selectedTags").innerHTML=""
+    let allInpts=document.getElementsByTagName("input")
+for(let i=0;i<allInpts.length;i++){
+  allInpts[i].checked=false;
+}
+let allInptBoxs = document.getElementsByClassName("input")
+        for (let z = 0; z < allInptBoxs.length; z++) {
+
+                    allInptBoxs[z].style.display = "";
+        }
+  }
 </script>
 
 </html>
