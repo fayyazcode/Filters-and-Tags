@@ -5,41 +5,51 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>home</title>
 
   <style>
     * {
       font-family: "Roboto", sans-serif;
+      margin: 0;
+      padding: 0;
     }
+	
+/* //style of scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
 
-    /* //style of scrollbar */
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: black; 
+}
 
-    /* Track */
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-      background: black;
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-      background: #555;
-    }
-
-    /* //style of scrollbar */
-
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+/* //style of scrollbar */
+.parent{
+  padding-bottom: 100px;
+  position: relative;
+  top: 10px;
+}
+#selectedTags{
+  position: sticky;
+  margin: 0 10px;
+  padding: 0;
+}
     label {
       font-size: 16px !important;
     }
 
     .checkHead {
-      font-size: 22px !important;
+      font-size: 16px !important;
       font-weight: 500;
     }
 
@@ -97,7 +107,6 @@
 
     .addedTags {
       display: inline-block;
-
       margin: 5px;
     }
   </style>
@@ -122,30 +131,28 @@
 
 
   let main;
-  let continueFilterArr = [];
-  let wixParams=[];
-  //get data from wix databse and save in main and tags present
+  let paramsData;
+ //get data from wix databse and save in main and tags present
   window.onmessage = (event) => {
-    console.log(event, "log event");
     if (event.data.tagsPresent) {
-      let tagsPresent = event.data.tagsPresent
-      setTimeout(() => {
+     let tagsPresent = event.data.tagsPresent
+  
         autoUpdataFilter(tagsPresent)
-      }, 1000)
-    } else if (event.data.message == "clear") {
+    
+    }else if(event.data.message=="clear"){
       clearAll()
-      console.log(event.data.message, "remove all data of filters");
-    } else {
-      main = event.data.data
-      //if it contain main data call render function 
-      dataRender()
-      if(event.data.wParams!==null){
-        wixParams=event.data.wParams
-        continueFilter()
-        // console.log("log wix params",event.data.wParams);
-      }
-
     }
+     else {
+      main = event.data.data
+      paramsData=event.data.wParams
+
+//if it contain main data call render function 
+      dataRender()
+    if(paramsData){
+      checkParams(paramsData)
+    }
+    }
+
 
   };
   // create filters from nested array
@@ -153,19 +160,21 @@
 
     let tags = document.getElementById("new");
 
-    //create heading and set attributes for further functionality
-    //nested loops to render data in nested arrays
+//create heading and set attributes for further functionality
+//nested loops to render data in nested arrays
     let resultDisplayArray = [];
     for (let x = 0; x < main.length; x++) {
       let mainDiv = document.createElement("div");
       mainDiv.style.width = "320px";
-      mainDiv.style.paddingBottom = "5px";
+      mainDiv.style.paddingBottom = "10px";
       let heading = document.createElement("p");
       // heading.style.padding = "10px";
       heading.style.fontSize = "35px";
-      heading.style.marginTop = "5px";
-      heading.style.marginBottom = "20px";
-      heading.style.fontWeight = "600px";
+      heading.style.fontWeight = "700px";
+      heading.style.marginTop="5px"
+      heading.style.marginBottom="25px"
+      // heading.style.borderBottom = "2px solid #BADA55";
+      // mainDiv.style.borderBottom = "2px solid #BADA55";
       mainDiv.append(heading);
       heading.innerText = main[x][0];
       let arr = main[x][1];
@@ -182,7 +191,7 @@
           fstChild.setAttribute("class", "input")
           if (arr[i][z] == undefined) {
           } else {
-            //use template strings  to create category and append into div
+            //use template strings create input and assigning attributes and appending to first child
             if (!Array.isArray(arr[i][z])) {
               fstChild.innerHTML += ` 
     <input  onchange="myFunction(this),getValues(this)" class="main" type="checkbox" style="margin-bottom:10px" placeholder="${arr[i][z]
@@ -196,8 +205,7 @@
           }
           if (Array.isArray(arr[i][z])) {
             //................................third loop..................................//
-            //loop through sub category and create tags and append elements in to main div
-
+//loop through sub category tags and creale elements and setting attributes through template string
             for (let a = 0; a < arr[i][z].length; a++) {
               childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
     <input onchange="getValues(this),myFunction(parentElement.parentElement.previousElementSibling.firstElementChild)" type="checkbox" style=" margin-left: 15px;" placeholder="${arr[i][z][a]
@@ -214,10 +222,9 @@
       }
     }
   }
-  //function commented
-  //hide and show  check box when checked on parent checkbox
-
+  //function hide and show sub tags 
   function myFunction(getCheckbox) {
+    //get attribute class and check for parent  check box if checked show sub tags
     try {
 
       let attr =
@@ -250,17 +257,27 @@
     }
 
   }
-  let checkedData = [];
+  let checkArray = [];
   function getValues(res) {
-    if (res.checked) {
-      // push tags in to local storage for later use 
+//get values of checkbox 
 
-      checkedData.push(res.value)
-      // localStorage.setItem("array", JSON.stringify(checkedData));
+//when checked push value to checkArray 
+    if (res.checked) {
+      checkArray.push(res.value)
     } else {
-      //remove item from array when unchecked
-      checkedData = checkedData.filter(checkedData => checkedData != res.value);
-      // localStorage.setItem("array", JSON.stringify(checkedData));
+      // if status is unchecked remove that value from array?
+      checkArray = checkArray.filter(function (valueRemov, index, arr) {
+        return valueRemov !== res.value;
+      });
+      //if array is empty display all checkbox to block
+      if(checkArray.length ==0){
+        let allInpt = document.getElementsByClassName("input")
+        for (let z = 0; z < allInpt.length; z++) {
+
+                    allInpt[z].style.display = "";
+        }
+       
+      }
     }
     window.parent.postMessage({
 
@@ -270,10 +287,9 @@
     },
       "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
     );
-    //............................add checked item into filter array call filter function every onChange event........................//
-    //add tag buttons of tags when any filter is checked
-
+        //............................add checked item into filter array call filter function every onChange event........................//
     if (res.checked) {
+      //create tag putton on top of filters when any checkbox is selected
       let parentBox = document.getElementById("selectedTags")
       let addedTag = document.createElement("div")
       addedTag.setAttribute("id", res.value.replace(/ /g, "") + "sub")
@@ -285,7 +301,9 @@
       span.setAttribute("class", "spanButton")
       span.innerHTML = "X " + res.value
       span.onclick = function (event) {
+        //when uncheck checkbox remove tag button created on top
         let unCheck = document.getElementById(res.value.replace(/ /g, "")).checked = false;
+        //send data to wix when any item is checked or unchecked
         window.parent.postMessage({
 
           status: res.checked,
@@ -306,122 +324,89 @@
     //................................functionality for remove when unchecked................................
 
   };
-  //used when lightbox is closed . saves data of checkboc and keep them checked when light box is reopend
+  //get data from params and mark them check
+  let checkParams=(params)=>{
+let allInpts=document.getElementsByTagName("input")
+for(let i=0;i<allInpts.length;i++){
+let val=allInpts[i].getAttribute("value").replace(/ /g, "").toLocaleLowerCase()
+for(let z=0;z<params.length;z++){
+  if(val==params[z].replace(/ /g, "").toLocaleLowerCase()){
+    allInpts[i].checked=true;
+    let parentBox = document.getElementById("selectedTags")
+      let addedTag = document.createElement("div")
+      addedTag.setAttribute("id", allInpts[i].value.replace(/ /g, "") + "sub")
 
-  function continueFilter() {
-    var getArr=[]
-    let flagNew = false;
-    // if(JSON.parse(localStorage.getItem('array'))!==[]){
-
-    //    getArr = JSON.parse(localStorage.getItem('array'));
-    // }else{
-      getArr=wixParams
-    // }
-    window.parent.postMessage({
-
-      local: getArr,
-      message: "exist"
-
-    },
-      "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
-    );
-    let allInpt = document.getElementsByTagName("input")
-    try {
+      addedTag.setAttribute("class", "addedTags")
+      let span = document.createElement("button")
+      let id =  allInpts[i].value.replace(/ /g, "")
+      span.setAttribute("id", id + "span")
+      span.setAttribute("class", "spanButton")
+      span.innerHTML = "X " +  allInpts[i].value
 
 
-      if (getArr.length > 0) {
-        // for (let x = 0; x < getArr.length; x++) {
-
-        let arrData = getArr
-        for (let x = 0; x < arrData.length; x++) {
-
-          for (var i = 0; i < allInpt.length; i++) {
-            //console.log(allInpt[i]);
-            if (arrData[x].toLocaleLowerCase() == allInpt[i].value.toLocaleLowerCase()) {
-              allInpt[i].checked = true;
-              let parentBox = document.getElementById("selectedTags")
-              let addedTag = document.createElement("div")
-              addedTag.setAttribute("id", allInpt[i].value.replace(/ /g, "") + "sub")
-
-              addedTag.setAttribute("class", "addedTags")
-              let span = document.createElement("button")
-              let id = allInpt[i].value.replace(/ /g, "")
-              span.setAttribute("id", id + "span")
-              span.setAttribute("class", "spanButton")
-              span.innerHTML = "X " + allInpt[i].value
+      myFunction( allInpts[i])
 
 
-              // myFunction( allInpt[i])
+      span.onclick = function (event) {
+        //when uncheck checkbox remove tag button created on top
+        let unCheck = document.getElementById( allInpts[i].value.replace(/ /g, "")).checked = false;
+        //send data to wix when any item is checked or unchecked
+        window.parent.postMessage({
 
+          status:  allInpts[i].checked,
+          value:  allInpts[i].value,
 
-              span.onclick = function (event) {
-                //when uncheck checkbox remove tag button created on top
-                let unCheck = document.getElementById(allInpt[i].value.replace(/ /g, "")).checked = false;
-                //send data to wix when any item is checked or unchecked
-
-                getArr = getArr.filter(function (valueRemov, index, arr) {
-                  return valueRemov !== allInpt[i].value;
-                });
-                // localStorage.setItem('array', JSON.stringify(getArr))
-                window.parent.postMessage({
-
-                  status: allInpt[i].checked,
-                  value: allInpt[i].value,
-
-                },
-                  "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
-                );
-                this.parentElement.remove()
-
-              }
-              addedTag.appendChild(span)
-              parentBox.appendChild(addedTag)
-              break;
-            }
-          }
-          //  }
-        }
+        },
+          "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+        );
+        this.parentElement.remove()
 
       }
-    } catch (error) {
-console.log("catch",error);
-    }
+      addedTag.appendChild(span)
+      parentBox.appendChild(addedTag)
+    break;
+  }
+}
+}
+console.log("all inputs",allInpts);
   }
 
 
-  function autoUpdataFilter(tagsPresent) {
-    if (checkedData.length > 0) {
 
+
+  //get values of tags present in filter bolgs and show existing tags other wise hide
+  function autoUpdataFilter(tagsPresent) {
+    if (checkArray.length > 0) {
+      
       let allInpt = document.getElementsByClassName("input")
       if (tagsPresent) {
         let arrData = tagsPresent
 
-        //console.log("log data in already esisting tags function", arrData);
         let displayBlockArr = []
         let flag = false;
 
         for (var i = 0; i < allInpt.length; i++) {
 
-
+          
           allInpt[i].style.display = "none";
-
-
-          if (i == allInpt.length - 1) {
+          
+          
+          if(i==allInpt.length-1){
             let dataValue;
             let newData;
-            for (var a = 0; a < tagsPresent.length; a++) {
+            for(var a = 0; a < tagsPresent.length; a++){
 
               for (var x = 0; x < allInpt.length; x++) {
                 newData = allInpt[x].firstElementChild
                 dataValue = newData.getAttribute("value").replace(/ /g, "").toLocaleLowerCase()
 
 
-                if (dataValue == tagsPresent[a].toLowerCase().replace(/ /g, "")) {
+                if(dataValue==tagsPresent[a].toLowerCase().replace(/ /g, "")){
                   allInpt[x].style.display = "";
+                }
                 }
               }
             }
-          }
         }
 
 
@@ -429,18 +414,17 @@ console.log("catch",error);
     }
   }
 
-  let clearAll = () => {
-    document.getElementById("selectedTags").innerHTML = ""
-    let allInpts = document.getElementsByTagName("input")
-    for (let i = 0; i < allInpts.length; i++) {
-      allInpts[i].checked = false;
-    }
-    let allInptBoxs = document.getElementsByClassName("input")
-    for (let z = 0; z < allInptBoxs.length; z++) {
-      
-      allInptBoxs[z].style.display = "";
-    }
-    // localStorage.clear();
+  let clearAll=()=>{
+    document.getElementById("selectedTags").innerHTML=""
+    let allInpts=document.getElementsByTagName("input")
+for(let i=0;i<allInpts.length;i++){
+  allInpts[i].checked=false;
+}
+let allInptBoxs = document.getElementsByClassName("input")
+        for (let z = 0; z < allInptBoxs.length; z++) {
+
+                    allInptBoxs[z].style.display = "";
+        }
   }
 </script>
 
