@@ -139,10 +139,13 @@
       main = event.data.data
       //if it contain main data call render function 
       dataRender()
-      continueFilter()
+      if(event.data.wParams!==null){
+        wixParams=event.data.wParams
+        continueFilter()
+        // console.log("log wix params",event.data.wParams);
+      }
 
     }
-    wixParams=event.data.wParams
 
   };
   // create filters from nested array
@@ -163,8 +166,6 @@
       heading.style.marginTop = "5px";
       heading.style.marginBottom = "20px";
       heading.style.fontWeight = "600px";
-      // heading.style.borderBottom = "2px solid #BADA55";
-      // mainDiv.style.borderBottom = "2px solid #BADA55";
       mainDiv.append(heading);
       heading.innerText = main[x][0];
       let arr = main[x][1];
@@ -255,11 +256,11 @@
       // push tags in to local storage for later use 
 
       checkedData.push(res.value)
-      localStorage.setItem("array", JSON.stringify(checkedData));
+      // localStorage.setItem("array", JSON.stringify(checkedData));
     } else {
       //remove item from array when unchecked
       checkedData = checkedData.filter(checkedData => checkedData != res.value);
-      localStorage.setItem("array", JSON.stringify(checkedData));
+      // localStorage.setItem("array", JSON.stringify(checkedData));
     }
     window.parent.postMessage({
 
@@ -310,12 +311,12 @@
   function continueFilter() {
     var getArr=[]
     let flagNew = false;
-    if(JSON.parse(localStorage.getItem('array'))!==[]){
+    // if(JSON.parse(localStorage.getItem('array'))!==[]){
 
-       getArr = JSON.parse(localStorage.getItem('array'));
-    }else{
+    //    getArr = JSON.parse(localStorage.getItem('array'));
+    // }else{
       getArr=wixParams
-    }
+    // }
     window.parent.postMessage({
 
       local: getArr,
@@ -361,7 +362,7 @@
                 getArr = getArr.filter(function (valueRemov, index, arr) {
                   return valueRemov !== allInpt[i].value;
                 });
-                localStorage.setItem('array', JSON.stringify(getArr))
+                // localStorage.setItem('array', JSON.stringify(getArr))
                 window.parent.postMessage({
 
                   status: allInpt[i].checked,
@@ -439,7 +440,7 @@ console.log("catch",error);
       
       allInptBoxs[z].style.display = "";
     }
-    localStorage.clear();
+    // localStorage.clear();
   }
 </script>
 
