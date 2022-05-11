@@ -11,27 +11,28 @@
     * {
       font-family: "Roboto", sans-serif;
     }
-	
-/* //style of scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-}
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: black; 
-}
+    /* //style of scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-}
-/* //style of scrollbar */
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: black;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    /* //style of scrollbar */
 
     label {
       font-size: 16px !important;
@@ -121,27 +122,27 @@
 
 
   let main;
-  let continueFilterArr=[];
-
- //get data from wix databse and save in main and tags present
+  let continueFilterArr = [];
+  let wixParams=[];
+  //get data from wix databse and save in main and tags present
   window.onmessage = (event) => {
-    console.log(event,"log event");
+    console.log(event, "log event");
     if (event.data.tagsPresent) {
-     let tagsPresent = event.data.tagsPresent
-     setTimeout(()=>{
+      let tagsPresent = event.data.tagsPresent
+      setTimeout(() => {
         autoUpdataFilter(tagsPresent)
-      },1000)
-    }else if(event.data.message=="clear"){
+      }, 1000)
+    } else if (event.data.message == "clear") {
       clearAll()
-      console.log(event.data.message,"remove all data of filters");
+      console.log(event.data.message, "remove all data of filters");
     } else {
       main = event.data.data
-//if it contain main data call render function 
+      //if it contain main data call render function 
       dataRender()
       continueFilter()
 
     }
-
+    wixParams=event.data.wParams
 
   };
   // create filters from nested array
@@ -149,8 +150,8 @@
 
     let tags = document.getElementById("new");
 
-//create heading and set attributes for further functionality
-//nested loops to render data in nested arrays
+    //create heading and set attributes for further functionality
+    //nested loops to render data in nested arrays
     let resultDisplayArray = [];
     for (let x = 0; x < main.length; x++) {
       let mainDiv = document.createElement("div");
@@ -194,7 +195,7 @@
           }
           if (Array.isArray(arr[i][z])) {
             //................................third loop..................................//
-//loop through sub category and create tags and append elements in to main div
+            //loop through sub category and create tags and append elements in to main div
 
             for (let a = 0; a < arr[i][z].length; a++) {
               childDiv.innerHTML += `<div class="show input"  style=" margin-left: 35px;">
@@ -213,7 +214,7 @@
     }
   }
   //function commented
-    //hide and show  check box when checked on parent checkbox
+  //hide and show  check box when checked on parent checkbox
 
   function myFunction(getCheckbox) {
     try {
@@ -251,7 +252,7 @@
   let checkedData = [];
   function getValues(res) {
     if (res.checked) {
-            // push tags in to local storage for later use 
+      // push tags in to local storage for later use 
 
       checkedData.push(res.value)
       localStorage.setItem("array", JSON.stringify(checkedData));
@@ -268,10 +269,10 @@
     },
       "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
     );
-        //............................add checked item into filter array call filter function every onChange event........................//
-        //add tag buttons of tags when any filter is checked
+    //............................add checked item into filter array call filter function every onChange event........................//
+    //add tag buttons of tags when any filter is checked
 
-        if (res.checked) {
+    if (res.checked) {
       let parentBox = document.getElementById("selectedTags")
       let addedTag = document.createElement("div")
       addedTag.setAttribute("id", res.value.replace(/ /g, "") + "sub")
@@ -304,79 +305,92 @@
     //................................functionality for remove when unchecked................................
 
   };
-//used when lightbox is closed . saves data of checkboc and keep them checked when light box is reopend
+  //used when lightbox is closed . saves data of checkboc and keep them checked when light box is reopend
 
   function continueFilter() {
-    let flagNew=false;
-    var getArr = JSON.parse(localStorage.getItem('array'));
+    var getArr=[]
+    let flagNew = false;
+    if(JSON.parse(localStorage.getItem('array'))!==[]){
+
+       getArr = JSON.parse(localStorage.getItem('array'));
+    }else{
+      getArr=wixParams
+    }
     window.parent.postMessage({
 
-local: getArr,
-message:"exist"
+      local: getArr,
+      message: "exist"
 
-},
-"https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
-);
+    },
+      "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+    );
     let allInpt = document.getElementsByTagName("input")
-    if(getArr.length>0){
-      for (let x = 0; x < 1; x++) {
-
-        let arrData=getArr
- for(let x=0;x<arrData.length;x++){
-
-   for(var i=0;i<allInpt.length;i++){
-    //console.log(allInpt[i]);
-     if(arrData[x].toLocaleLowerCase()==allInpt[i].value.toLocaleLowerCase()){
-       allInpt[i].checked=true;
-       let parentBox = document.getElementById("selectedTags")
-      let addedTag = document.createElement("div")
-      addedTag.setAttribute("id", allInpt[i].value.replace(/ /g, "") + "sub")
-
-      addedTag.setAttribute("class", "addedTags")
-      let span = document.createElement("button")
-      let id =  allInpt[i].value.replace(/ /g, "")
-      span.setAttribute("id", id + "span")
-      span.setAttribute("class", "spanButton")
-      span.innerHTML = "X " +  allInpt[i].value
+    try {
 
 
-      // myFunction( allInpt[i])
+      if (getArr.length > 0) {
+        // for (let x = 0; x < getArr.length; x++) {
+
+        let arrData = getArr
+        for (let x = 0; x < arrData.length; x++) {
+
+          for (var i = 0; i < allInpt.length; i++) {
+            //console.log(allInpt[i]);
+            if (arrData[x].toLocaleLowerCase() == allInpt[i].value.toLocaleLowerCase()) {
+              allInpt[i].checked = true;
+              let parentBox = document.getElementById("selectedTags")
+              let addedTag = document.createElement("div")
+              addedTag.setAttribute("id", allInpt[i].value.replace(/ /g, "") + "sub")
+
+              addedTag.setAttribute("class", "addedTags")
+              let span = document.createElement("button")
+              let id = allInpt[i].value.replace(/ /g, "")
+              span.setAttribute("id", id + "span")
+              span.setAttribute("class", "spanButton")
+              span.innerHTML = "X " + allInpt[i].value
 
 
-      span.onclick = function (event) {
-        //when uncheck checkbox remove tag button created on top
-        let unCheck = document.getElementById( allInpt[i].value.replace(/ /g, "")).checked = false;
-        //send data to wix when any item is checked or unchecked
-        console.log("..................",getArr);
-        getArr = getArr.filter(function (valueRemov, index, arr) {
+              // myFunction( allInpt[i])
+
+
+              span.onclick = function (event) {
+                //when uncheck checkbox remove tag button created on top
+                let unCheck = document.getElementById(allInpt[i].value.replace(/ /g, "")).checked = false;
+                //send data to wix when any item is checked or unchecked
+
+                getArr = getArr.filter(function (valueRemov, index, arr) {
                   return valueRemov !== allInpt[i].value;
                 });
                 localStorage.setItem('array', JSON.stringify(getArr))
-        window.parent.postMessage({
+                window.parent.postMessage({
 
-          status:  allInpt[i].checked,
-          value:  allInpt[i].value,
+                  status: allInpt[i].checked,
+                  value: allInpt[i].value,
 
-        },
-          "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
-        );
-        this.parentElement.remove()
+                },
+                  "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+                );
+                this.parentElement.remove()
+
+              }
+              addedTag.appendChild(span)
+              parentBox.appendChild(addedTag)
+              break;
+            }
+          }
+          //  }
+        }
 
       }
-      addedTag.appendChild(span)
-      parentBox.appendChild(addedTag)
-    break;
-     }
-    }
- }
-}
+    } catch (error) {
+console.log("catch",error);
     }
   }
 
 
   function autoUpdataFilter(tagsPresent) {
     if (checkedData.length > 0) {
-      
+
       let allInpt = document.getElementsByClassName("input")
       if (tagsPresent) {
         let arrData = tagsPresent
@@ -387,45 +401,45 @@ message:"exist"
 
         for (var i = 0; i < allInpt.length; i++) {
 
-          
+
           allInpt[i].style.display = "none";
-          
-          
-          if(i==allInpt.length-1){
+
+
+          if (i == allInpt.length - 1) {
             let dataValue;
             let newData;
-            for(var a = 0; a < tagsPresent.length; a++){
+            for (var a = 0; a < tagsPresent.length; a++) {
 
               for (var x = 0; x < allInpt.length; x++) {
                 newData = allInpt[x].firstElementChild
                 dataValue = newData.getAttribute("value").replace(/ /g, "").toLocaleLowerCase()
 
 
-                if(dataValue==tagsPresent[a].toLowerCase().replace(/ /g, "")){
+                if (dataValue == tagsPresent[a].toLowerCase().replace(/ /g, "")) {
                   allInpt[x].style.display = "";
-                }
                 }
               }
             }
+          }
         }
 
 
       }
     }
   }
-  
-  let clearAll=()=>{
-    localStorage.clear();
-    document.getElementById("selectedTags").innerHTML=""
-    let allInpts=document.getElementsByTagName("input")
-for(let i=0;i<allInpts.length;i++){
-  allInpts[i].checked=false;
-}
-let allInptBoxs = document.getElementsByClassName("input")
-        for (let z = 0; z < allInptBoxs.length; z++) {
 
-                    allInptBoxs[z].style.display = "";
-        }
+  let clearAll = () => {
+    document.getElementById("selectedTags").innerHTML = ""
+    let allInpts = document.getElementsByTagName("input")
+    for (let i = 0; i < allInpts.length; i++) {
+      allInpts[i].checked = false;
+    }
+    let allInptBoxs = document.getElementsByClassName("input")
+    for (let z = 0; z < allInptBoxs.length; z++) {
+      
+      allInptBoxs[z].style.display = "";
+    }
+    localStorage.clear();
   }
 </script>
 
