@@ -201,7 +201,8 @@
               mainDiv.append(fstChild);
             }
           }
-          if (Array.isArray(arr[i][z])) {
+          if (Array.isArray(arr[i][z]  && arr[i][z].length)) {
+            console.log(arr[i][z].length,"tags array length");
             //................................third loop..................................//
 //loop through sub category tags and creale elements and setting attributes through template string
             for (let a = 0; a < arr[i][z].length; a++) {
