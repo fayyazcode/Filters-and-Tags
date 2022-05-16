@@ -398,11 +398,13 @@
     .addedFilters {
       margin: 80px;
     }
-    .subivCat > div{
-      margin: 0 !important;
+
+    .subivCat>div {
+      margin: 40px 0 !important;
       padding: 34px !important;
     }
-    .selectDv{
+
+    .selectDv {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -459,7 +461,7 @@
         //slice the  text and capitalize first word
 
         try {
-        res=res.toUpperCase()
+          res = res.toUpperCase()
 
         } catch (error) {
           console.log(error);
@@ -543,7 +545,7 @@
 
     //trigger function on select button  create  category
     function createInnerTag(parentRes, btn) {
-       swal({
+      swal({
         title: "Select Category",
         content: {
           element: "input",
@@ -553,8 +555,10 @@
           },
         },
       }).then((res) => {
+
+        console.log("logging parent element", JSON.parse(parentRes.previousElementSibling.previousElementSibling.previousElementSibling.name)[0]);
         try {
-          
+
           // const lower = res.toLowerCase();
           // res = res.charAt(0).toUpperCase() + lower.slice(1);
         } catch (error) {
@@ -563,10 +567,13 @@
         if (res.trim() == "" || res == "") {
           swal("Oops", "Input Cant Be Empty", "error");
         } else {
-          if(btn.name!=="up"){
+          if (btn.name == "up") {
+            createArrayExist(res, "innertag", JSON.parse(parentRes.previousElementSibling.previousElementSibling.previousElementSibling.name)[0])
+          } else {
             createArray(res, 'innertag')
 
           }
+
           //creating elements and setting attribute  for catogeries
           let subLi = document.createElement("li");
           let inpSub = document.createElement("input");
@@ -580,6 +587,7 @@
 
           selectSubCatogery.innerHTML = "Select Sub Category"
           selectSubCatogery.setAttribute("class", "selectSubCat")
+          inpSub.setAttribute("name", JSON.parse(parentRes.previousElementSibling.previousElementSibling.previousElementSibling.name)[0])
 
           inpSub.value = res;
           tagSelectBtn.innerHTML = "Select";
@@ -627,7 +635,7 @@
     //.............................second function ends...............
 
     // .............................third sub tag function starts.................\
-    let createSubTag = (data) => {
+    let createSubTag = (data, btnn) => {
       //trigger swal get values in swwetalert input and if its not empty update on dom created input
       swal({
         title: "Select Sub Category",
@@ -650,9 +658,16 @@
         if (res.trim() == "null" || res == "") {
           swal("Oops", "Input Cant Be Empty", "error");
         } else {
-          if(parentElement.parentElement.previousElement.lastElementChild.name!=="up"){
-            createArray(res, 'subtag')
- 
+          try {
+            if (btnn.parentElement.parentElement.previousElementSibling.lastElementChild.name == "up") {
+              console.log("name is up");
+              createArrayExist(res, "subtag", JSON.parse(btnn.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.name)[0])
+            } else {
+              createArray(res, 'subtag')
+
+            }
+          } catch (error) {
+            console.log(error);
           }
           //sub category tags  create elements and append  
           let tagLi = document.createElement("li");
@@ -712,7 +727,7 @@
           element: "input",
           attributes: {
             placeholder: "Edit",
-            value:preVal,
+            value: preVal,
             type: "text",
           },
         },
@@ -814,10 +829,38 @@
           }
         }
       }
-// after removing data remove element from dom
+      // after removing data remove element from dom
       data.remove();
       swal("Remove", "Tag removed", "success");
     }
+
+
+
+    let createArrayExist = (valu, prop, objName) => {
+
+      if (prop == "innertag") {
+        for (let a = 0; a < objArray.length; a++) {
+          let e = Object.keys(objArray[a])
+          if (e == objName) {
+            //  Object.entries(objArray[a])[1].push([valu, []])
+            // let zzz=objArray[a].objName
+            console.log(e, objName);
+            console.log(objArray[a][objName][1]);
+            objArray[a][objName][1].push([valu, []])
+            break;
+          }
+
+        }
+      } else if (prop == "subtag") {
+        for (let a = 0; a < objArray.length; a++) {
+          let e = Object.keys(objArray[a])
+        let length=  objArray[a][objName][1].length-1
+          objArray[a][objName][1][length].push(valu)
+        }
+      }
+
+    }
+
 
     //create array
     let head = 1
@@ -851,6 +894,7 @@
 
 
       }
+      console.log("object of all tags ", objArray);
       //loop through existing array and render 
       let tags = document.getElementById("addedFilters");
       for (let x = 0; x < main.length; x++) {
@@ -858,10 +902,10 @@
         let btns = document.createElement("div");
         // mainDiv.style.width = "400px";
         let heading = document.createElement("input");
-        let selectDiv=document.createElement("div")
-        selectDiv.setAttribute("class","selectDv")
-        let  subdiv=document.createElement("div")
-        subdiv.setAttribute("class","subivCat")
+        let selectDiv = document.createElement("div")
+        selectDiv.setAttribute("class", "selectDv")
+        let subdiv = document.createElement("div")
+        subdiv.setAttribute("class", "subivCat")
 
         heading.style.padding = "10px";
         heading.style.fontSize = "40px";
@@ -871,22 +915,14 @@
         // add remove  button on main head in  existing filters
         btns.innerHTML = `
             <button class="btn-danger" name="head" id="delx" onclick="delExisting(this.parentElement.parentElement,this.parentElement,this.name)"  style="float: right; margin-right: 10px;display:inline-block; margin-top:-52px;">Delete</button>`;
-       
-            
 
 
 
+        //new code adding to old
 
 
 
-//new code adding to old
-
-
-
-
-
-
-        selectDiv.innerHTML=`<span>Select Category</span><button class="btn-danger" name="up" onclick="createInnerTag(this.parentElement.nextElementSibling,this,console.log(this.parentElement.nextElementSibling))" >Select</button>`
+        selectDiv.innerHTML = `<span>Select Category</span><button class="btn-danger" name="up" onclick="createInnerTag(this.parentElement.nextElementSibling,this,console.log(this.parentElement.nextElementSibling))" >Select</button>`
         mainDiv.append(heading);
         mainDiv.append(btns)
         mainDiv.appendChild(selectDiv)
@@ -907,7 +943,7 @@
             let fstChild = document.createElement("div");
             if (arr[i][z] == undefined) {
             } else {
-              if (!Array.isArray(arr[i][z]) ) {
+              if (!Array.isArray(arr[i][z])) {
 
                 fstChild.innerHTML += `<div class="cat"> 
     <input   class="heading"  style="margin-bottom:10px" disabled placeholder="${arr[i][z]
@@ -927,15 +963,15 @@
                 mainDiv.append(fstChild);
               }
             }
-            if (Array.isArray(arr[i][z]) && arr[i][z].length ) {
-              console.log("logging length of tags array",arr[i][z].length);
+            if (Array.isArray(arr[i][z]) && arr[i][z].length) {
+              console.log("logging length of tags array", arr[i][z].length);
               //................................third loop..................................//
               let text = "";
               let a = 0;
               do {
 
 
-           
+
                 childDiv.innerHTML += `<div class="subTagsdiv"  style=" margin-left: 35px;">
     <input   style=" margin-left: 15px;" disabled placeholder="${arr[i][z][a]
                   }" id="${arr[i][z][a].replace(/ /g, "")}" name="${(i.toString() + "," + a.toString())
@@ -975,7 +1011,7 @@
         let ipts = document.createElement("div")
         ipts.setAttribute("class", "subTagsdiv")
         ipts.style.marginLeft = "35px"
-//functionality for adding more tags in to existing filters
+        //functionality for adding more tags in to existing filters
 
         ipts.innerHTML = `
     <input   style=" margin-left: 15px;" disabled placeholder="" id="${res.replace(/ /g, "")}" name="${(res.toString())}" 
@@ -985,7 +1021,7 @@
               <button  class="btn-success" onclick="updtExist(this.parentElement)" id="${res.replace(/ /g, "")}edt"  style=" margin-right: 0px;" >Edit</button>
               </div>`
         divToAppen.append(ipts)
-//pass  new tags data to add into main array
+        //pass  new tags data to add into main array
         NewTagsToEsisting(data.parentElement.parentElement.firstElementChild.firstElementChild.value, data.parentElement.parentElement.parentElement.firstElementChild.name, res)
       });
     }
@@ -996,7 +1032,7 @@
     function updtExist(edit) {
       let preVal = edit.previousElementSibling.value
       console.log("preVal ", preVal)
-    
+
 
       //trigger sweet alert takes a value and trigger inner update function if value is not emmpty
       swal({
@@ -1045,7 +1081,7 @@
                       break;
                     }
                     else {
-                  
+
                       for (let p = 0; p < existingArr[z][a][l].length; p++) {
                         if (!Array.isArray(existingArr[z][a][l][p]) && existingArr[z][a][l][p] == preVal) {
                           existingArr[z][a][l][p] = newVal
@@ -1081,12 +1117,12 @@
               }
             }
           }
-         
+
         }
       }
-     
+
     }
-  
+
     function delExisting(data, updata, newProp) {
       //..........................remove element.....................
       // remove data and dome element 
@@ -1134,21 +1170,21 @@
               for (let a = 0; a < existingArr[z].length; a++) {
                 for (let x = 0; x < existingArr[z][a].length; x++) {
                   if (!Array.isArray(existingArr[z][a][x]) && existingArr[z][a][x] == newVal) {
-                    existingArr[z].splice(a,1)
+                    existingArr[z].splice(a, 1)
                     console.log("aray in cat", existingArr[z][a]);
 
-                
+
                     break;
                   } else {
                     console.log("is an array in tags")
                     //filter data in sub tags 
                     for (let p = 0; p < existingArr[z][a][x].length; p++) {
                       if (!Array.isArray(existingArr[z][a][x][p]) && existingArr[z][a][x][p] == newVal) {
-                        updR=existingArr[z][a][x] 
-                        existingArr[z][a][x] =  updR.filter(function(updR) {return updR != newVal});
-                        if (existingArr[z][a][x]==[]) {
-                          existingArr[z][a].splice(x,1)
-                        }else{
+                        updR = existingArr[z][a][x]
+                        existingArr[z][a][x] = updR.filter(function (updR) { return updR != newVal });
+                        if (existingArr[z][a][x] == []) {
+                          existingArr[z][a].splice(x, 1)
+                        } else {
 
                         }
                         console.log(existingArr[z][a][x]);
@@ -1162,7 +1198,7 @@
 
         }
 
- 
+
         if (newProp == "subCat") {
           data.remove();
         } else if (newProp == "head") {
@@ -1179,7 +1215,7 @@
 
           }
         }
-  
+
         swal("Remove", "Tag removed", "success");
       }
       data.remove();
@@ -1194,17 +1230,17 @@
       for (let l = 0; l < objArray.length; l++) {
 
         console.log("log object array value", objArray[l][name]);
-        
+
         if (objArray[l][name]) {
           existingArr = objArray[l][name]
-         
+
           for (let z = 0; z < existingArr.length; z++) {
-           
+
             if (existingArr[z] == undefined) {
             } else {
               if (!Array.isArray(existingArr[z]) && existingArr[z] == name) {
 
-               
+
                 if (Array.isArray(existingArr[z + 1])) {
                   let innerArr = existingArr[z + 1]
                   for (let a = 0; a < innerArr.length; a++) {
@@ -1247,7 +1283,6 @@
       }
 
     }
-
 
     //sending data to wix 
 
