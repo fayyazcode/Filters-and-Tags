@@ -398,6 +398,16 @@
     .addedFilters {
       margin: 80px;
     }
+    .subivCat > div{
+      margin: 0 !important;
+      padding: 34px !important;
+    }
+    .selectDv{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 34px 10px;
+    }
   </style>
 </head>
 
@@ -449,9 +459,7 @@
         //slice the  text and capitalize first word
 
         try {
-          const lower = str.toLowerCase();
-          res = str.charAt(0).toUpperCase() + lower.slice(1);
-          console.log("result...........", res); res = res.toLowerCase();
+        res=res.toUpperCase()
 
         } catch (error) {
           console.log(error);
@@ -546,16 +554,19 @@
         },
       }).then((res) => {
         try {
-
-          const lower = str.toLowerCase();
-          res = str.charAt(0).toUpperCase() + lower.slice(1);
+          
+          // const lower = res.toLowerCase();
+          // res = res.charAt(0).toUpperCase() + lower.slice(1);
         } catch (error) {
           console.log(error);
         }
         if (res.trim() == "" || res == "") {
           swal("Oops", "Input Cant Be Empty", "error");
         } else {
-          createArray(res, 'innertag')
+          if(btn.name!=="up"){
+            createArray(res, 'innertag')
+
+          }
           //creating elements and setting attribute  for catogeries
           let subLi = document.createElement("li");
           let inpSub = document.createElement("input");
@@ -630,9 +641,8 @@
         },
       }).then((res) => {
         try {
-          str = res
-          const lower = str.toLowerCase();
-          res = str.charAt(0).toUpperCase() + lower.slice(1);
+          const lower = res.toLowerCase();
+          res = res.charAt(0).toUpperCase() + lower.slice(1);
 
         } catch (error) {
         }
@@ -640,8 +650,10 @@
         if (res.trim() == "null" || res == "") {
           swal("Oops", "Input Cant Be Empty", "error");
         } else {
-          createArray(res, 'subtag')
-
+          if(parentElement.parentElement.previousElement.lastElementChild.name!=="up"){
+            createArray(res, 'subtag')
+ 
+          }
           //sub category tags  create elements and append  
           let tagLi = document.createElement("li");
           let tagInpt = document.createElement("input");
@@ -695,10 +707,12 @@
 
       //trigger sweet alert takes a value and trigger inner update function if value is not emmpty
       swal({
+        title: "Edit Tag",
         content: {
           element: "input",
           attributes: {
             placeholder: "Edit",
+            value:preVal,
             type: "text",
           },
         },
@@ -844,6 +858,11 @@
         let btns = document.createElement("div");
         // mainDiv.style.width = "400px";
         let heading = document.createElement("input");
+        let selectDiv=document.createElement("div")
+        selectDiv.setAttribute("class","selectDv")
+        let  subdiv=document.createElement("div")
+        subdiv.setAttribute("class","subivCat")
+
         heading.style.padding = "10px";
         heading.style.fontSize = "40px";
         heading.disabled = "true";
@@ -852,8 +871,26 @@
         // add remove  button on main head in  existing filters
         btns.innerHTML = `
             <button class="btn-danger" name="head" id="delx" onclick="delExisting(this.parentElement.parentElement,this.parentElement,this.name)"  style="float: right; margin-right: 10px;display:inline-block; margin-top:-52px;">Delete</button>`;
+       
+            
+
+
+
+
+
+
+//new code adding to old
+
+
+
+
+
+
+        selectDiv.innerHTML=`<span>Select Category</span><button class="btn-danger" name="up" onclick="createInnerTag(this.parentElement.nextElementSibling,this,console.log(this.parentElement.nextElementSibling))" >Select</button>`
         mainDiv.append(heading);
         mainDiv.append(btns)
+        mainDiv.appendChild(selectDiv)
+        mainDiv.appendChild(subdiv)
         heading.value = main[x][0];
         let arr = main[x][1];
         for (let i = 0; i < arr.length; i++) {
@@ -870,7 +907,7 @@
             let fstChild = document.createElement("div");
             if (arr[i][z] == undefined) {
             } else {
-              if (!Array.isArray(arr[i][z])) {
+              if (!Array.isArray(arr[i][z]) ) {
 
                 fstChild.innerHTML += `<div class="cat"> 
     <input   class="heading"  style="margin-bottom:10px" disabled placeholder="${arr[i][z]
@@ -890,7 +927,8 @@
                 mainDiv.append(fstChild);
               }
             }
-            if (Array.isArray(arr[i][z])) {
+            if (Array.isArray(arr[i][z]) && arr[i][z].length ) {
+              console.log("logging length of tags array",arr[i][z].length);
               //................................third loop..................................//
               let text = "";
               let a = 0;
