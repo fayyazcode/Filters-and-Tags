@@ -556,7 +556,6 @@
         },
       }).then((res) => {
 
-        console.log("logging parent element", JSON.parse(parentRes.previousElementSibling.previousElementSibling.previousElementSibling.name)[0]);
         try {
 
           // const lower = res.toLowerCase();
@@ -587,8 +586,11 @@
 
           selectSubCatogery.innerHTML = "Select Sub Category"
           selectSubCatogery.setAttribute("class", "selectSubCat")
-          inpSub.setAttribute("name", JSON.parse(parentRes.previousElementSibling.previousElementSibling.previousElementSibling.name)[0])
-
+          if (btn.name == "up") {
+            inpSub.setAttribute("name", JSON.parse(parentRes.previousElementSibling.previousElementSibling.previousElementSibling.name)[0])
+            subDel.style.display="none"
+            subEdit.style.display="none"
+          }
           inpSub.value = res;
           tagSelectBtn.innerHTML = "Select";
           tagSelectBtn.setAttribute("id", "tagSelectBtn");
@@ -663,10 +665,11 @@
               console.log("name is up");
               createArrayExist(res, "subtag", JSON.parse(btnn.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.name)[0])
             } else {
-              createArray(res, 'subtag')
+              // createArray(res, 'subtag')
 
             }
           } catch (error) {
+            createArray(res, 'subtag')
             console.log(error);
           }
           //sub category tags  create elements and append  
@@ -683,7 +686,10 @@
           tagEdit.setAttribute("id", "tagEdit");
           tagEdit.setAttribute("onclick", "updt(this.parentElement)");
           tagEdit.setAttribute("class", " btn btn-success");
-
+          if (btnn.parentElement.parentElement.previousElementSibling.lastElementChild.name == "up"){
+            tagEdit.style.display="none"
+            tagDel.style.display="none"
+          }
           tagInpt.setAttribute("id", "listInput");
           tagInpt.setAttribute("disabled", "disabled");
           tagInpt.setAttribute("class", "list-input form-control");
@@ -719,7 +725,7 @@
     function updt(edit) {
       let preVal = edit.previousElementSibling.value
 
-
+      console.log("logging edit .....", edit);
       //trigger sweet alert takes a value and trigger inner update function if value is not emmpty
       swal({
         title: "Edit Tag",
@@ -854,8 +860,10 @@
       } else if (prop == "subtag") {
         for (let a = 0; a < objArray.length; a++) {
           let e = Object.keys(objArray[a])
-        let length=  objArray[a][objName][1].length-1
-          objArray[a][objName][1][length].push(valu)
+          let length = objArray[a][objName][1].length
+          length = length - 1
+          objArray[a][objName][1][length][1].push(valu)
+          break;
         }
       }
 
@@ -1031,7 +1039,7 @@
     //....................edit button function
     function updtExist(edit) {
       let preVal = edit.previousElementSibling.value
-      console.log("preVal ", preVal)
+      console.log("previous value ", preVal, edit)
 
 
       //trigger sweet alert takes a value and trigger inner update function if value is not emmpty
@@ -1047,6 +1055,7 @@
         },
       }).then((res) => {
         innerupdatExist(edit, res, preVal);
+        console.log("existing update is triggered *********************************");
       });
     }
     //........................... update value in input from sweet alert
@@ -1056,6 +1065,7 @@
       if (existingArr.length == 0) {
         existingArr = JSON.parse(edit.parentElement.parentElement.parentElement.firstElementChild.name)
       }
+      console.log("logging existing array", existingArr);
       //get values  saved in attribute and compare go get index where to update data
       if (res.trim() == "" || null) {
         swal("Edit", "Value cant be Empty", "error");
@@ -1067,32 +1077,35 @@
           } else {
             if (!Array.isArray(existingArr[z]) && existingArr[z] == preVal) {
               existingArr[z] = newVal
-              // console.log(existingArr);
+              console.log(existingArr[z], newVal, "adding in heading");
               break;
-            }
+            } else {
 
-            if (Array.isArray(existingArr[z])) {
-              for (let a = 0; a < existingArr[z].length; a++) {
+              if (Array.isArray(existingArr[z])) {
+                for (let a = 0; a < existingArr[z].length; a++) {
 
-                if (Array.isArray(existingArr[z][a])) {
-                  for (let l = 0; l < existingArr[z][a].length; l++) {
-                    if (!Array.isArray(existingArr[z][a][l]) && existingArr[z][a][l] == preVal) {
-                      existingArr[z][0][a] = newVal
-                      break;
-                    }
-                    else {
+                  if (Array.isArray(existingArr[z][a])) {
+                    for (let l = 0; l < existingArr[z][a].length; l++) {
+                      console.log("existing array",existingArr[z][a]);
+                      if (!Array.isArray(existingArr[z][a][l]) && existingArr[z][a][l] == preVal) {
+                        console.log("updated value in existing arr", existingArr[z][a][l]);
+                        existingArr[z][a][l] = newVal
+                        break;
+                      }
+                      else {
 
-                      for (let p = 0; p < existingArr[z][a][l].length; p++) {
-                        if (!Array.isArray(existingArr[z][a][l][p]) && existingArr[z][a][l][p] == preVal) {
-                          existingArr[z][a][l][p] = newVal
-                          break;
+                        for (let p = 0; p < existingArr[z][a][l].length; p++) {
+                          if (!Array.isArray(existingArr[z][a][l][p]) && existingArr[z][a][l][p] == preVal) {
+                            existingArr[z][a][l][p] = newVal
+                            break;
+                          }
                         }
                       }
+
                     }
-
                   }
-                }
 
+                }
               }
             }
           }
@@ -1110,7 +1123,7 @@
               // console.log("log objects one by one",element);
               if (objArray[p][objProperty]) {
                 objArray[p] = updArr
-                // console.log("check if object changed", objArray[p]);
+                console.log("check if object changed", objArray[p]);
               } else {
                 // objArray.push({newVal:updArr})
                 console.log("no data found");
