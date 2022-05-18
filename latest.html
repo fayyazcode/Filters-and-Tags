@@ -39,10 +39,21 @@
   position: relative;
   top: 10px;
 }
-#selectedTags{
-  position: sticky;
+/* #selectedTags{
+  position: fixed;
   margin: 0 10px;
   padding: 0;
+} */
+
+#selectedTags {
+    position: sticky;
+    position: -webkit-sticky;
+    /* margin: 0 10px; */
+    /* width: 100%; */
+    background-color: white;
+    margin: 0;
+    padding: 10px 0px;
+    top: 0;
 }
     label {
       font-size: 16px !important;
@@ -132,23 +143,32 @@
 
   let main;
   let paramsData;
+  let checkedData=JSON.parse(localStorage.getItem("array"))
+  let checkArray = [];
+
  //get data from wix databse and save in main and tags present
   window.onmessage = (event) => {
     if (event.data.tagsPresent) {
      let tagsPresent = event.data.tagsPresent
-     setTimeout(()=>{
+  console.log(tagsPresent);
         autoUpdataFilter(tagsPresent)
-      },1000)
+    
     }else if(event.data.message=="clear"){
-      clearAll()
+      clearAll(event.data.clear)
     }
      else {
       main = event.data.data
-      paramsData=event.data.params
-
-//if it contain main data call render function 
+      paramsData=event.data.wParams
+  
       dataRender()
-      setTimeout(()=>{checkParams(paramsData)},2000)
+
+console.log("run else");
+//if it contain main data call render function 
+    if(paramsData){
+      checkParams(paramsData)
+    }else if(checkArray){
+      checkParams(checkArray)
+    }
     }
 
 
@@ -160,20 +180,23 @@
 
 //create heading and set attributes for further functionality
 //nested loops to render data in nested arrays
-    let resultDisplayArray = [];
     for (let x = 0; x < main.length; x++) {
       let mainDiv = document.createElement("div");
       mainDiv.style.width = "320px";
       mainDiv.style.paddingBottom = "10px";
       let heading = document.createElement("p");
+      // heading.style.padding = "10px";
       heading.style.fontSize = "35px";
       heading.style.fontWeight = "700px";
-      heading.style.marginTop="5px"
+      heading.style.marginTop="px"
       heading.style.marginBottom="25px"
+      // heading.style.borderBottom = "2px solid #BADA55";
+      // mainDiv.style.borderBottom = "2px solid #BADA55";
       mainDiv.append(heading);
       heading.innerText = main[x][0];
       let arr = main[x][1];
       for (let i = 0; i < arr.length; i++) {
+        //.............................first loop......................
 
         //...............................second loop...........................
         //create sub category after heading and setting attributes
@@ -197,8 +220,7 @@
               mainDiv.append(fstChild);
             }
           }
-          if (Array.isArray(arr[i][z]  && arr[i][z].length)) {
-            console.log(arr[i][z].length,"tags array length");
+          if (Array.isArray(arr[i][z])) {
             //................................third loop..................................//
 //loop through sub category tags and creale elements and setting attributes through template string
             for (let a = 0; a < arr[i][z].length; a++) {
@@ -252,7 +274,6 @@
     }
 
   }
-  let checkArray = [];
   function getValues(res) {
 //get values of checkbox 
 
@@ -299,6 +320,13 @@
         //when uncheck checkbox remove tag button created on top
         let unCheck = document.getElementById(res.value.replace(/ /g, "")).checked = false;
         //send data to wix when any item is checked or unchecked
+        if (res.checked) {
+            // push tags in to local storage for later use 
+      // push tags in to local storage for later use 
+
+      checkedData.push(res.value)
+      localStorage.setItem("array", JSON.stringify(checkedData));
+    }
         window.parent.postMessage({
 
           status: res.checked,
@@ -346,8 +374,8 @@ for(let z=0;z<params.length;z++){
         //when uncheck checkbox remove tag button created on top
         let unCheck = document.getElementById( allInpts[i].value.replace(/ /g, "")).checked = false;
         //send data to wix when any item is checked or unchecked
-        window.parent.postMessage({
 
+        window.parent.postMessage({
           status:  allInpts[i].checked,
           value:  allInpts[i].value,
 
@@ -371,13 +399,12 @@ console.log("all inputs",allInpts);
 
   //get values of tags present in filter bolgs and show existing tags other wise hide
   function autoUpdataFilter(tagsPresent) {
-    if (checkArray.length > 0) {
+    // if (checkArray.length > 0) {
       
       let allInpt = document.getElementsByClassName("input")
       if (tagsPresent) {
         let arrData = tagsPresent
 
-        let displayBlockArr = []
         let flag = false;
 
         for (var i = 0; i < allInpt.length; i++) {
@@ -406,20 +433,20 @@ console.log("all inputs",allInpts);
 
 
       }
-    }
+    // }
   }
 
-  let clearAll=()=>{
+  let clearAll=(tgs)=>{
     document.getElementById("selectedTags").innerHTML=""
     let allInpts=document.getElementsByTagName("input")
 for(let i=0;i<allInpts.length;i++){
   allInpts[i].checked=false;
 }
-let allInptBoxs = document.getElementsByClassName("input")
-        for (let z = 0; z < allInptBoxs.length; z++) {
+// let allInptBoxs = document.getElementsByClassName("input")
+//         for (let z = 0; z < allInptBoxs.length; z++) {
 
-                    allInptBoxs[z].style.display = "";
-        }
+//                     allInptBoxs[z].style.display = "";
+//         }
   }
 </script>
 
