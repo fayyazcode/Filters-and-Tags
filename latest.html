@@ -186,8 +186,6 @@
       heading.style.fontWeight = "700px";
       heading.style.marginTop="px"
       heading.style.marginBottom="25px"
-      // heading.style.borderBottom = "2px solid #BADA55";
-      // mainDiv.style.borderBottom = "2px solid #BADA55";
       mainDiv.append(heading);
       heading.innerText = main[x][0];
       let arr = main[x][1];
@@ -431,7 +429,7 @@ console.log("all inputs",allInpts);
       }
     // }
   }
-
+//clear all data and reset filter
   let clearAll=(tgs)=>{
     document.getElementById("selectedTags").innerHTML=""
     let allInpts=document.getElementsByTagName("input")
