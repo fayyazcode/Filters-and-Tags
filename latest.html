@@ -141,34 +141,30 @@
 <script>
 
 
-  let main;
+
   let paramsData;
   let checkedData=JSON.parse(localStorage.getItem("array"))
   let checkArray = [];
+
+  let main;
 
  //get data from wix databse and save in main and tags present
   window.onmessage = (event) => {
     if (event.data.tagsPresent) {
      let tagsPresent = event.data.tagsPresent
-  console.log(tagsPresent);
+     setTimeout(()=>{
         autoUpdataFilter(tagsPresent)
-    
+      },1000)
     }else if(event.data.message=="clear"){
-      clearAll(event.data.clear)
+      clearAll()
     }
      else {
       main = event.data.data
-      paramsData=event.data.wParams
-  
-      dataRender()
+      paramsData=event.data.params
 
-console.log("run else");
 //if it contain main data call render function 
-    if(paramsData){
-      checkParams(paramsData)
-    }else if(checkArray){
-      checkParams(checkArray)
-    }
+      dataRender()
+      setTimeout(()=>{checkParams(paramsData)},2000)
     }
 
 
@@ -442,6 +438,14 @@ console.log("all inputs",allInpts);
 for(let i=0;i<allInpts.length;i++){
   allInpts[i].checked=false;
 }
+localStorage.clear()
+    window.parent.postMessage({
+          message: "reload",
+         
+
+        },
+          "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+        );
 // let allInptBoxs = document.getElementsByClassName("input")
 //         for (let z = 0; z < allInptBoxs.length; z++) {
 
