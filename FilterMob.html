@@ -442,6 +442,14 @@ console.log("all inputs",allInpts);
 for(let i=0;i<allInpts.length;i++){
   allInpts[i].checked=false;
 }
+localStorage.clear()
+    window.parent.postMessage({
+          message: "reload",
+         
+
+        },
+          "https://jenksryan.editorx.io/hownot2/blank-3?siteRevision=290"
+        );
 // let allInptBoxs = document.getElementsByClassName("input")
 //         for (let z = 0; z < allInptBoxs.length; z++) {
 
