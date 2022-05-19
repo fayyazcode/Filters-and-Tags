@@ -78,6 +78,11 @@
       background-color: #F1F1F1;
       margin-right: 20px;
     }
+    .big_DangerBtn:hover{
+      border: 2px solid rgb(26, 25, 25);
+      background-color: #e0e0e0;
+
+    }
 
 
 
@@ -333,6 +338,9 @@
       font-family: "Roboto";
 
     }
+    button:hover{
+      cursor: pointer;
+    }
 
     .selectSubCat {
       padding-top: 20px;
@@ -410,6 +418,16 @@
       align-items: center;
       padding: 34px 10px;
     }
+    .top_clear :hover{
+      border: 1px solid black;
+      background-color: white;
+    }
+    .top_save{
+      border: 2px solid #BADA55;
+      cursor: pointer;
+      background-color: #ceeb72;
+      
+    }
   </style>
 </head>
 
@@ -418,8 +436,8 @@
   <div class="main container" id="main">
     <h2 class="filterH2">Filter</h2>
     <div class="inner-div">
-      <button class="btn big_DangerBtn" onclick="reset()"><span class="x">X</span> Clear All</button>
-      <button class=" big_SuccessBtn" onclick="sendData()">Save Changes</button>
+      <button class="btn big_DangerBtn top_clear" onclick="reset()"><span class="x">X</span> Clear All</button>
+      <button class=" big_SuccessBtn top_save" onclick="sendData()">Save Changes</button>
     </div>
     <!-- <input id="mainInput" type="text" disabled value="Select Tag Heading" class="form-control" /> -->
   </div>
@@ -1312,15 +1330,17 @@
 
 
           data: mainDataArr,
-
+          message:"reloadPage"
+          
         },
-          "https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
+        "https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
         );
       } else {
         window.parent.postMessage({
-
-
+          
+          
           data: mainDataArr,
+          message:"reloadPage"
 
         },
           "https://jenksryan.editorx.io/hownot2/newfilters?siteRevision=290"
