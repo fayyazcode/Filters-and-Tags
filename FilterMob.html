@@ -291,6 +291,7 @@ console.log("run else");
         for (let z = 0; z < allInpt.length; z++) {
 
                     allInpt[z].style.display = "";
+                    localStorage.clear()
         }
        
       }
@@ -318,15 +319,23 @@ console.log("run else");
       span.innerHTML = "X " + res.value
       span.onclick = function (event) {
         //when uncheck checkbox remove tag button created on top
-        let unCheck = document.getElementById(res.value.replace(/ /g, "")).checked = false;
+        let unCheck = document.getElementById(res.value.replace(/ /g, ""))
+        // .checked = false;
+      
+        unCheck.click()
         //send data to wix when any item is checked or unchecked
-        if (res.checked) {
+        // if (res.checked) {
             // push tags in to local storage for later use 
       // push tags in to local storage for later use 
 
-      checkedData.push(res.value)
+      // checkedData.push(res.value)
+      // localStorage.setItem("array", JSON.stringify(checkedData));
+    // }else{
+      checkedData = checkedData.filter(function (valueRemov, index, arr) {
+        return valueRemov !== res.value;
+      });
       localStorage.setItem("array", JSON.stringify(checkedData));
-    }
+    // }
         window.parent.postMessage({
 
           status: res.checked,
@@ -373,6 +382,8 @@ for(let z=0;z<params.length;z++){
       span.onclick = function (event) {
         //when uncheck checkbox remove tag button created on top
         let unCheck = document.getElementById( allInpts[i].value.replace(/ /g, "")).checked = false;
+        // .checked = false
+        // unCheck.click()
         //send data to wix when any item is checked or unchecked
 
         window.parent.postMessage({
