@@ -602,7 +602,7 @@
           let innerTagDiv = document.createElement("div");
           let selectSubCatogery = document.createElement("span")
 
-          selectSubCatogery.innerHTML = "Select Sub Category"
+          selectSubCatogery.innerHTML = "Select SubCategory"
           selectSubCatogery.setAttribute("class", "selectSubCat")
           if (btn.name == "up") {
             inpSub.setAttribute("name", JSON.parse(parentRes.previousElementSibling.previousElementSibling.previousElementSibling.name)[0])
@@ -981,7 +981,7 @@
             </div>
     </div>
     <div class="selectCatexist"  >
-      <span>Add Sub Category</span> 
+      <span>Add SubCategory</span> 
       <button class="btn-danger" onclick="addTagAddedFilter(this.parentElement.previousElementSibling.firstElementChild)" >Select</button>
       </div>
 
@@ -1023,7 +1023,7 @@
     //add catogery to existing filter
     let addTagAddedFilter = (data) => {
       swal({
-        title: "Add Sub Category",
+        title: "Add SubCategory",
         content: {
           element: "input",
           attributes: {
